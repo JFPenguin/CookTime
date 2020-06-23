@@ -41,7 +41,6 @@ public class Sorter {
 
     }
 
-
 //    public static void quickSort(SinglyList<Integer> numberList){
 //        int length = numberList.getLength();
 //        int tmp = numberList.get(length/2).getData();
@@ -51,8 +50,6 @@ public class Sorter {
 //        int maxNum = getMax(numberList);
 //        int numLen = numberLen(maxNum);
 //    }
-
-
 
     /**
      * This method takes a list and returns a boolean value, true if the list is sorted, false if its not sorted
@@ -76,6 +73,5 @@ public class Sorter {
           }
         return sorted;
     }
-
 
 }
