@@ -13,7 +13,7 @@ public class Sorter {
         Node<Integer> tmp;
         Node<Integer> next;
         while (!checkSorted(numberList)) {
-            for (int i = 0; i < numberList.getLength(); i++) {
+            for (int i = 0; i < numberList.getLength() - 1; i++) {
                 tmp = numberList.get(i);
                 next = numberList.get(i + 1);
                 if(tmp.getData() > next.getData()){
