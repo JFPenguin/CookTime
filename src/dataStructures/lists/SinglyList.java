@@ -172,6 +172,4 @@ public class SinglyList<T> extends LinkedList<T> {
         first.setData(second.getData());
         second.setData(temporalFirst);
     }
-
-
 }
