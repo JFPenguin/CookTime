@@ -1,13 +1,12 @@
 import dataStructures.lists.SinglyList;
 import dataStructures.sorters.Sorter;
+import dataStructures.tree.BinaryTree;
 
 public class Main {
 
     static SinglyList<Integer> numberList = new SinglyList<>();
 
-
     public static void main(String[] args) {
-
         numberList.add(8);
         numberList.add(2);
         numberList.add(5);
@@ -21,8 +20,5 @@ public class Main {
         Sorter.bubbleSort(numberList);
         numberList.print();
         System.out.println("hola");
-
-
     }
-
 }
