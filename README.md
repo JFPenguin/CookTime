@@ -4,6 +4,6 @@
 
 The project consists of a client-server implementation, using a REST API to connect the client and server applications.
 
-# Technical aspects:
+### Technical aspects:
 Server and REST are being coded in Java, using the 13th release of JDK. (13.0.x)
 Client-related code will be implemented in C#, due to the fact that it is based in the Xamarin framework.
