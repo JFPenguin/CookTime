@@ -1,4 +1,4 @@
-package dataStructures.nodes;
+package com.btp.dataStructures.nodes;
 
 /**
  * Superclass of all Nodes. Stores data on lists.

@@ -1,4 +1,4 @@
-package dataStructures.lists;
+package com.btp.dataStructures.lists;
 
 /**
  * Superclass made to add length to Lists and Stack

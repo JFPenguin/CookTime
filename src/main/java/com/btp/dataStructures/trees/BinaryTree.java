@@ -1,5 +1,5 @@
-package dataStructures.tree;
-import dataStructures.nodes.TreeNode;
+package com.btp.dataStructures.trees;
+import com.btp.dataStructures.nodes.TreeNode;
 
 /**
  * A class that represents a Binary Tree

@@ -1,6 +1,6 @@
-package dataStructures.lists;
+package com.btp.dataStructures.lists;
 
-import dataStructures.nodes.Node;
+import com.btp.dataStructures.nodes.Node;
 
 /**
  * Superclass of linear data structures where each element can be accessed and manipulated freely.

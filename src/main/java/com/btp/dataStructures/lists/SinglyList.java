@@ -1,7 +1,7 @@
-package dataStructures.lists;
+package com.btp.dataStructures.lists;
 
-import dataStructures.nodes.Node;
-import dataStructures.nodes.SinglyNode;
+import com.btp.dataStructures.nodes.Node;
+import com.btp.dataStructures.nodes.SinglyNode;
 
 /**
  * LinkedList where each Node contains a reference to the next

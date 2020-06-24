@@ -1,4 +1,4 @@
-package dataStructures.nodes;
+package com.btp.dataStructures.nodes;
 
 /**
  * This class represents a node that forms part of a tree

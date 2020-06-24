@@ -1,8 +1,7 @@
-package dataStructures.sorters;
+package com.btp.dataStructures.sorters;
 
-import dataStructures.lists.SinglyList;
-import dataStructures.nodes.Node;
-
+import com.btp.dataStructures.lists.SinglyList;
+import com.btp.dataStructures.nodes.Node;
 import java.util.Arrays;
 
 public class Sorter {
@@ -134,17 +133,17 @@ public class Sorter {
         boolean sorted = false;
         Node<Integer> tmp;
         Node<Integer> next;
-            for (int i = 0; i < list.getLength()-1; i++) {
-                tmp = list.get(i);
-                next = list.get(i + 1);
-                if(tmp.getData() > next.getData()){
-                    sorted = false;
-                    i = list.getLength();
-                }
-                else{
+        for (int i = 0; i < list.getLength()-1; i++) {
+            tmp = list.get(i);
+            next = list.get(i + 1);
+            if(tmp.getData() > next.getData()){
+                sorted = false;
+                i = list.getLength();
+            }
+            else{
                 sorted = true;
-                }
-          }
+            }
+        }
         return sorted;
     }
 

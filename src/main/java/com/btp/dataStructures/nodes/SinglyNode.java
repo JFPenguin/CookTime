@@ -1,4 +1,4 @@
-package dataStructures.nodes;
+package com.btp.dataStructures.nodes;
 
 /**
  * Nodes with a reference of the Node that follows it
