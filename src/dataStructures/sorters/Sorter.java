@@ -51,9 +51,10 @@ public class Sorter {
     /**
      * main method for radixSort implementation. Takes an integer list and sorts it using
      * the Radix Sorting algorithm.
-     * @param numberList the integer-containing instance that the user desires to sort.
+     * note:
      * This method is based on the tutorial recovered from https://www.geeksforgeeks.org/radix-sort/
      * with only minor implementation-related changes.
+     * @param numberList the integer-containing instance that the user desires to sort.
      */
     public static void radixSort(SinglyList<Integer> numberList){
         int n = numberList.getLength();
@@ -70,11 +71,12 @@ public class Sorter {
 
     /**
      * Method for the counting sorth algorithm, working over an unsorted list.
+     * note:
+     * This method is based on the tutorial recovered from https://www.geeksforgeeks.org/radix-sort/
+     * with only minor implementation-related changes.
      * @param numberList list to be sorted according to the digit being watched by Radix.
      * @param n amount of elements in the list (length)
      * @param exponent current digit being sorted by the main algorithm (base 10)
-     * This method is based on the tutorial recovered from https://www.geeksforgeeks.org/radix-sort/
-     * with only minor implementation-related changes.
      */
     private static void countSort(SinglyList<Integer> numberList, int n, int exponent){
         int output[] = new int[n]; //output array
