@@ -25,7 +25,7 @@ public class Sorter {
     }
 
     /**
-     * bubble sort method, takes an integer list and orders it using the insertion sort algorithm
+     * insertion sort method, takes an integer list and orders it using the insertion sort algorithm
      * @param numberList an Integer list
      */
     public static void insertionSort(SinglyList<Integer> numberList){
@@ -39,13 +39,16 @@ public class Sorter {
                 j--;
             }
         }
-
     }
 
-//    public static void quickSort(SinglyList<Integer> numberList){
-//        int length = numberList.getLength();
-//        int tmp = numberList.get(length/2).getData();
-//    }
+    /**
+     * quick sort method, takes an integer list and orders it using the quick sort algorithm
+     * @param numberList - an integer list
+     */
+    public static void quickSort(SinglyList<Integer> numberList){
+        int length = numberList.getLength();
+        partition(numberList, 0, length - 1);
+    }
 
     /**
      * main method for radixSort implementation. Takes an integer list and sorts it using
@@ -131,7 +134,7 @@ public class Sorter {
      * @param list an integer list
      * @return boolean value, true if sorted, false if not
      */
-    public static boolean checkSorted(SinglyList<Integer> list){
+    private static boolean checkSorted(SinglyList<Integer> list){
         boolean sorted = false;
         Node<Integer> tmp;
         Node<Integer> next;
@@ -149,4 +152,34 @@ public class Sorter {
         return sorted;
     }
 
+    /**
+     * This method is the recursive part of the quicksort algorithm
+     * @param list an integer list
+     * @param low  first element of the list
+     * @param high last element of the list
+     */
+    private static void partition(SinglyList<Integer> list, int low, int high){
+        int i = low;
+        int j = high;
+        int pivot = list.get(low + (high - low) / 2).getData();
+        while (i <= j){
+            while (list.get(i).getData() < pivot){
+                i++;
+            }
+            while (list.get(j).getData() > pivot){
+                j--;
+            }
+            if (i <= j){
+                list.swap(list.get(i), list.get(j));
+                i++;
+                j--;
+            }
+        }
+        if (low < j){
+            partition(list, low, j);
+        }
+        if (i < high){
+            partition(list, i, high);
+        }
+    }
 }

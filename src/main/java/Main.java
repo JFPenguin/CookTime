@@ -17,8 +17,7 @@ public class Main {
         numberList.add(3);
         numberList.add(4);
         numberList.print();
-  //      Sorter.insertSort(numberList);
-        Sorter.radixSort(numberList);
+        Sorter.quickSort(numberList);
         numberList.print();
         System.out.println("hola");
 
