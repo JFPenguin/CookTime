@@ -1,6 +1,8 @@
 package com.btp.serverData;
 
-
+/**
+ * This is the Class for the User obj, it holds the user data
+ */
 public class User {
     private String name;
     private String email;

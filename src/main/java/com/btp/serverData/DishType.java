@@ -1,9 +1,11 @@
 package com.btp.serverData;
 
 public enum DishType {
-    BREAKFAST,
-    LUNCH,
-    SNACK,
-    DINNER,
-    BRUNCH
+    APPETIZER,
+    ENTREE,
+    MAIN_DISH,
+    ALCHOHOL_BEVERAGE,
+    COLD_BEVERAGE,
+    HOT_BEVERAGE,
+    DESSERT
 }

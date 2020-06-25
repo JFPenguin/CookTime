@@ -16,12 +16,15 @@ public class Resources {
 
     public Resources() {
 
+        //Test Users
         createUser("Pedrito Johnson",13,"xxxxXXXXpedritoSexyGamer420XXXxxx@yahoo.com","password");
         createUser("Ojo Noda",18,"OjoNoda@gmail.com","password");
         createUser("Fus RoDah",14,"dragonborn69@bugtesda.com","password");
         createUser("Michael Jayson Toshiba",65,"theRealMichaelJayson@gmail.com","password");
         createUser("Kenny Velasquez",22,"kennyBellius@gmail.com","password");
 
+        //Test Recipes
+        //Gallo Pinto
         SinglyList<DishTag> galloPintoTags = new SinglyList<>();
         galloPintoTags.add(DishTag.VEGAN);
 
@@ -35,8 +38,8 @@ public class Resources {
         galloPintoInstructions.add("Revolver las varas");
         galloPintoInstructions.add("Cocinar");
 
-        Recipe galloPinto = new Recipe("Gallo Pinto",userRepo.getUser(0),DishType.BREAKFAST,
-                5,15,DishTime.MAIN_DISH,3,galloPintoTags,galloPintoIngredients,galloPintoInstructions);
+        Recipe galloPinto = new Recipe("Gallo Pinto",userRepo.getUser(0), DishTime.BREAKFAST,
+                5,15, DishType.MAIN_DISH,3,galloPintoTags,galloPintoIngredients,galloPintoInstructions);
 
         recipeRepo.addRecipe(galloPinto);
 
@@ -50,10 +53,18 @@ public class Resources {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getIt() {
-        return "Resources Main page, \n\nnot much to see here";
+    public String getResources() {
+        return "Resources Main page, \n\nIf you want to check user's JSONs do the following:" +
+                "\n\non your browser address bar add the following to the url: /getUser?id= followed by the int value of the id" +
+                "\n\nif you want to check the recipe's JSONs do the following:\n\n" +
+                "on your browser address bar add the following to the url: /getRecipe?id= followed by the int value of the id";
     }
 
+    /**
+     * API getter for the user obj
+     * @param id int value of the id of the user
+     * @return User obj
+     */
     @Path("getUser")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -61,6 +72,11 @@ public class Resources {
         return userRepo.getUser(id);
     }
 
+    /**
+     * API getter for the recipe obj
+     * @param id int value of the id of the recipe
+     * @return recipe obj
+     */
     @Path("getRecipe")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
