@@ -1,7 +1,7 @@
 package com.btp;
 
-import com.btp.serverData.User;
-import com.btp.serverData.UserRepo;
+import com.btp.dataStructures.lists.SinglyList;
+import com.btp.serverData.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
@@ -11,8 +11,36 @@ import jakarta.ws.rs.core.MediaType;
 @Path("resources")
 public class Resources {
 
-    User pedrito = new User();
     UserRepo userRepo = new UserRepo();
+    RecipeRepo recipeRepo = new RecipeRepo();
+
+    public Resources() {
+
+        createUser("Pedrito Johnson",13,"xxxxXXXXpedritoSexyGamer420XXXxxx@yahoo.com","password");
+        createUser("Ojo Noda",18,"OjoNoda@gmail.com","password");
+        createUser("Fus RoDah",14,"dragonborn69@bugtesda.com","password");
+        createUser("Michael Jayson Toshiba",65,"theRealMichaelJayson@gmail.com","password");
+        createUser("Kenny Velasquez",22,"kennyBellius@gmail.com","password");
+
+        SinglyList<DishTag> galloPintoTags = new SinglyList<>();
+        galloPintoTags.add(DishTag.VEGAN);
+
+        SinglyList<String> galloPintoIngredients = new SinglyList<>();
+        galloPintoIngredients.add("Arroz");
+        galloPintoIngredients.add("Frijoles");
+        galloPintoIngredients.add("Especies Mixtas");
+        galloPintoIngredients.add("Lizano, obvio");
+
+        SinglyList<String> galloPintoInstructions = new SinglyList<>();
+        galloPintoInstructions.add("Revolver las varas");
+        galloPintoInstructions.add("Cocinar");
+
+        Recipe galloPinto = new Recipe("Gallo Pinto",userRepo.getUser(0),DishType.BREAKFAST,
+                5,15,DishTime.MAIN_DISH,3,galloPintoTags,galloPintoIngredients,galloPintoInstructions);
+
+        recipeRepo.addRecipe(galloPinto);
+
+    }
 
 
     /**
@@ -33,5 +61,20 @@ public class Resources {
         return userRepo.getUser(id);
     }
 
+    @Path("getRecipe")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Recipe getRecipe(@QueryParam("id") int id){
+        return recipeRepo.getRecipe(id);
+    }
+
+    public void createUser(String name, int age, String email, String password){
+        User newUser = new User();
+        newUser.setName(name);
+        newUser.setAge(age);
+        newUser.setEmail(email);
+        newUser.setPassword(password);
+        userRepo.addUser(newUser);
+    }
 
 }
