@@ -63,8 +63,10 @@ public class Sorter {
 
         // starts doing counting sort for every digit.
         // passes an exponent of 10 (10 ^i) with i being the current positional value.
-        for (int exp = 1; m/exp > 0; exp *= 10){
-            countSort(numberList, n , exp);
+        while (!checkSorted(numberList)){
+            for (int exp = 1; m/exp > 0; exp *= 10){
+                countSort(numberList, n , exp);
+            }
         }
     }
 
