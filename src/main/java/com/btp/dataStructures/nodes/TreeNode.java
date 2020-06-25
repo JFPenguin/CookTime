@@ -39,6 +39,14 @@ public class TreeNode<T extends Comparable<T>> {
     }
 
     /**
+     * Setter for the element attribute
+     * @param element the new value for element
+     */
+    public void setElement(T element) {
+        this.element = element;
+    }
+
+    /**
      * Getter for the left child
      * @return the TreeNode pointed by the left pointer
      */

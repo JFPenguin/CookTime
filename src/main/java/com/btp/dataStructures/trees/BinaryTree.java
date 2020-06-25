@@ -17,6 +17,7 @@ public class BinaryTree<T extends Comparable<T>> {
 
     /**
      * Checks if the tree is empty
+     *
      * @return true if the tree is empty, false if not
      */
     public boolean isEmpty() {
@@ -26,6 +27,7 @@ public class BinaryTree<T extends Comparable<T>> {
     /**
      * Checks if an element is inside the tree.
      * Calls the recursive method contains
+     *
      * @param element The element to be checked
      * @return true if the element is contained, false if not
      */
@@ -35,24 +37,22 @@ public class BinaryTree<T extends Comparable<T>> {
 
     /**
      * Recursive method that actively checks if an element is in the tree
+     *
      * @param element The element to be checked
-     * @param node The node on which the method starts checking
+     * @param node    The node on which the method starts checking
      * @return true if the element is contained, false if not
      */
     private boolean contains(T element, TreeNode<T> node) {
         if (node == null) {
             return false;
-        }
-        else {
+        } else {
             int compareValue = element.compareTo(node.getElement());
 
             if (compareValue < 0) {
                 return contains(element, node.getLeft());
-            }
-            else if (compareValue > 0) {
+            } else if (compareValue > 0) {
                 return contains(element, node.getRight());
-            }
-            else {
+            } else {
                 return true;
             }
         }
@@ -61,30 +61,29 @@ public class BinaryTree<T extends Comparable<T>> {
     /**
      * Finds the minimun element in the tree.
      * Calls the recursive method findMin
+     *
      * @return the smallest element found
      */
     public T findMin() {
         if (this.isEmpty()) {
             return null;
-        }
-        else {
+        } else {
             return this.findMin(this.root).getElement();
         }
     }
 
     /**
      * Recursive method that finds the minor element in the tree
+     *
      * @param node The node on which the method starts checking
      * @return The found min element
      */
     public TreeNode<T> findMin(TreeNode<T> node) {
         if (node == null) {
             return null;
-        }
-        else if (node.getLeft() == null) {
+        } else if (node.getLeft() == null) {
             return node;
-        }
-        else {
+        } else {
             return findMin(node.getLeft());
         }
     }
@@ -92,19 +91,20 @@ public class BinaryTree<T extends Comparable<T>> {
     /**
      * Finds the maximum element in the tree.
      * Calls the private method findMax
+     *
      * @return the biggest element found
      */
     public T findMax() {
         if (this.isEmpty()) {
             return null;
-        }
-        else {
+        } else {
             return this.findMax(this.root).getElement();
         }
     }
 
     /**
      * Method that finds the mayor element in the tree
+     *
      * @param node The node on which the method starts checking
      * @return The found max element
      */
@@ -118,13 +118,21 @@ public class BinaryTree<T extends Comparable<T>> {
     }
 
     /**
-     * Calls the recursive method
+     * Calls the recursive method insert
+     *
      * @param element the element to be inserted
      */
     public void insert(T element) {
         this.root = this.insert(element, this.root);
     }
 
+    /**
+     * Recursive method that inserts a new node in the tree
+     *
+     * @param element the element to be inserted
+     * @param current the current node being compared
+     * @return the new TreeNode to be inserted
+     */
     private TreeNode<T> insert(T element, TreeNode<T> current) {
         if (current == null) {
             return new TreeNode<T>(element, null, null);
@@ -134,13 +142,51 @@ public class BinaryTree<T extends Comparable<T>> {
 
         if (compareValue < 0) {
             current.setLeft(this.insert(element, current.getLeft()));
-        }
-        else if (compareValue > 0) {
+        } else if (compareValue > 0) {
             current.setRight(this.insert(element, current.getRight()));
         }
         return current;
     }
 
+    /**
+     * Calls the recursive method remove
+     *
+     * @param element the element to be removed
+     */
+    public void remove(T element) {
+        this.root = this.remove(element, this.root);
+    }
+
+    /**
+     * Recursive method that removes a certain node
+     * @param element the element that will be searched and deleted
+     * @param current the current node being compared
+     * @return
+     */
+    private TreeNode<T> remove(T element, TreeNode<T> current) {
+        if (current == null) {
+            return current;
+        }
+        int compareValue = element.compareTo(current.getElement());
+
+        if (compareValue < 0) {
+            current.setLeft(this.remove(element, current.getLeft()));
+        } else if (compareValue > 0) {
+            current.setRight(this.remove(element, current.getRight()));
+        } else if (current.getLeft() != null && current.getRight() != null) {
+            current.setElement(findMin(current.getRight()).getElement());
+            current.setRight(this.remove(current.getElement(), current.getRight()));
+        } else {
+            current = current.getLeft() != null ? current.getLeft() : current.getRight();
+        }
+        return current;
+
+    }
+    
+    /**
+     * Getter for the root attribute
+     * @return the root TreeNode
+     */
     public TreeNode<T> getRoot() {
         return root;
     }
