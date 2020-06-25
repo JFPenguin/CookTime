@@ -6,7 +6,7 @@ import com.btp.dataStructures.nodes.TreeNode;
  * @param <T> A generic type
  */
 public class BinaryTree<T extends Comparable<T>> {
-    public TreeNode<T> root;
+    private TreeNode<T> root;
 
     /**
      * Constructor for the class
@@ -139,6 +139,10 @@ public class BinaryTree<T extends Comparable<T>> {
             current.setRight(this.insert(element, current.getRight()));
         }
         return current;
+    }
+
+    public TreeNode<T> getRoot() {
+        return root;
     }
 }
 
