@@ -5,19 +5,18 @@ import com.btp.dataStructures.nodes.TreeNode;
  * A class that represents a Binary Tree
  * @param <T> A generic type
  */
-public class BinaryTree<T extends Comparable<T>> {
-    private TreeNode<T> root;
+public class BinarySearchTree<T extends Comparable<T>> {
+    protected TreeNode<T> root;
 
     /**
      * Constructor for the class
      */
-    public BinaryTree() {
+    public BinarySearchTree() {
         this.root = null;
     }
 
     /**
      * Checks if the tree is empty
-     *
      * @return true if the tree is empty, false if not
      */
     public boolean isEmpty() {
@@ -42,7 +41,7 @@ public class BinaryTree<T extends Comparable<T>> {
      * @param node    The node on which the method starts checking
      * @return true if the element is contained, false if not
      */
-    private boolean contains(T element, TreeNode<T> node) {
+    protected boolean contains(T element, TreeNode<T> node) {
         if (node == null) {
             return false;
         } else {

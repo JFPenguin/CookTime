@@ -4,7 +4,7 @@ package com.btp.dataStructures.nodes;
  * Superclass of all Nodes. Stores data on lists.
  * @param <T> Data type of the info stored on each Node
  */
-public  abstract class Node<T> {
+public abstract class Node<T> {
 
     protected T data;
 
