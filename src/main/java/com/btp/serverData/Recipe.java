@@ -67,11 +67,11 @@ public class Recipe {
         this.dishTags = dishTags;
     }
 
-    public SinglyList<String> getIngredientsList() {
+    public SinglyList<Ingredient> getIngredientsList() {
         return ingredientsList;
     }
 
-    public void setIngredientsList(SinglyList<String> ingredientsList) {
+    public void setIngredientsList(SinglyList<Ingredient> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 
@@ -100,7 +100,7 @@ public class Recipe {
     private float difficulty;
     private SinglyList<DishTag> dishTags;
     //TODO picture
-    private SinglyList<String> ingredientsList;
+    private SinglyList<Ingredient> ingredientsList;
     private SinglyList<String> instructions;
     private float price;
 
@@ -118,7 +118,7 @@ public class Recipe {
      * @param instructions list of Strings of the instructions that need to be followed
      */
     public Recipe(String name, User author, DishTime dishTime, int portions, int duration, DishType dishType,
-                  float difficulty, SinglyList<DishTag> dishTags, SinglyList<String> ingredientsList, SinglyList<String> instructions) {
+                  float difficulty, SinglyList<DishTag> dishTags, SinglyList<Ingredient> ingredientsList, SinglyList<String> instructions) {
 
         this.name = name;
         this.author = author;

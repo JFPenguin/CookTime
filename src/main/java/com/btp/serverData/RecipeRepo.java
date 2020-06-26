@@ -3,17 +3,13 @@ package com.btp.serverData;
 import com.btp.dataStructures.lists.SinglyList;
 
 public class RecipeRepo {
-    private static SinglyList<Recipe> recipeList;
+    private static final SinglyList<Recipe> recipeList = new SinglyList<>();
 
-    public RecipeRepo() {
-        recipeList = new SinglyList<>();
-    }
-
-    public void addRecipe(Recipe recipe){
+    public static void addRecipe(Recipe recipe){
         recipeList.add(recipe);
     }
 
-    public Recipe getRecipe(int id){
+    public static Recipe getRecipe(int id){
         return recipeList.get(id).getData();
     }
 }
