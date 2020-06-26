@@ -6,7 +6,7 @@ import com.btp.dataStructures.nodes.TreeNode;
  * @param <T> A generic type
  */
 public class BinarySearchTree<T extends Comparable<T>> {
-    protected TreeNode<T> root;
+    private TreeNode<T> root;
 
     /**
      * Constructor for the class
@@ -41,7 +41,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @param node    The node on which the method starts checking
      * @return true if the element is contained, false if not
      */
-    protected boolean contains(T element, TreeNode<T> node) {
+    private boolean contains(T element, TreeNode<T> node) {
         if (node == null) {
             return false;
         } else {
