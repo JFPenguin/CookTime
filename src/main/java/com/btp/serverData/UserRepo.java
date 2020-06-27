@@ -6,17 +6,15 @@ import com.btp.dataStructures.lists.SinglyList;
 
 public class UserRepo {
 
-    private static SinglyList<User> userList;
+    private static final SinglyList<User> userList = new SinglyList<>();
 
-    public UserRepo() {
-         userList = new SinglyList<>();
-    }
 
-    public void addUser(User user){
+    public static void addUser(User user){
         userList.add(user);
+        System.out.println("user Added");
     }
 
-    public User getUser(int id){
+    public static User getUser(int id){
         return userList.get(id).getData();
     }
 
