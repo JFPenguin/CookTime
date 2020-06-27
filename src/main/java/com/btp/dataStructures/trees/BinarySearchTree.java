@@ -60,8 +60,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     public boolean checkById(int id){
-        if (this.root.getElement().getClass().equals(User.class)){
+        if(this.isEmpty()){
+            return false;
+        }
+        else if (this.root.getElement().getClass().equals(User.class)){
             return checkById(id, (TreeNode<User>) this.root);
+
         } else {
             System.out.println("Tree is not made of User type");
             return false;
@@ -204,7 +208,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      */
     private TreeNode<T> insert(T element, TreeNode<T> current) {
         if (current == null) {
-            return new TreeNode<T>(element, null, null);
+            return new TreeNode<>(element, null, null);
         }
 
         int compareValue = element.compareTo(current.getElement());

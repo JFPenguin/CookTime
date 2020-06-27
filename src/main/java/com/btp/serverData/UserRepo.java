@@ -8,16 +8,19 @@ import java.util.Random;
 //TODO change data structure from list to the appropriate tree
 
 public class UserRepo {
+    private static Random random = new Random();
+
 
     private static final BinarySearchTree<User> userTree = new BinarySearchTree<>();
 
 
     public static void addUser(User user){
-        Random random = new Random();
         int i = random.nextInt(999) + 1;
-        
-        while (!userTree.checkById(i)){
+        System.out.println("generating id...");
+        System.out.println("userID: "+i);
+        while (userTree.checkById(i)){
             i = random.nextInt(999) + 1;
+            System.out.println("new Number!");
         }
 
         user.setId(i);

@@ -1,0 +1,45 @@
+{
+  "UserList": {
+    "length": 4,
+    "head": {
+      "data": {
+        "age": 13,
+        "email": "xxxxXXXXpedritoSexyGamer420XXXxxx@yahoo.com",
+        "name": "Pedrito Johnson",
+        "password": "password"
+      },
+      "next": {
+        "data": {
+          "age": 13,
+          "email": "xxxxXXXXpedritoSexyGamer420XXXxxx@yahoo.com",
+          "name": "Pedrito Johnson",
+          "password": "password"
+        },
+        "next": {
+          "data": {
+            "age": 13,
+            "email": "xxxxXXXXpedritoSexyGamer420XXXxxx@yahoo.com",
+            "name": "Pedrito Johnson",
+            "password": "password"
+          },
+          "next": {
+            "data": {
+              "age": 13,
+              "email": "xxxxXXXXpedritoSexyGamer420XXXxxx@yahoo.com",
+              "name": "Pedrito Johnson",
+              "password": "password"
+            }
+          }
+        }
+      }
+    },
+    "last": {
+      "data": {
+        "age": 13,
+        "email": "xxxxXXXXpedritoSexyGamer420XXXxxx@yahoo.com",
+        "name": "Pedrito Johnson",
+        "password": "password"
+      }
+    }
+  }
+}
