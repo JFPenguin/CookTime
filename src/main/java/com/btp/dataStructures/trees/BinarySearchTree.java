@@ -59,6 +59,31 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
+    public boolean checkById(int id){
+        if (this.root.getElement().getClass().equals(User.class)){
+            return checkById(id, (TreeNode<User>) this.root);
+        } else {
+            System.out.println("Tree is not made of User type");
+            return false;
+        }
+    }
+
+    private boolean checkById(int id, TreeNode<User> node){
+        if (node == null){
+            return false;
+        } else {
+            int compareValue = id - node.getElement().getId();
+
+            if (compareValue < 0) {
+                return checkById(id, node.getLeft());
+            } else if (compareValue > 0) {
+                return checkById(id, node.getRight());
+            } else {
+                return true;
+            }
+        }
+    }
+
     public T getElement(T element){
         return getElement(element, this.root);
     }
