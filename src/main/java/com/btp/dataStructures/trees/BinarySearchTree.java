@@ -1,5 +1,7 @@
 package com.btp.dataStructures.trees;
+import com.btp.dataStructures.nodes.SplayNode;
 import com.btp.dataStructures.nodes.TreeNode;
+import com.btp.serverData.User;
 
 /**
  * A class that represents a Binary Tree
@@ -54,6 +56,49 @@ public class BinarySearchTree<T extends Comparable<T>> {
             } else {
                 return true;
             }
+        }
+    }
+
+    public T getElement(T element){
+        return getElement(element, this.root);
+    }
+
+    private T getElement(T element, TreeNode<T> node){
+        if (node == null){
+            return null;
+        }
+        int compareValue = element.compareTo(node.getElement());
+
+        if(compareValue < 0){
+            return getElement(element, node.getLeft());
+        } else if (compareValue > 0) {
+            return getElement(element, node.getRight());
+        } else {
+            return node.getElement();
+        }
+    }
+
+    public User getElementById(int id){
+        if (this.root.getElement().getClass().equals(User.class)){
+            return getElementById(id, (TreeNode<User>) this.root);
+        } else {
+            System.out.println("Tree is not made of User type");
+            return null;
+        }
+    }
+
+    private User getElementById(int id, TreeNode<User> node){
+        if (node == null){
+            return null;
+        }
+        int compareValue = id - node.getElement().getId();
+
+        if(compareValue < 0){
+            return getElementById(id, node.getLeft());
+        } else if (compareValue > 0) {
+            return getElementById(id, node.getRight());
+        } else {
+            return node.getElement();
         }
     }
 
@@ -188,6 +233,34 @@ public class BinarySearchTree<T extends Comparable<T>> {
      */
     public TreeNode<T> getRoot() {
         return root;
+    }
+
+    public void preorder() {
+        if (this.root.getElement().getClass().equals(User.class)){
+            preorderUser((TreeNode<User>) this.root);
+        } else {
+            preorder(this.root);
+        }
+    }
+
+    /**
+     * private preorder traversal method
+     * @param root root object of the SplayTree instance
+     */
+    private void preorder(TreeNode<T> root) {
+        if (root != null) {
+            System.out.println(root.getElement() + " ");
+            preorder(root.getLeft());
+            preorder(root.getRight());
+        }
+    }
+
+    private void preorderUser(TreeNode<User> root){
+        if (root != null) {
+            System.out.println(root.getElement().getName() + " ");
+            preorderUser(root.getLeft());
+            preorderUser(root.getRight());
+        }
     }
 }
 

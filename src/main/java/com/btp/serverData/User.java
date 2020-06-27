@@ -3,11 +3,20 @@ package com.btp.serverData;
 /**
  * This is the Class for the User obj, it holds the user data
  */
-public class User {
+public class User implements Comparable<User> {
+    private int id;
     private String name;
     private String email;
     private String password;
     private int age;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -39,5 +48,10 @@ public class User {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    @Override
+    public int compareTo(User user) {
+        return this.getId() - user.getId();
     }
 }
