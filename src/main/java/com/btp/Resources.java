@@ -5,6 +5,8 @@ import com.btp.serverData.*;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import java.io.IOException;
+
 /**
  * Root resource (exposed at "myresource" path)
  */
@@ -53,7 +55,7 @@ public class Resources {
 
     @POST
     @Path("createUser")
-    public void createUser(User user){
+    public void createUser(User user) {
         System.out.println(user.getName()+ user.getEmail()+ user.getPassword()+ user.getAge());
         UserRepo.addUser(user);
     }
