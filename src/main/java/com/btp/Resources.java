@@ -60,7 +60,7 @@ public class Resources {
     @POST
     @Path("createUser")
     public void createUser(User user) {
-        System.out.println(user.getName()+ user.getEmail()+ user.getPassword()+ user.getAge());
+        System.out.println("name: "+ user.getName()+" email: "+user.getEmail()+ " password: "+user.getPassword()+ " age: "+user.getAge());
         int i = random.nextInt(999) + 1;
         System.out.println("generating id...");
         System.out.println("userID: "+i);

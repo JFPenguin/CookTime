@@ -27,12 +27,11 @@ public class DataWriter<T>{
 
         try {
             dataString = objectMapper.writeValueAsString(data);
-            System.out.println("\nJSON Object: " + dataString);
             String absolutePath = new File(path).getAbsolutePath();
             FileWriter file = new FileWriter(absolutePath);
             file.write(dataString);
             file.flush();
-            System.out.println("Successfully Copied JSON Object to File...");
+            System.out.println("added user to user data base...");
 
         } catch (IOException e) {
             e.printStackTrace();
