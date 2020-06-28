@@ -2,6 +2,9 @@ package com.btp.serverData;
 
 import com.btp.dataStructures.lists.SinglyList;
 
+/**
+ * This class represents the main repository for recipes
+ */
 public class RecipeRepo {
     private static final SinglyList<Recipe> recipeList = new SinglyList<>();
 

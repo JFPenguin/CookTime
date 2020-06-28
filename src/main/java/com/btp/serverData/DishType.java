@@ -1,5 +1,8 @@
 package com.btp.serverData;
 
+/**
+ * Enum of type of dish
+ */
 public enum DishType {
     APPETIZER,
     ENTREE,
