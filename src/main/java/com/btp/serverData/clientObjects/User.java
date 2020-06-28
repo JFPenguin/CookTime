@@ -1,4 +1,4 @@
-package com.btp.serverData;
+package com.btp.serverData.clientObjects;
 
 /**
  * This is the Class for the User obj, it holds the user data

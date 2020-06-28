@@ -1,4 +1,4 @@
-package com.btp.serverData;
+package com.btp.serverData.clientObjects;
 
 /**
  * Ingredient obj that represents ingredients, it has 3 values, the ingredient String name, the quantity and the enum of the measurement type

@@ -1,53 +1,31 @@
 package com.btp;
 
 import com.btp.dataStructures.lists.SinglyList;
-import com.btp.serverData.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.application.Application;
+import com.btp.serverData.clientObjects.*;
+import com.btp.serverData.repos.RecipeRepo;
+import com.btp.serverData.repos.UserRepo;
 
 import javax.servlet.http.HttpServlet;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 
-public class Main extends HttpServlet {
-
-    ObjectMapper objectMapper = new ObjectMapper();
+public class Initializer extends HttpServlet {
 
     public void init() {
-        System.out.println("running init...");
+        System.out.println("running initialization...");
         System.out.println("loading resources...");
-        testResources();
+        try {
+            UserRepo.loadTree();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("opening GUI...");
         createWindow();
     }
 
     public static void testResources() {
-
-        //Test Users
-        User u1 = new User();
-        u1.setName("Pedrito Johnson"); u1.setEmail("xxxxXXXXpedritoSexyGamer420XXXxxx@yahoo.com");u1.setPassword("password");u1.setAge(13);
-
-        User u2 = new User();
-        u2.setName("Ojo Noda"); u2.setEmail("OjoNoda@gmail.com");u2.setPassword("password");u2.setAge(18);
-
-        User u3 = new User();
-        u3.setName("Fus RoDah"); u3.setEmail("dragonborn69@bugtesda.com");u3.setPassword("password");u3.setAge(18);
-
-        User u4 = new User();
-        u4.setName("Michael Jayson Toshiba"); u4.setEmail("theRealMichaelJayson@gmail.com");u4.setPassword("password");u4.setAge(65);
-
-        User u5 = new User();
-        u5.setName("Kenny Velasquez"); u5.setEmail("kennyBellius@gmail.com");u5.setPassword("password");u5.setAge(22);
-
-
-        UserRepo.addUser(u1);
-        UserRepo.addUser(u2);
-        UserRepo.addUser(u3);
-        UserRepo.addUser(u4);
-        UserRepo.addUser(u5);
-
-
         //Test Recipes
         //Gallo Pinto
         SinglyList<DishTag> galloPintoTags = new SinglyList<>();

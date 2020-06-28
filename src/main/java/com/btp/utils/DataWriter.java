@@ -1,4 +1,4 @@
-package com.btp.serverData;
+package com.btp.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
