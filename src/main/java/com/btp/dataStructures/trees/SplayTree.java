@@ -52,7 +52,7 @@ public class SplayTree<T extends Comparable<T>> {
     }
 
     // rotations
-    public void makeLeftchildParent(SplayNode<T> child, SplayNode<T> parent) {
+    public void zigRotation(SplayNode<T> child, SplayNode<T> parent) {
         if ((child == null) || (parent == null) || (parent.getLeft() != child) || (child.getParent() != parent)){
             throw new RuntimeException("wrong rotational operation for this value");
         }
@@ -78,7 +78,7 @@ public class SplayTree<T extends Comparable<T>> {
         //TODO: actually understand what is going on
     }
 
-    public void makeRightChildParent(SplayNode<T> child, SplayNode<T> parent) {
+    public void zagRotation(SplayNode<T> child, SplayNode<T> parent) {
         if ((child == null) || (parent == null) || (parent.getRight() != child) || (child.getParent() != parent)){
             throw new RuntimeException("wrong rotational operation for this value");
         }
@@ -107,29 +107,29 @@ public class SplayTree<T extends Comparable<T>> {
             SplayNode<T> grandParent = parent.getParent();
             if (grandParent == null) {
                 if (x == parent.getLeft()) {
-                    makeLeftchildParent(x, parent);
+                    zigRotation(x, parent);
                 } else {
-                    makeRightChildParent(x, parent);
+                    zagRotation(x, parent);
                 }
             } else {
                 if (x == parent.getLeft()) {
                     if (parent == grandParent.getLeft()) {
-                        makeLeftchildParent(parent, grandParent);
-                        makeLeftchildParent(x, parent);
+                        zigRotation(parent, grandParent);
+                        zigRotation(x, parent);
                     }
                     else {
-                        makeLeftchildParent(x, x.getParent());
-                        makeRightChildParent(x, x.getParent());
+                        zigRotation(x, x.getParent());
+                        zagRotation(x, x.getParent());
                     }
                 }
                 else {
                     if (parent == grandParent.getLeft()){
-                        makeRightChildParent(x, x.getParent());
-                        makeLeftchildParent(x, x.getParent());
+                        zagRotation(x, x.getParent());
+                        zigRotation(x, x.getParent());
                     }
                     else {
-                        makeRightChildParent(parent, grandParent);
-                        makeRightChildParent(x, parent);
+                        zagRotation(parent, grandParent);
+                        zagRotation(x, parent);
                     }
                 }
             }
@@ -174,7 +174,7 @@ public class SplayTree<T extends Comparable<T>> {
         toRemove.setParent(null);
         toRemove.setLeft(null);
         toRemove.setRight(null);
-        toRemove = null;
+        toRemove.setElement(null);
         values--;
     }
 
@@ -225,7 +225,8 @@ public class SplayTree<T extends Comparable<T>> {
     }
 
     /**
-     * in order traversal method
+     * in order traversal printing method
+     * this method is used to print the tree in the following order: left subtree, root and right subtree.
      */
     public void inOrder() {
         inorder(this.root);
@@ -241,10 +242,14 @@ public class SplayTree<T extends Comparable<T>> {
             System.out.println(root.getElement() + " ");
             inorder(root.getRight());
         }
+        else {
+            System.out.println("root is empty");
+        }
     }
 
     /**
      * public preorder traversal method
+     * this method is used to print the tree in the following order: the root, the left subtree, the right subtree
      */
     public void preorder() {
         preorder(this.root);
@@ -260,10 +265,14 @@ public class SplayTree<T extends Comparable<T>> {
             preorder(root.getLeft());
             preorder(root.getRight());
         }
+        else {
+            System.out.println("root is empty");
+        }
     }
 
     /**
      * public postorder traversal method
+     * this method is used to print the tree in the following order: left subtree, right subtree, root
      */
     public void postorder() {
         postorder(this.root);
@@ -278,6 +287,9 @@ public class SplayTree<T extends Comparable<T>> {
             postorder(root.getLeft());
             postorder(root.getRight());
             System.out.println(root.getElement() + " ");
+        }
+        else {
+            System.out.println("root is empty");
         }
     }
 }
