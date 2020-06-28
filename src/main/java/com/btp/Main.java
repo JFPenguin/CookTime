@@ -2,6 +2,8 @@ package com.btp;
 
 import com.btp.dataStructures.lists.SinglyList;
 import com.btp.serverData.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.application.Application;
 
 import javax.servlet.http.HttpServlet;
 import javax.swing.*;
@@ -10,25 +12,17 @@ import java.awt.*;
 
 public class Main extends HttpServlet {
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
     public void init() {
+        System.out.println("running init...");
+        System.out.println("loading resources...");
         testResources();
+        System.out.println("opening GUI...");
         createWindow();
     }
 
-    private static void createWindow() {
-        JFrame frame = new JFrame("simpleGUI");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel textLabel = new JLabel("Hola soy su server pa",SwingConstants.CENTER);
-        textLabel.setPreferredSize(new Dimension(300,100));
-        frame.getContentPane().add(textLabel, BorderLayout.CENTER);
-
-        frame.setLocationRelativeTo(null);
-        frame.pack();
-        frame.setVisible(true);
-
-    }
-
-    public void testResources() {
+    public static void testResources() {
 
         //Test Users
         User u1 = new User();
@@ -99,6 +93,18 @@ public class Main extends HttpServlet {
         RecipeRepo.addRecipe(cheeseCake);
         RecipeRepo.addRecipe(galloPinto);
 
+    }
+
+    private static void createWindow() {
+        JFrame frame = new JFrame("simpleGUI");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JLabel textLabel = new JLabel("Hola soy su server pa",SwingConstants.CENTER);
+        textLabel.setPreferredSize(new Dimension(300,100));
+        frame.getContentPane().add(textLabel, BorderLayout.CENTER);
+        frame.setLocationRelativeTo(null);
+        frame.pack();
+        frame.setVisible(true);
 
     }
+
 }
