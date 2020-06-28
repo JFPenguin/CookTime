@@ -1,11 +1,13 @@
-package com.btp.serverData;
+package com.btp.serverData.repos;
 
 import com.btp.dataStructures.lists.SinglyList;
+import com.btp.serverData.clientObjects.Recipe;
 
 /**
  * This class represents the main repository for recipes
  */
 public class RecipeRepo {
+
     private static final SinglyList<Recipe> recipeList = new SinglyList<>();
 
     public static void addRecipe(Recipe recipe){
@@ -15,4 +17,5 @@ public class RecipeRepo {
     public static Recipe getRecipe(int id){
         return recipeList.get(id).getData();
     }
+
 }

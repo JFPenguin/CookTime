@@ -1,19 +1,19 @@
 package com.btp.dataStructures.trees;
-import com.btp.dataStructures.nodes.SplayNode;
-import com.btp.dataStructures.nodes.TreeNode;
-import com.btp.serverData.User;
+import com.btp.dataStructures.nodes.UserTreeNode;
+import com.btp.serverData.clientObjects.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A class that represents a Binary Tree
- * @param <T> A generic type
- */
-public class BinarySearchTree<T extends Comparable<T>> {
-    private TreeNode<T> root;
+¿ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class UserBST {
+    private UserTreeNode root;
 
     /**
      * Constructor for the class
      */
-    public BinarySearchTree() {
+    public UserBST() {
         this.root = null;
     }
 
@@ -29,30 +29,30 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * Checks if an element is inside the tree.
      * Calls the recursive method contains
      *
-     * @param element The element to be checked
+     * @param id The element to be checked
      * @return true if the element is contained, false if not
      */
-    public boolean contains(T element) {
-        return this.contains(element, this.root);
+    public boolean contains(int id) {
+        return this.contains(id, this.root);
     }
 
     /**
      * Recursive method that actively checks if an element is in the tree
      *
-     * @param element The element to be checked
+     * @param id The element to be checked
      * @param node    The node on which the method starts checking
      * @return true if the element is contained, false if not
      */
-    private boolean contains(T element, TreeNode<T> node) {
+    private boolean contains(int id, UserTreeNode node) {
         if (node == null) {
             return false;
         } else {
-            int compareValue = element.compareTo(node.getElement());
+            int compareValue = id - node.getElement().getId();
 
             if (compareValue < 0) {
-                return contains(element, node.getLeft());
+                return contains(id, node.getLeft());
             } else if (compareValue > 0) {
-                return contains(element, node.getRight());
+                return contains(id, node.getRight());
             } else {
                 return true;
             }
@@ -63,16 +63,12 @@ public class BinarySearchTree<T extends Comparable<T>> {
         if(this.isEmpty()){
             return false;
         }
-        else if (this.root.getElement().getClass().equals(User.class)){
-            return checkById(id, (TreeNode<User>) this.root);
-
-        } else {
-            System.out.println("Tree is not made of User type");
-            return false;
+        else{
+            return checkById(id, this.root);
         }
     }
 
-    private boolean checkById(int id, TreeNode<User> node){
+    private boolean checkById(int id, UserTreeNode node){
         if (node == null){
             return false;
         } else {
@@ -88,35 +84,16 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-    public T getElement(T element){
-        return getElement(element, this.root);
-    }
-
-    private T getElement(T element, TreeNode<T> node){
-        if (node == null){
-            return null;
-        }
-        int compareValue = element.compareTo(node.getElement());
-
-        if(compareValue < 0){
-            return getElement(element, node.getLeft());
-        } else if (compareValue > 0) {
-            return getElement(element, node.getRight());
-        } else {
-            return node.getElement();
-        }
-    }
-
     public User getElementById(int id){
         if (this.root.getElement().getClass().equals(User.class)){
-            return getElementById(id, (TreeNode<User>) this.root);
+            return getElementById(id, this.root);
         } else {
             System.out.println("Tree is not made of User type");
             return null;
         }
     }
 
-    private User getElementById(int id, TreeNode<User> node){
+    private User getElementById(int id, UserTreeNode node){
         if (node == null){
             return null;
         }
@@ -137,7 +114,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      *
      * @return the smallest element found
      */
-    public T findMin() {
+    public User findMin() {
         if (this.isEmpty()) {
             return null;
         } else {
@@ -151,7 +128,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @param node The node on which the method starts checking
      * @return The found min element
      */
-    public TreeNode<T> findMin(TreeNode<T> node) {
+    public UserTreeNode findMin(UserTreeNode node) {
         if (node == null) {
             return null;
         } else if (node.getLeft() == null) {
@@ -167,7 +144,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      *
      * @return the biggest element found
      */
-    public T findMax() {
+    public User findMax() {
         if (this.isEmpty()) {
             return null;
         } else {
@@ -181,7 +158,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * @param node The node on which the method starts checking
      * @return The found max element
      */
-    public TreeNode<T> findMax(TreeNode<T> node) {
+    public UserTreeNode findMax(UserTreeNode node) {
         if (node != null) {
             while (node.getRight() != null) {
                 node = node.getRight();
@@ -193,30 +170,33 @@ public class BinarySearchTree<T extends Comparable<T>> {
     /**
      * Calls the recursive method insert
      *
-     * @param element the element to be inserted
+     * @param user the element to be inserted
      */
-    public void insert(T element) {
-        this.root = this.insert(element, this.root);
+    public void insert(User user) {
+        this.root = this.insert(user, this.root);
     }
 
     /**
      * Recursive method that inserts a new node in the tree
      *
-     * @param element the element to be inserted
+     * @param user the element to be inserted
      * @param current the current node being compared
      * @return the new TreeNode to be inserted
      */
-    private TreeNode<T> insert(T element, TreeNode<T> current) {
+    private UserTreeNode insert(User user, UserTreeNode current) {
         if (current == null) {
-            return new TreeNode<>(element, null, null);
+            UserTreeNode userTreeNode = new UserTreeNode( null, null);
+            userTreeNode.setElement(user);
+            return userTreeNode;
+
         }
 
-        int compareValue = element.compareTo(current.getElement());
+        int compareValue = user.getId() - current.getElement().getId();
 
         if (compareValue < 0) {
-            current.setLeft(this.insert(element, current.getLeft()));
+            current.setLeft(this.insert(user, current.getLeft()));
         } else if (compareValue > 0) {
-            current.setRight(this.insert(element, current.getRight()));
+            current.setRight(this.insert(user, current.getRight()));
         }
         return current;
     }
@@ -224,28 +204,28 @@ public class BinarySearchTree<T extends Comparable<T>> {
     /**
      * Calls the recursive method remove
      *
-     * @param element the element to be removed
+     * @param id the element to be removed
      */
-    public void remove(T element) {
-        this.root = this.remove(element, this.root);
+    public void remove(int id) {
+        this.root = this.remove(getElementById(id), this.root);
     }
 
     /**
      * Recursive method that removes a certain node
-     * @param element the element that will be searched and deleted
+     * @param user the element that will be searched and deleted
      * @param current the current node being compared
-     * @return
+     * @return current Node
      */
-    private TreeNode<T> remove(T element, TreeNode<T> current) {
+    private UserTreeNode remove(User user, UserTreeNode current) {
         if (current == null) {
             return current;
         }
-        int compareValue = element.compareTo(current.getElement());
+        int compareValue = user.getId() - current.getElement().getId();
 
         if (compareValue < 0) {
-            current.setLeft(this.remove(element, current.getLeft()));
+            current.setLeft(this.remove(user, current.getLeft()));
         } else if (compareValue > 0) {
-            current.setRight(this.remove(element, current.getRight()));
+            current.setRight(this.remove(user, current.getRight()));
         } else if (current.getLeft() != null && current.getRight() != null) {
             current.setElement(findMin(current.getRight()).getElement());
             current.setRight(this.remove(current.getElement(), current.getRight()));
@@ -260,13 +240,13 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * Getter for the root attribute
      * @return the root TreeNode
      */
-    public TreeNode<T> getRoot() {
+    public UserTreeNode getRoot() {
         return root;
     }
 
     public void preorder() {
         if (this.root.getElement().getClass().equals(User.class)){
-            preorderUser((TreeNode<User>) this.root);
+            preorderUser(this.root);
         } else {
             preorder(this.root);
         }
@@ -276,7 +256,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
      * private preorder traversal method
      * @param root root object of the SplayTree instance
      */
-    private void preorder(TreeNode<T> root) {
+    private void preorder(UserTreeNode root) {
         if (root != null) {
             System.out.println(root.getElement() + " ");
             preorder(root.getLeft());
@@ -284,7 +264,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-    private void preorderUser(TreeNode<User> root){
+    private void preorderUser(UserTreeNode root){
         if (root != null) {
             System.out.println(root.getElement().getName() + " ");
             preorderUser(root.getLeft());

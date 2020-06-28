@@ -1,31 +1,28 @@
-package com.btp.dataStructures.nodes;
+package com.btp.dataStructures.nodes.GenericNodes;
 
 /**
  * This class represents a node that forms part of a tree
  * @param <T> A generic type
  */
-public class TreeNode<T extends Comparable<T>> {
-    private T element;
-    private TreeNode<T> left;
-    private TreeNode<T> right;
+public class BinaryTreeNode<T extends Comparable<T>> {
+    private T element = null;
+    private BinaryTreeNode<T> left;
+    private BinaryTreeNode<T> right;
 
     /**
      * The constructor of the method called externally.
      * It calls the private constructor.
-     * @param element The element attribute that the node will contain
      */
-    public TreeNode(T element) {
-        this(element, null, null);
+    public BinaryTreeNode() {
+        this(null, null);
     }
 
     /**
      * The actual constructor for this class
-     * @param element The element attribute that the node will contain
      * @param left The left child of the node
      * @param right The right child of the node
      */
-    public TreeNode(T element, TreeNode<T> left, TreeNode<T> right) {
-        this.element = element;
+    public BinaryTreeNode(BinaryTreeNode<T> left, BinaryTreeNode<T> right) {
         this.left = left;
         this.right = right;
     }
@@ -50,7 +47,7 @@ public class TreeNode<T extends Comparable<T>> {
      * Getter for the left child
      * @return the TreeNode pointed by the left pointer
      */
-    public TreeNode<T> getLeft() {
+    public BinaryTreeNode<T> getLeft() {
         return left;
     }
 
@@ -58,7 +55,7 @@ public class TreeNode<T extends Comparable<T>> {
      * Setter for the left child
      * @param left the TreeNode left child
      */
-    public void setLeft(TreeNode<T> left) {
+    public void setLeft(BinaryTreeNode<T> left) {
         this.left = left;
     }
 
@@ -66,7 +63,7 @@ public class TreeNode<T extends Comparable<T>> {
      * Getter for the right child
      * @return the TreeNode pointed by the right pointer
      */
-    public TreeNode<T> getRight() {
+    public BinaryTreeNode<T> getRight() {
         return right;
     }
 
@@ -74,7 +71,7 @@ public class TreeNode<T extends Comparable<T>> {
      * Setter for the right child
      * @param right the TreeNode right child
      */
-    public void setRight(TreeNode<T> right) {
+    public void setRight(BinaryTreeNode<T> right) {
         this.right = right;
     }
 }

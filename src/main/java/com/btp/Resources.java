@@ -1,17 +1,21 @@
 package com.btp;
 
-import com.btp.dataStructures.lists.SinglyList;
-import com.btp.serverData.*;
+import com.btp.serverData.clientObjects.Recipe;
+import com.btp.serverData.clientObjects.User;
+import com.btp.serverData.repos.RecipeRepo;
+import com.btp.serverData.repos.UserRepo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
-import java.io.IOException;
+import java.util.Random;
 
 /**
  * Root resource (exposed at "myresource" path)
  */
 @Path("resources")
 public class Resources {
+
+    private static final Random random = new Random();
 
 
     /**
@@ -36,7 +40,7 @@ public class Resources {
     @Path("getUser")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public User getUser(@QueryParam("id") int id){
+        public User getUser(@QueryParam("id") int id){
         return UserRepo.getUser(id);
     }
 
@@ -56,7 +60,15 @@ public class Resources {
     @POST
     @Path("createUser")
     public void createUser(User user) {
-        System.out.println(user.getName()+ user.getEmail()+ user.getPassword()+ user.getAge());
+        System.out.println("name: "+ user.getName()+" email: "+user.getEmail()+ " password: "+user.getPassword()+ " age: "+user.getAge());
+        int i = random.nextInt(999) + 1;
+        System.out.println("generating id...");
+        System.out.println("userID: "+i);
+        while (UserRepo.checkByID(i)){
+            i = random.nextInt(999) + 1;
+            System.out.println("new Number!");
+        }
+        user.setId(i);
         UserRepo.addUser(user);
     }
 

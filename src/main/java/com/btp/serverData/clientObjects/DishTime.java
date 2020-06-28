@@ -1,4 +1,4 @@
-package com.btp.serverData;
+package com.btp.serverData.clientObjects;
 
 /**
  * Enum of the time of day for the dish

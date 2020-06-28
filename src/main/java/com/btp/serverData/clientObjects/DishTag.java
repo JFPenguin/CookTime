@@ -1,4 +1,4 @@
-package com.btp.serverData;
+package com.btp.serverData.clientObjects;
 
 /**
  * Enum for the different dish tags
