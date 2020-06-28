@@ -1,12 +1,15 @@
 package com.btp;
 
 import com.btp.dataStructures.lists.SinglyList;
+import com.btp.gui.Display;
+import com.btp.gui.ServerGUI;
 import com.btp.serverData.clientObjects.*;
 import com.btp.serverData.repos.RecipeRepo;
 import com.btp.serverData.repos.UserRepo;
 
 import javax.servlet.http.HttpServlet;
 import javax.swing.*;
+import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.io.IOException;
 
@@ -22,7 +25,11 @@ public class Initializer extends HttpServlet {
             e.printStackTrace();
         }
         System.out.println("opening GUI...");
-        createWindow();
+        try {
+            createWindow();
+        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void testResources() {
@@ -73,15 +80,32 @@ public class Initializer extends HttpServlet {
 
     }
 
-    private static void createWindow() {
-        JFrame frame = new JFrame("simpleGUI");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JLabel textLabel = new JLabel("Hola soy su server pa",SwingConstants.CENTER);
-        textLabel.setPreferredSize(new Dimension(300,100));
-        frame.getContentPane().add(textLabel, BorderLayout.CENTER);
-        frame.setLocationRelativeTo(null);
-        frame.pack();
-        frame.setVisible(true);
+    private static void createWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        SwingUtilities.invokeLater(() -> {
+            ServerGUI serverGUI = new ServerGUI();
+            serverGUI.setVisible(true);
+        });
+
+        //serverGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+//        JFrame frame = new JFrame("simpleGUI");
+//        //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        JLabel textLabel = new JLabel("Hola soy su server pa",SwingConstants.CENTER);
+//        //textLabel.setPreferredSize(new Dimension(800,600));
+//        //frame = new JFrame(title);
+//        frame.setPreferredSize(new Dimension(800,600));
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setResizable(true);
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+//        frame.pack();
+//        //Display display = new Display("CookTime Server Manager", 800, 600);
+//        //Graphics graphics;
+//        frame.getContentPane().add(textLabel, BorderLayout.CENTER);
+//       // display.getFrame().setLocationRelativeTo(null);
+//       // display.getFrame().pack();
+//        //display.getFrame().setVisible(true);
 
     }
 
