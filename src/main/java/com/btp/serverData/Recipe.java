@@ -5,7 +5,29 @@ import com.btp.dataStructures.lists.SinglyList;
 /**
  * This is the class of the recipe obj, it holds the recipe information
  */
-public class Recipe {
+public class Recipe implements Comparable<Recipe> {
+
+    private String name;
+    private final User author;
+    private DishTime dishTime;
+    private int portions;
+    private int duration; //in minutes
+    private DishType dishType;
+    private float difficulty;
+    private SinglyList<DishTag> dishTags;
+    //TODO picture
+    private SinglyList<Ingredient> ingredientsList;
+    private SinglyList<String> instructions;
+    private float price;
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -91,19 +113,6 @@ public class Recipe {
         this.price = price;
     }
 
-    private String name;
-    private final User author;
-    private DishTime dishTime;
-    private int portions;
-    private int duration; //in minutes
-    private DishType dishType;
-    private float difficulty;
-    private SinglyList<DishTag> dishTags;
-    //TODO picture
-    private SinglyList<Ingredient> ingredientsList;
-    private SinglyList<String> instructions;
-    private float price;
-
     /**
      * Constructor for the Recipe Class
      * @param name A String representing the name of the dish
@@ -139,5 +148,10 @@ public class Recipe {
         this.ingredientsList = ingredientsList;
         this.instructions = instructions;
 
+    }
+
+    @Override
+    public int compareTo(Recipe recipe) {
+        return this.getId() - recipe.getId();
     }
 }
