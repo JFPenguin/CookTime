@@ -60,13 +60,25 @@ public class Resources {
     @POST
     @Path("createUser")
     public void createUser(User user) {
+        System.out.println("new user!");
         System.out.println("name: "+ user.getName()+" email: "+user.getEmail()+ " password: "+user.getPassword()+ " age: "+user.getAge());
+        if(Initializer.isGUIOnline()){
+            Initializer.getServerGUI().printLn("new user!");
+            Initializer.getServerGUI().printLn("name: "+ user.getName()+"\nemail: "+user.getEmail()+ "\npassword: "+user.getPassword()+ "\nage: "+user.getAge());
+        }
         int i = random.nextInt(999) + 1;
         System.out.println("generating id...");
         System.out.println("userID: "+i);
+        if(Initializer.isGUIOnline()){
+            Initializer.getServerGUI().printLn("generating id...");
+            Initializer.getServerGUI().printLn("userID: "+i);
+        }
         while (UserRepo.checkByID(i)){
             i = random.nextInt(999) + 1;
-            System.out.println("new Number!");
+            System.out.println("id in use, generating new id...");
+            if(Initializer.isGUIOnline()){
+                Initializer.getServerGUI().printLn("id in use, generating new id...");
+            }
         }
         user.setId(i);
         UserRepo.addUser(user);

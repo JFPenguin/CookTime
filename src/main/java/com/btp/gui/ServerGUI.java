@@ -18,16 +18,18 @@ public class ServerGUI extends JFrame{
     private JTextArea textArea1;
     private JButton sendButton;
 
-
-
     public ServerGUI() {
         setTitle("CookTime Server Manager");
         setSize(1000,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(mainPanel);
-
-
+        serverConsoleMonitor.setEditable(false);
     }
 
+    public void printLn(String txt) {
+        serverConsoleMonitor.setEditable(true);
+        serverConsoleMonitor.append(txt+"\n");
+        serverConsoleMonitor.setEditable(false);
+    }
 }
 

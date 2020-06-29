@@ -1,5 +1,6 @@
 package com.btp.serverData.repos;
 
+import com.btp.Initializer;
 import com.btp.dataStructures.trees.UserBST;
 import com.btp.utils.DataWriter;
 import com.btp.serverData.clientObjects.User;
@@ -17,6 +18,9 @@ public class UserRepo {
     public static void addUser(User user) {
         userTree.insert(user);
         System.out.println("user added");
+        if(Initializer.isGUIOnline()){
+            Initializer.getServerGUI().printLn("user added");
+        }
         dataWriter.writeData(userTree, path);
 
     }

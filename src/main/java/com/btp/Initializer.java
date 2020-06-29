@@ -13,6 +13,18 @@ import java.io.IOException;
 
 public class Initializer extends HttpServlet {
 
+    public static boolean isGUIOnline() {
+        return guiStatus;
+    }
+
+    public static boolean guiStatus = false;
+
+    public static ServerGUI getServerGUI() {
+        return serverGUI;
+    }
+
+    public static ServerGUI serverGUI;
+
     public void init() {
         System.out.println("running initialization...");
         System.out.println("loading resources...");
@@ -78,12 +90,12 @@ public class Initializer extends HttpServlet {
 
     }
 
-    private static void createWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        SwingUtilities.invokeLater(() -> {
-            ServerGUI serverGUI = new ServerGUI();
-            serverGUI.setVisible(true);
-        });
+    private void createWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        serverGUI = new ServerGUI();
+        serverGUI.setVisible(true);
+        guiStatus = true;
+
 
         //serverGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

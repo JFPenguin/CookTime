@@ -1,5 +1,6 @@
 package com.btp.utils;
 
+import com.btp.Initializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -32,6 +33,9 @@ public class DataWriter<T>{
             file.write(dataString);
             file.flush();
             System.out.println("added user to user data base...");
+            if(Initializer.isGUIOnline()){
+                Initializer.getServerGUI().printLn("added user to user data base...");
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
