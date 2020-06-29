@@ -12,7 +12,7 @@ import java.io.IOException;
 public class UserRepo {
     private static UserBST userTree = new UserBST();
     private static final DataWriter<UserBST> dataWriter = new DataWriter<>();
-    private static final String path ="C:/Users/Joe_A/OneDrive - Estudiantes ITCR/Universidad/2020-1/Algoritmos y estructuras de datos 1/CookTime/dataBase/userDataBase.json";
+    private static final String path =System.getProperty("project.folder")+"dataBase/userDataBase.json";
 
 
     public static void addUser(User user) {

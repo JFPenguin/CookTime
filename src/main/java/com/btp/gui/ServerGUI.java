@@ -20,7 +20,7 @@ public class ServerGUI extends JFrame{
 
     public ServerGUI() {
         setTitle("CookTime Server Manager");
-        setSize(1000,600);
+        setSize(1200,650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(mainPanel);
         serverConsoleMonitor.setEditable(false);
