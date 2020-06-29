@@ -8,19 +8,26 @@ public class ServerGUI extends JFrame{
     private JPanel rightPanel;
     private JPanel leftPanel;
     private JPanel middlePanel;
-    private JTextPane serverConsoleMonitor;
+    private JTextArea serverConsoleMonitor;
     private JTable chefRequestTable;
     private JButton acceptButton;
     private JButton refuseButton;
+    private JTable table1;
+    private JTextArea userSearchBoxTextArea;
+    private JTable table2;
+    private JTextArea textArea1;
+    private JButton sendButton;
+
+
 
     public ServerGUI() {
         setTitle("CookTime Server Manager");
-        setSize(800,600);
+        setSize(1000,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(mainPanel);
-//        mainPanel.add(rightPanel);
-//        mainPanel.add(middlePanel);
-//        mainPanel.add(leftPanel);
+
+
     }
+
 }
 

@@ -1,7 +1,6 @@
 package com.btp;
 
 import com.btp.dataStructures.lists.SinglyList;
-import com.btp.gui.Display;
 import com.btp.gui.ServerGUI;
 import com.btp.serverData.clientObjects.*;
 import com.btp.serverData.repos.RecipeRepo;
@@ -9,8 +8,6 @@ import com.btp.serverData.repos.UserRepo;
 
 import javax.servlet.http.HttpServlet;
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
-import java.awt.*;
 import java.io.IOException;
 
 
@@ -27,6 +24,7 @@ public class Initializer extends HttpServlet {
         System.out.println("opening GUI...");
         try {
             createWindow();
+
         } catch (ClassNotFoundException | UnsupportedLookAndFeelException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
@@ -81,7 +79,7 @@ public class Initializer extends HttpServlet {
     }
 
     private static void createWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+       UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         SwingUtilities.invokeLater(() -> {
             ServerGUI serverGUI = new ServerGUI();
             serverGUI.setVisible(true);
