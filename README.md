@@ -7,3 +7,7 @@ The project consists of a client-server implementation, using a REST API to conn
 ### Technical aspects:
 Server and REST are being coded in Java, using the 13th release of JDK. (13.0.x)
 Client-related code will be implemented in C#, due to the fact that it is based in the Xamarin framework.
+
+### Setup Instructions
+In order to load the data base, you need to add the following VM argument:  `-Dproject.folder="path/to/project/folder"`
+make sure to change `"path/to/project/folder"` to your project directory
