@@ -10,5 +10,7 @@ Client-related code will be implemented in C#, due to the fact that it is based 
 
 ### Setup Instructions
 In order to load the data base, you need to add the following VM argument:
-`-Dproject.folder="path/to/project/folder"`
+
+>`-Dproject.folder="path/to/project/folder"`
+
 make sure to change `"path/to/project/folder"` to your project directory
