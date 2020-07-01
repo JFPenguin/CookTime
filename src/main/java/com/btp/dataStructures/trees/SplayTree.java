@@ -12,14 +12,26 @@ public class SplayTree<T extends Comparable<T>> {
     private SplayNode<T> root;
     int values = 0;
 
+    /**
+     * Constructor for the class
+     */
     public SplayTree() {
         this.root = null;
     }
 
+    /**
+     * Checks if the tree is empty
+     * @return true if the tree is empty, false if not
+     */
     public boolean isEmpty() {
         return root == null;
     }
 
+    /**
+     * Calls the recursive method insert
+     *
+     * @param element the element to be inserted
+     */
     public void insert(T element) {
         SplayNode<T> current = root;
         SplayNode<T> parent = null;
@@ -51,7 +63,11 @@ public class SplayTree<T extends Comparable<T>> {
         values++;
     }
 
-    // rotations
+    /**
+     * Makes a zig rotation of the SplayTree data structure
+     * @param child child to be rotated
+     * @param parent parent to be rotated
+     */
     public void zigRotation(SplayNode<T> child, SplayNode<T> parent) {
         if ((child == null) || (parent == null) || (parent.getLeft() != child) || (child.getParent() != parent)){
             throw new RuntimeException("wrong rotational operation for this value");
@@ -78,6 +94,11 @@ public class SplayTree<T extends Comparable<T>> {
         //TODO: actually understand what is going on
     }
 
+    /**
+     * Makes a zag rotation of the SplayTree data structure
+     * @param child child to be rotated
+     * @param parent parent to be rotated
+     */
     public void zagRotation(SplayNode<T> child, SplayNode<T> parent) {
         if ((child == null) || (parent == null) || (parent.getRight() != child) || (child.getParent() != parent)){
             throw new RuntimeException("wrong rotational operation for this value");
@@ -100,7 +121,10 @@ public class SplayTree<T extends Comparable<T>> {
         child.setLeft(parent);
     }
 
-    //splay function
+    /**
+     * Sets a node to its corresponding position
+     * @param x node to be rotated
+     */
     private void Splay(SplayNode<T> x) {
         while (x.getParent() != null) {
             SplayNode<T> parent = x.getParent();
@@ -137,11 +161,20 @@ public class SplayTree<T extends Comparable<T>> {
         root = x;
     }
 
+    /**
+     * Removes a node with an specified element
+     *
+     * @param element the element to be removed
+     */
     public void remove(T element) {
         SplayNode<T> temp = findNode(element);
         remove(temp);
     }
 
+    /**
+     * Removes a node
+     * @param toRemove node to be removed
+     */
     private void remove(SplayNode<T> toRemove) {
         if (toRemove == null) {
             return;

@@ -1,5 +1,9 @@
 package com.btp.dataStructures.nodes;
 
+/**
+ * Nodes used for the Splay Tree data structure
+ * @param <T> Data type of the info stored on each Node
+ */
 public class SplayNode<T extends Comparable<T>> {
     private T element;
     private SplayNode<T> left;

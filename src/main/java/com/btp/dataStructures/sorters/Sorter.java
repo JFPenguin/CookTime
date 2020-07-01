@@ -4,6 +4,9 @@ import com.btp.dataStructures.lists.SinglyList;
 import com.btp.dataStructures.nodes.Node;
 import java.util.Arrays;
 
+/**
+ * Class with static methods to sort the recipes
+ */
 public class Sorter {
 
     /**
