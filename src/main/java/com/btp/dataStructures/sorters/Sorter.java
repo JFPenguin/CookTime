@@ -2,6 +2,10 @@ package com.btp.dataStructures.sorters;
 
 import com.btp.dataStructures.lists.SinglyList;
 import com.btp.dataStructures.nodes.Node;
+import com.btp.serverData.clientObjects.Recipe;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import java.time.Duration;
 import java.util.Arrays;
 
 /**
@@ -10,13 +14,27 @@ import java.util.Arrays;
 public class Sorter {
 
     /**
-     * bubble sort method, takes an integer list and orders it using the bubble sort algorithm
+     * Bubble sort method, calls the respective method according to its class
+     * @param list a SinglyList with any type (Only sorts Integers and Recipes)
+     */
+    public static void bubbleSort(SinglyList list) {
+        if (list.getHead().getData().getClass() == Integer.class) {
+            bubbleSortInteger(list);
+        } else if (list.getHead().getData().getClass() == Recipe.class){
+            bubbleSortRecipe(list);
+        } else{
+            System.out.println("Can't sort this data type");
+        }
+    }
+
+    /**
+     * Bubble sort method, takes an integer list and orders it using the bubble sort algorithm
      * @param numberList an Integer list
      */
-    public static void bubbleSort(SinglyList<Integer> numberList) {
+    private static void bubbleSortInteger(SinglyList<Integer> numberList) {
         Node<Integer> tmp;
         Node<Integer> next;
-        while (!checkSorted(numberList)) {
+        while (!checkSortedInteger(numberList)) {
             for (int i = 0; i < numberList.getLength() - 1; i++) {
                 tmp = numberList.get(i);
                 next = numberList.get(i + 1);
@@ -28,10 +46,43 @@ public class Sorter {
     }
 
     /**
+     * Bubble sort method, takes a recipe list and orders it using the bubble sort algorithm
+     * using as a parameter the postTime of the Recipe
+     * @param recipeList a Recipe list
+     */
+    private static void bubbleSortRecipe(SinglyList<Recipe> recipeList){
+        Node<Recipe> tmp;
+        Node<Recipe> next;
+        while (!checkSortedRecipe(recipeList)) {
+            for (int i = 0; i < recipeList.getLength() - 1; i++) {
+                tmp = recipeList.get(i);
+                next = recipeList.get(i + 1);
+                if(Duration.between(tmp.getData().getPostTime(), next.getData().getPostTime()).toMillis() < 0){
+                    recipeList.swap(tmp,next);
+                }
+            }
+        }
+    }
+
+    /**
+     * Insertion sort method, calls the respective method according to its class
+     * @param list a SinglyList with any type (Only sorts Integers and Recipes)
+     */
+    public static void insertionSort(SinglyList list){
+        if (list.getHead().getData().getClass() == Integer.class) {
+            insertionSortInteger(list);
+        } else if (list.getHead().getData().getClass() == Recipe.class){
+            insertionSortRecipe(list);
+        } else{
+            System.out.println("Can't sort this data type");
+        }
+    }
+
+    /**
      * insertion sort method, takes an integer list and orders it using the insertion sort algorithm
      * @param numberList an Integer list
      */
-    public static void insertionSort(SinglyList<Integer> numberList){
+    private static void insertionSortInteger(SinglyList<Integer> numberList){
         int tmp;
         for (int i = 1; i < numberList.getLength(); i++) {
             tmp = numberList.get(i).getData();
@@ -45,13 +96,39 @@ public class Sorter {
     }
 
     /**
-     * quick sort method, takes an integer list and orders it using the quick sort algorithm
-     * @param numberList - an integer list
+     * insertion sort method, takes a recipe list and orders it using the insertion sort algorithm
+     * using as a parameter the recipe name
+     * @param recipeList an Integer list
      */
-    public static void quickSort(SinglyList<Integer> numberList){
-        int length = numberList.getLength();
-        partition(numberList, 0, length - 1);
+    private static void insertionSortRecipe(SinglyList<Recipe> recipeList){
+        String tmp;
+        for (int i = 1; i < recipeList.getLength(); i++){
+            tmp = recipeList.get(i).getData().getName();
+            int j = i - 1;
+
+            while(j >= 0 && recipeList.get(j).getData().getName().compareToIgnoreCase(tmp) > 0){
+                recipeList.swap(recipeList.get(j), recipeList.get(j+1));
+                j--;
+            }
+        }
     }
+
+    /**
+     * Quicksort method, calls the respective method according to its class
+     * @param list a SinglyList with any type (Only sorts Integers and Recipes)
+     */
+    public static void quickSort(SinglyList list){
+        int length = list.getLength();
+        if (list.getHead().getData().getClass() == Integer.class) {
+            partitionInteger(list, 0, length - 1);
+        } else if (list.getHead().getData().getClass() == Recipe.class){
+            partitionRecipe(list, 0, length - 1);
+        } else{
+            System.out.println("Can't sort this data type");
+        }
+    }
+
+
 
     /**
      * main method for radixSort implementation. Takes an integer list and sorts it using
@@ -69,7 +146,7 @@ public class Sorter {
 
         // starts doing counting sort for every digit.
         // passes an exponent of 10 (10 ^i) with i being the current positional value.
-        while (!checkSorted(numberList)){
+        while (!checkSortedInteger(numberList)){
             for (int exp = 1; m/exp > 0; exp *= 10){
                 countSort(numberList, n , exp);
             }
@@ -137,7 +214,7 @@ public class Sorter {
      * @param list an integer list
      * @return boolean value, true if sorted, false if not
      */
-    private static boolean checkSorted(SinglyList<Integer> list){
+    private static boolean checkSortedInteger(SinglyList<Integer> list){
         boolean sorted = false;
         Node<Integer> tmp;
         Node<Integer> next;
@@ -156,12 +233,35 @@ public class Sorter {
     }
 
     /**
+     * This method takes a list and returns a boolean value, true if the list is sorted, false otherwise.
+     * @param list a recipe list
+     * @return boolean true if sorted, false if not
+     */
+    private static boolean checkSortedRecipe(SinglyList<Recipe> list){
+        boolean sorted = false;
+        Node<Recipe> tmp;
+        Node<Recipe> next;
+        for (int i = 0; i < list.getLength()-1; i++) {
+            tmp = list.get(i);
+            next = list.get(i + 1);
+            if(Duration.between(tmp.getData().getPostTime(), next.getData().getPostTime()).toMillis() < 0){
+                sorted = false;
+                i = list.getLength();
+            }
+            else{
+                sorted = true;
+            }
+        }
+        return sorted;
+    }
+
+    /**
      * This method is the recursive part of the quicksort algorithm
      * @param list an integer list
      * @param low  first element of the list
      * @param high last element of the list
      */
-    private static void partition(SinglyList<Integer> list, int low, int high){
+    private static void partitionInteger(SinglyList<Integer> list, int low, int high){
         int i = low;
         int j = high;
         int pivot = list.get(low + (high - low) / 2).getData();
@@ -179,10 +279,35 @@ public class Sorter {
             }
         }
         if (low < j){
-            partition(list, low, j);
+            partitionInteger(list, low, j);
         }
         if (i < high){
-            partition(list, i, high);
+            partitionInteger(list, i, high);
+        }
+    }
+
+    private static void partitionRecipe(SinglyList<Recipe> list, int low, int high){
+        int i = low;
+        int j = high;
+        float pivot = list.get(low + (high - low) /2).getData().getScore();
+        while (i <= j) {
+            while (list.get(i).getData().getScore() > pivot){
+                i++;
+            }
+            while (list.get(j).getData().getScore() < pivot){
+                j--;
+            }
+            if (i <= j){
+                list.swap(list.get(i), list.get(j));
+                i++;
+                j--;
+            }
+        }
+        if (low < j){
+            partitionRecipe(list, low, j);
+        }
+        if (i < high){
+            partitionRecipe(list, i, high);
         }
     }
 }

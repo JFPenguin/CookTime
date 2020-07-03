@@ -2,6 +2,12 @@ package com.btp.serverData.clientObjects;
 
 import com.btp.dataStructures.lists.SinglyList;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * This is the class of the recipe obj, it holds the recipe information
  */
@@ -20,10 +26,13 @@ public class Recipe implements Comparable<Recipe> {
     private SinglyList<String> instructions;
     private float price;
     private int id;
+    private LocalDateTime postTime;
+    private float score;
+    private int scoreTimes;
 
     /**
      * Getter of the id attribute
-     * @return int the id attribute
+     * @return int the unique id associated to a recipe
      */
     public int getId() {
         return id;
@@ -31,7 +40,7 @@ public class Recipe implements Comparable<Recipe> {
 
     /**
      * Setter of the id attribute
-     * @param id int the id to be set
+     * @param id int the unique id to be set
      */
     public void setId(int id) {
         this.id = id;
@@ -39,7 +48,7 @@ public class Recipe implements Comparable<Recipe> {
 
     /**
      * Getter of the name attribute
-     * @return String the name attribute
+     * @return String the name of the recipe
      */
     public String getName() {
         return name;
@@ -47,7 +56,7 @@ public class Recipe implements Comparable<Recipe> {
 
     /**
      * Setter of the name attribute
-     * @param name String the name to be set
+     * @param name String the name of the recipe to be set
      */
     public void setName(String name) {
         this.name = name;
@@ -206,6 +215,62 @@ public class Recipe implements Comparable<Recipe> {
     }
 
     /**
+     * Getter of the postTime attribute
+     * @return LocalDateTime of the postTime attribute
+     */
+    public LocalDateTime getPostTime() {
+        return postTime;
+    }
+
+    /**
+     * Gets the postTime attribute but in String
+     * @return String of the postTime attribute using YYYY/MM/dd HH:mm:ss
+     */
+    public String getPostTimeString() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        return dtf.format(this.postTime);
+    }
+
+    /**
+     * Setter of the postTime attribute
+     * @param postTime LocalDateTime of the postTime to be set
+     */
+    public void setPostTime(LocalDateTime postTime) {
+        this.postTime = postTime;
+    }
+
+    /**
+     * Getter of the score attribute
+     * @return float of the score attribute
+     */
+    public float getScore() {
+        return score;
+    }
+
+    /**
+     * Setter of the score attribute
+     * @param score score by one of the other users
+     */
+    public void setScore(float score) {
+        float tmp = this.score*this.scoreTimes;
+        this.scoreTimes ++;
+        if (score < 0){
+            score = 0;
+        } else if (score > 5){
+            score = 5;
+        }
+        this.score = (tmp + score)/this.scoreTimes;
+    }
+
+    /**
+     * Getter of the scoreTimes attribute
+     * @return int of the scoreTimes attribute
+     */
+    public int getScoreTimes() {
+        return scoreTimes;
+    }
+
+    /**
      * Constructor for the Recipe Class
      * @param name A String representing the name of the dish
      * @param author An user obj, determined by the creator of the recipe
@@ -219,7 +284,8 @@ public class Recipe implements Comparable<Recipe> {
      * @param instructions list of Strings of the instructions that need to be followed
      */
     public Recipe(String name, User author, DishTime dishTime, int portions, int duration, DishType dishType,
-                  float difficulty, SinglyList<DishTag> dishTags, SinglyList<Ingredient> ingredientsList, SinglyList<String> instructions) {
+                  float difficulty, SinglyList<DishTag> dishTags, SinglyList<Ingredient> ingredientsList,
+                  SinglyList<String> instructions) {
 
         this.name = name;
         this.author = author;
@@ -239,7 +305,10 @@ public class Recipe implements Comparable<Recipe> {
         this.dishTags = dishTags;
         this.ingredientsList = ingredientsList;
         this.instructions = instructions;
-
+        this.postTime = LocalDateTime.now();
+        System.out.println(this.getPostTimeString());
+        this.scoreTimes = 0;
+        this.score = 0;
     }
 
     /**
