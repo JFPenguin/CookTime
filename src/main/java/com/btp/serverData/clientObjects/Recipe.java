@@ -78,7 +78,12 @@ public class Recipe implements Comparable<Recipe> {
     }
 
     public void setDifficulty(float difficulty) {
-        this.difficulty = difficulty;
+        if(difficulty<1){
+            this.difficulty = 1;
+        }
+        else if(difficulty>5){
+            this.difficulty = 5;
+        }
     }
 
     public SinglyList<DishTag> getDishTags() {
