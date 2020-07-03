@@ -59,6 +59,11 @@ public class UserBST {
         }
     }
 
+    /**
+     * Checks if an id is inside the tree. Calss checkById private method
+     * @param id int of the id to be searched
+     * @return boolean true if the id is on the tree, false if not
+     */
     public boolean checkById(int id){
         if(this.isEmpty()){
             return false;
@@ -68,6 +73,12 @@ public class UserBST {
         }
     }
 
+    /**
+     * Checks if an id is inside the tree. Calls itself recursively
+     * @param id int of the id to be searched
+     * @param node current node is searching
+     * @return boolean true if the id is on the tree, false if not
+     */
     private boolean checkById(int id, UserTreeNode node){
         if (node == null){
             return false;
@@ -84,15 +95,21 @@ public class UserBST {
         }
     }
 
+    /**
+     * Gets an user of the tree using its id. Calls the private getElementById method
+     * @param id the id of the user to be searched
+     * @return the user of that respective id
+     */
     public User getElementById(int id){
-        if (this.root.getElement().getClass().equals(User.class)){
-            return getElementById(id, this.root);
-        } else {
-            System.out.println("Tree is not made of User type");
-            return null;
-        }
+        return getElementById(id, this.root);
     }
 
+    /**
+     * Gets an user of the tree using its id. Calls itself recursively
+     * @param id the id of the user to be searched
+     * @param node the current node is searching
+     * @return the user of that respective id
+     */
     private User getElementById(int id, UserTreeNode node){
         if (node == null){
             return null;
@@ -244,26 +261,19 @@ public class UserBST {
         return root;
     }
 
+    /**
+     * Prints the tree using each user's name attribute in preorder
+     * Calls the private preorderUser function
+     */
     public void preorder() {
-        if (this.root.getElement().getClass().equals(User.class)){
-            preorderUser(this.root);
-        } else {
-            preorder(this.root);
-        }
+        preorderUser(this.root);
     }
 
     /**
-     * private preorder traversal method
-     * @param root root object of the SplayTree instance
+     * Prints the tree using each user's name attribute in preorder
+     * Calls itself recursively
+     * @param root the current node is printing
      */
-    private void preorder(UserTreeNode root) {
-        if (root != null) {
-            System.out.println(root.getElement() + " ");
-            preorder(root.getLeft());
-            preorder(root.getRight());
-        }
-    }
-
     private void preorderUser(UserTreeNode root){
         if (root != null) {
             System.out.println(root.getElement().getName() + " ");

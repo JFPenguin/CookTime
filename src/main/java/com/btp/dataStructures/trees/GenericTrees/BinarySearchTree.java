@@ -58,26 +58,21 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
     }
 
-    private boolean checkById(int id, BinaryTreeNode<User> node){
-        if (node == null){
-            return false;
-        } else {
-            int compareValue = id - node.getElement().getId();
-
-            if (compareValue < 0) {
-                return checkById(id, node.getLeft());
-            } else if (compareValue > 0) {
-                return checkById(id, node.getRight());
-            } else {
-                return true;
-            }
-        }
-    }
-
+    /**
+     * Gets an element inside the tree. Calls getElement private method
+     * @param element element to be searched
+     * @return the element inside the tree
+     */
     public T getElement(T element){
         return getElement(element, this.root);
     }
 
+    /**
+     * Gets an element inside the tree. Calls itself recursively
+     * @param element element to be searched
+     * @param node current node searching
+     * @return the element inside the tree
+     */
     private T getElement(T element, BinaryTreeNode<T> node){
         if (node == null){
             return null;
@@ -218,7 +213,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
             current = current.getLeft() != null ? current.getLeft() : current.getRight();
         }
         return current;
-
     }
     
     /**
@@ -229,12 +223,11 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return root;
     }
 
+    /**
+     * Prints the tree using preorder
+     */
     public void preorder() {
-        if (this.root.getElement().getClass().equals(User.class)){
-            preorderUser((BinaryTreeNode<User>) this.root);
-        } else {
-            preorder(this.root);
-        }
+        preorder(this.root);
     }
 
     /**
@@ -246,14 +239,6 @@ public class BinarySearchTree<T extends Comparable<T>> {
             System.out.println(root.getElement() + " ");
             preorder(root.getLeft());
             preorder(root.getRight());
-        }
-    }
-
-    private void preorderUser(BinaryTreeNode<User> root){
-        if (root != null) {
-            System.out.println(root.getElement().getName() + " ");
-            preorderUser(root.getLeft());
-            preorderUser(root.getRight());
         }
     }
 }

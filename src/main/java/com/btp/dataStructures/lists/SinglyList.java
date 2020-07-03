@@ -167,6 +167,11 @@ public class SinglyList<T> extends LinkedList<T> {
         System.out.println("]\n");
     }
 
+    /**
+     * Swaps the data of two nodes
+     * @param first Node that will swap is data
+     * @param second Node that will swap is data
+     */
     public void swap(Node<T> first, Node<T> second) {
         T temporalFirst = first.getData();
         first.setData(second.getData());
