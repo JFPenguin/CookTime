@@ -147,7 +147,12 @@ public class Recipe implements Comparable<Recipe> {
      * @param difficulty int difficulty to be set
      */
     public void setDifficulty(float difficulty) {
-        this.difficulty = difficulty;
+        if(difficulty<1){
+            this.difficulty = 1;
+        }
+        else if(difficulty>5){
+            this.difficulty = 5;
+        }
     }
 
     /**
