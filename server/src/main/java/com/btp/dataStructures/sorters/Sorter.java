@@ -4,7 +4,6 @@ import com.btp.dataStructures.lists.SinglyList;
 import com.btp.dataStructures.nodes.Node;
 import com.btp.serverData.clientObjects.Recipe;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.Duration;
 import java.util.Arrays;
 
@@ -163,9 +162,9 @@ public class Sorter {
      * @param exponent current digit being sorted by the main algorithm (base 10)
      */
     private static void countSort(SinglyList<Integer> numberList, int n, int exponent){
-        int output[] = new int[n]; //output array
+        int[] output = new int[n]; //output array
         int i;
-        int count[] = new int[10];
+        int[] count = new int[10];
         Arrays.fill(count,0);
 
         // Store count of found values in count[]
