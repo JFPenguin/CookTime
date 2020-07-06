@@ -17,6 +17,7 @@ public class ServerGUI extends JFrame{
     private JTable table2;
     private JTextArea textArea1;
     private JButton sendButton;
+    private JButton searchButton;
 
     public ServerGUI() {
         setTitle("CookTime Server Manager");
