@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * A class that represents a Binary Tree
-¿ */
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserBST {
     private UserTreeNode root;
@@ -26,69 +26,35 @@ public class UserBST {
     }
 
     /**
-     * Checks if an element is inside the tree.
-     * Calls the recursive method contains
-     *
-     * @param id The element to be checked
-     * @return true if the element is contained, false if not
-     */
-    public boolean contains(int id) {
-        return this.contains(id, this.root);
-    }
-
-    /**
-     * Recursive method that actively checks if an element is in the tree
-     *
-     * @param id The element to be checked
-     * @param node    The node on which the method starts checking
-     * @return true if the element is contained, false if not
-     */
-    private boolean contains(int id, UserTreeNode node) {
-        if (node == null) {
-            return false;
-        } else {
-            int compareValue = id - node.getElement().getId();
-
-            if (compareValue < 0) {
-                return contains(id, node.getLeft());
-            } else if (compareValue > 0) {
-                return contains(id, node.getRight());
-            } else {
-                return true;
-            }
-        }
-    }
-
-    /**
      * Checks if an id is inside the tree. Calss checkById private method
-     * @param id int of the id to be searched
+     * @param email int of the id to be searched
      * @return boolean true if the id is on the tree, false if not
      */
-    public boolean checkById(int id){
+    public boolean checkByEmail(String email){
         if(this.isEmpty()){
             return false;
         }
         else{
-            return checkById(id, this.root);
+            return checkByEmail(email, this.root);
         }
     }
 
     /**
      * Checks if an id is inside the tree. Calls itself recursively
-     * @param id int of the id to be searched
+     * @param email int of the id to be searched
      * @param node current node is searching
      * @return boolean true if the id is on the tree, false if not
      */
-    private boolean checkById(int id, UserTreeNode node){
+    private boolean checkByEmail(String email, UserTreeNode node){
         if (node == null){
             return false;
         } else {
-            int compareValue = id - node.getElement().getId();
+            int compareValue = email.compareToIgnoreCase(node.getElement().getEmail());
 
             if (compareValue < 0) {
-                return checkById(id, node.getLeft());
+                return checkByEmail(email, node.getLeft());
             } else if (compareValue > 0) {
-                return checkById(id, node.getRight());
+                return checkByEmail(email, node.getRight());
             } else {
                 return true;
             }
@@ -97,29 +63,29 @@ public class UserBST {
 
     /**
      * Gets an user of the tree using its id. Calls the private getElementById method
-     * @param id the id of the user to be searched
+     * @param email the email of the user to be searched
      * @return the user of that respective id
      */
-    public User getElementById(int id){
-        return getElementById(id, this.root);
+    public User getElementByEmail(String email){
+        return getElementByEmail(email, this.root);
     }
 
     /**
      * Gets an user of the tree using its id. Calls itself recursively
-     * @param id the id of the user to be searched
+     * @param email the email of the user to be searched
      * @param node the current node is searching
      * @return the user of that respective id
      */
-    private User getElementById(int id, UserTreeNode node){
+    private User getElementByEmail(String email, UserTreeNode node){
         if (node == null){
             return null;
         }
-        int compareValue = id - node.getElement().getId();
+        int compareValue = email.compareToIgnoreCase(node.getElement().getEmail());
 
         if(compareValue < 0){
-            return getElementById(id, node.getLeft());
+            return getElementByEmail(email, node.getLeft());
         } else if (compareValue > 0) {
-            return getElementById(id, node.getRight());
+            return getElementByEmail(email, node.getRight());
         } else {
             return node.getElement();
         }
@@ -208,7 +174,7 @@ public class UserBST {
 
         }
 
-        int compareValue = user.getId() - current.getElement().getId();
+        int compareValue = user.getEmail().compareToIgnoreCase(current.getElement().getEmail());
 
         if (compareValue < 0) {
             current.setLeft(this.insert(user, current.getLeft()));
@@ -221,10 +187,10 @@ public class UserBST {
     /**
      * Calls the recursive method remove
      *
-     * @param id the element to be removed
+     * @param email the element to be removed
      */
-    public void remove(int id) {
-        this.root = this.remove(getElementById(id), this.root);
+    public void remove(String email) {
+        this.root = this.remove(getElementByEmail(email), this.root);
     }
 
     /**
@@ -237,7 +203,7 @@ public class UserBST {
         if (current == null) {
             return current;
         }
-        int compareValue = user.getId() - current.getElement().getId();
+        int compareValue = user.getEmail().compareToIgnoreCase(current.getElement().getEmail());
 
         if (compareValue < 0) {
             current.setLeft(this.remove(user, current.getLeft()));
@@ -250,9 +216,8 @@ public class UserBST {
             current = current.getLeft() != null ? current.getLeft() : current.getRight();
         }
         return current;
-
     }
-    
+
     /**
      * Getter for the root attribute
      * @return the root TreeNode
@@ -276,30 +241,9 @@ public class UserBST {
      */
     private void preorderUser(UserTreeNode root){
         if (root != null) {
-            System.out.println(root.getElement().getName() + " ");
+            System.out.println(root.getElement().getFirstName() + " ");
             preorderUser(root.getLeft());
             preorderUser(root.getRight());
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

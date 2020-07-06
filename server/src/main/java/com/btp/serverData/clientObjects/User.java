@@ -4,8 +4,8 @@ package com.btp.serverData.clientObjects;
  * This is the Class for the User obj, it holds the user data
  */
 public class User implements Comparable<User> {
-    private int id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String email;
     private String password;
     private int age;
@@ -14,32 +14,32 @@ public class User implements Comparable<User> {
      * Getter of the id attribute
      * @return int of the id attribute
      */
-    public int getId() {
-        return id;
+    public String getFirstName() {
+        return this.firstName;
     }
 
     /**
      * Setter of the id attribute
-     * @param id int the id to be set
+     * @param firstName int the id to be set
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     /**
      * Getter of the name attribute
      * @return String of the name attribute
      */
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return this.lastName;
     }
 
     /**
      * Setter of the id attribute
-     * @param name String the name to be set
+     * @param lastName String the name to be set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     /**
@@ -97,6 +97,7 @@ public class User implements Comparable<User> {
      */
     @Override
     public int compareTo(User user) {
-        return this.getId() - user.getId();
+        return this.getEmail().compareToIgnoreCase(user.getEmail());
     }
 }
+
