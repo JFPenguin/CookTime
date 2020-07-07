@@ -36,7 +36,7 @@
             android:id="@+id/signInPassword"
             android:layout_weight="25"/>
     <Button
-            android:text="Sign Up!"
+            android:text="Sign In!"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="25"
