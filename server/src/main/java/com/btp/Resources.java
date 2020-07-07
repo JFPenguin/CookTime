@@ -7,7 +7,10 @@ import com.btp.serverData.repos.UserRepo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+
+import static com.btp.security.HashPassword.hashPassword;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -34,14 +37,14 @@ public class Resources {
 
     /**
      * API getter for the user obj
-     * @param id int value of the id of the user
+     * @param email String value of the email of the user
      * @return User obj
      */
     @Path("getUser")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-        public User getUser(@QueryParam("id") int id){
-        return UserRepo.getUser(id);
+        public User getUser(@QueryParam("id") String email){
+        return UserRepo.getUser(email);
     }
 
     /**
@@ -59,29 +62,35 @@ public class Resources {
 
     @POST
     @Path("createUser")
-    public void createUser(User user) {
+    public void createUser(User user, @QueryParam("uniqueID") boolean uniqueID) throws NoSuchAlgorithmException {
         System.out.println("new user!");
-        System.out.println("name: "+ user.getName()+" email: "+user.getEmail()+ " password: "+user.getPassword()+ " age: "+user.getAge());
+        System.out.println("name: "+ user.fullName()+" email: "+user.getEmail()+ " password: "+user.getPassword()+ " age: "+user.getAge());
         if(Initializer.isGUIOnline()){
             Initializer.getServerGUI().printLn("new user!");
-            Initializer.getServerGUI().printLn("name: "+ user.getName()+"\nemail: "+user.getEmail()+ "\npassword: "+user.getPassword()+ "\nage: "+user.getAge());
+            Initializer.getServerGUI().printLn("name: "+ user.fullName()+"\nemail: "+user.getEmail()+ "\npassword: "+user.getPassword()+ "\nage: "+user.getAge());
         }
-        int i = random.nextInt(999) + 1;
-        System.out.println("generating id...");
-        System.out.println("userID: "+i);
-        if(Initializer.isGUIOnline()){
-            Initializer.getServerGUI().printLn("generating id...");
-            Initializer.getServerGUI().printLn("userID: "+i);
-        }
-        while (UserRepo.checkByID(i)){
-            i = random.nextInt(999) + 1;
-            System.out.println("id in use, generating new id...");
-            if(Initializer.isGUIOnline()){
-                Initializer.getServerGUI().printLn("id in use, generating new id...");
-            }
-        }
-        user.setId(i);
+//        int i = random.nextInt(999) + 1;
+//        System.out.println("generating id...");
+//        System.out.println("userID: "+i);
+//        if(Initializer.isGUIOnline()){
+//            Initializer.getServerGUI().printLn("generating id...");
+//            Initializer.getServerGUI().printLn("userID: "+i);
+//        }
+//        while (UserRepo.checkByID(i)){
+//            i = random.nextInt(999) + 1;
+//            System.out.println("id in use, generating new id...");
+//            if(Initializer.isGUIOnline()){
+//                Initializer.getServerGUI().printLn("id in use, generating new id...");
+//            }
+//        }
+        user.setPassword(hashPassword(user.getPassword()));
         UserRepo.addUser(user);
+    }
+
+    @GET
+    @Path("isEmailNew")
+    public boolean isEmailNew(String email){
+        return UserRepo.checkByID(email);
     }
 
 //    @Path("createRecipe")

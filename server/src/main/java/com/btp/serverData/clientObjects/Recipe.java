@@ -1,29 +1,24 @@
 package com.btp.serverData.clientObjects;
 
-import com.btp.dataStructures.lists.SinglyList;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 /**
  * This is the class of the recipe obj, it holds the recipe information
  */
 public class Recipe implements Comparable<Recipe> {
-
     private String name;
     private final User author;
     private DishTime dishTime;
     private int portions;
     private int duration; //in minutes
     private DishType dishType;
-    private float difficulty;
-    private SinglyList<DishTag> dishTags;
+    private int difficulty;
+    private ArrayList<DishTag> dishTags;
     //TODO picture
-    private SinglyList<Ingredient> ingredientsList;
-    private SinglyList<String> instructions;
+    private ArrayList<Ingredient> ingredientsList;
+    private ArrayList<String> instructions;
     private float price;
     private int id;
     private LocalDateTime postTime;
@@ -138,7 +133,7 @@ public class Recipe implements Comparable<Recipe> {
      * Getter of the difficulty attribute
      * @return int the difficulty attribute
      */
-    public float getDifficulty() {
+    public int getDifficulty() {
         return difficulty;
     }
 
@@ -146,60 +141,62 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the  difficulty attribute
      * @param difficulty int difficulty to be set
      */
-    public void setDifficulty(float difficulty) {
+    public void setDifficulty(int difficulty) {
         if(difficulty<1){
             this.difficulty = 1;
         }
         else if(difficulty>5){
             this.difficulty = 5;
+        } else {
+            this.difficulty = difficulty;
         }
     }
 
     /**
      * Getter of the dishTags attribute
-     * @return SinglyList<DishTag> of the dishTags attribute
+     * @return ArrayList<DishTag> of the dishTags attribute
      */
-    public SinglyList<DishTag> getDishTags() {
+    public ArrayList<DishTag> getDishTags() {
         return dishTags;
     }
 
     /**
      * Setter of the dishTags attribute
-     * @param dishTags SinglyList<DishTag> of the dishTags to be set
+     * @param dishTags ArrayList<DishTag> of the dishTags to be set
      */
-    public void setDishTags(SinglyList<DishTag> dishTags) {
+    public void setDishTags(ArrayList<DishTag> dishTags) {
         this.dishTags = dishTags;
     }
 
     /**
      * Getter of the ingredientsList attribute
-     * @return SinglyList<Ingredient> of the ingredientsList attribute
+     * @return ArrayList<Ingredient> of the ingredientsList attribute
      */
-    public SinglyList<Ingredient> getIngredientsList() {
+    public ArrayList<Ingredient> getIngredientsList() {
         return ingredientsList;
     }
 
     /**
      * Setter of the ingredientsList attribute
-     * @param ingredientsList SinglyList<Ingredient> of the ingredientList to be set
+     * @param ingredientsList ArrayList<Ingredient> of the ingredientList to be set
      */
-    public void setIngredientsList(SinglyList<Ingredient> ingredientsList) {
+    public void setIngredientsList(ArrayList<Ingredient> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 
     /**
      * Getter of the instructions attribute
-     * @return SinglyList<String> of the instructions attribute
+     * @return ArrayList<String> of the instructions attribute
      */
-    public SinglyList<String> getInstructions() {
+    public ArrayList<String> getInstructions() {
         return instructions;
     }
 
     /**
      * Setter of the instructions attribute
-     * @param instructions SinglyList<String> of the instructions to be set
+     * @param instructions ArrayList<String> of the instructions to be set
      */
-    public void setInstructions(SinglyList<String> instructions) {
+    public void setInstructions(ArrayList<String> instructions) {
         this.instructions = instructions;
     }
 
@@ -256,12 +253,12 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the score attribute
      * @param score score by one of the other users
      */
-    public void setScore(float score) {
+    public void addScore(float score) {
         float tmp = this.score*this.scoreTimes;
         this.scoreTimes ++;
-        if (score < 0){
+        if (score < 0.0){
             score = 0;
-        } else if (score > 5){
+        } else if (score > 5.0){
             score = 5;
         }
         this.score = (tmp + score)/this.scoreTimes;
@@ -289,8 +286,8 @@ public class Recipe implements Comparable<Recipe> {
      * @param instructions list of Strings of the instructions that need to be followed
      */
     public Recipe(String name, User author, DishTime dishTime, int portions, int duration, DishType dishType,
-                  float difficulty, SinglyList<DishTag> dishTags, SinglyList<Ingredient> ingredientsList,
-                  SinglyList<String> instructions) {
+                  int difficulty, ArrayList<DishTag> dishTags, ArrayList<Ingredient> ingredientsList,
+                  ArrayList<String> instructions) {
 
         this.name = name;
         this.author = author;

@@ -7,7 +7,15 @@ import com.btp.dataStructures.lists.SinglyList;
  *
  */
 public class Business extends User{
-    SinglyList<User> employeeList;
+    private int id;
+    private SinglyList<User> employeeList;
     //TODO image logo
-    
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

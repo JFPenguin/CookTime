@@ -9,6 +9,9 @@ import com.btp.serverData.repos.UserRepo;
 import javax.servlet.http.HttpServlet;
 import javax.swing.*;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
+import static com.btp.security.HashPassword.hashPassword;
 
 
 public class Initializer extends HttpServlet {
@@ -28,6 +31,7 @@ public class Initializer extends HttpServlet {
     public void init() {
         System.out.println("running initialization...");
         System.out.println("loading resources...");
+        //testResources();
         try {
             UserRepo.loadTree();
         } catch (IOException e) {
@@ -45,48 +49,72 @@ public class Initializer extends HttpServlet {
     public static void testResources() {
         //Test Recipes
         //Gallo Pinto
-        SinglyList<DishTag> galloPintoTags = new SinglyList<>();
-        galloPintoTags.add(DishTag.VEGAN);
+        User theFirst = new User();
+        theFirst.setAge(30);
+        theFirst.setEmail("m@gmail.com");
+        theFirst.setFirstName("El Magias");
+        theFirst.setLastName("Rivera");
+        theFirst.setPassword("pdsfsdfsd");
+        User theSecond = new User();
+        theSecond.setAge(30);
+        theSecond.setEmail("g@gmail.com");
+        theSecond.setFirstName("Jenifer");
+        theSecond.setLastName("Vargas");
+        theSecond.setPassword("23fsddsf");
+        User theThird = new User();
+        theThird.setAge(30);
+        theThird.setEmail("s@gmail.com");
+        theThird.setFirstName("Jichael");
+        theThird.setLastName("Mackson");
+        theThird.setPassword("sdfksmd");
+        UserRepo.addUser(theFirst);
+        UserRepo.addUser(theSecond);
+        UserRepo.addUser(theThird);
 
-        SinglyList<Ingredient> galloPintoIngredients = new SinglyList<>();
-        galloPintoIngredients.add(new Ingredient("Arroz",1, MeasurementUnit.CUP));
-        galloPintoIngredients.add(new Ingredient("Frijoles",1,MeasurementUnit.CUP));
-        galloPintoIngredients.add(new Ingredient("Especies Mixtas",(float)1/2,MeasurementUnit.CUP));
-        galloPintoIngredients.add(new Ingredient("Lizano, obvio",(float) 1/2, MeasurementUnit.CUP));
 
-        SinglyList<String> galloPintoInstructions = new SinglyList<>();
-        galloPintoInstructions.add("Revolver las varas");
-        galloPintoInstructions.add("Cocinar");
 
-        Recipe galloPinto = new Recipe("Gallo Pinto",UserRepo.getUser(0), DishTime.BREAKFAST,
-                5,15, DishType.MAIN_DISH,3,galloPintoTags,galloPintoIngredients,galloPintoInstructions);
-
-        //CheeseCake
-        SinglyList<DishTag> CheeseCakeTags = new SinglyList<>();
-        CheeseCakeTags.add(DishTag.VEGETARIAN);
-
-        SinglyList<Ingredient> cheeseCakeIngredients = new SinglyList<>();
-        cheeseCakeIngredients.add(new Ingredient("Queso Crema",300,MeasurementUnit.GRAM));
-        cheeseCakeIngredients.add(new Ingredient("Azucar",1,MeasurementUnit.CUP));
-        cheeseCakeIngredients.add(new Ingredient("Galleta Maria",500,MeasurementUnit.GRAM));
-        cheeseCakeIngredients.add(new Ingredient("Mantequilla",150,MeasurementUnit.GRAM));
-        cheeseCakeIngredients.add(new Ingredient("Huevos", 3,MeasurementUnit.UNIT));
-        cheeseCakeIngredients.add(new Ingredient("Natilla",1,MeasurementUnit.CUP));
-        cheeseCakeIngredients.add(new Ingredient("Jalea de Fresa",(float)1/2,MeasurementUnit.CUP));
-
-        SinglyList<String> cheeseCakeInstructions = new SinglyList<>();
-        cheeseCakeInstructions.add("Precalentar horno a 350°F ");
-        cheeseCakeInstructions.add("Pulverize la galleta maria y mézclela con la mantequilla" +
-                " y recubra el interior de un molde para queques");
-        cheeseCakeInstructions.add("Mezcle el queso crema y la azucar hasta que tenga una consistencia suave, " +
-                "agregue los huevos uno a uno, mezclando despues de cada uno");
-        cheeseCakeInstructions.add("Hornee en el horno precalentado por 50 minutos, espere a que se enfrie por completo antes de remover del molde");
-
-        Recipe cheeseCake = new Recipe("Cheese Cake",UserRepo.getUser(1), DishTime.BREAKFAST,
-                5,15, DishType.MAIN_DISH,3,CheeseCakeTags,cheeseCakeIngredients,cheeseCakeInstructions);
-
-        RecipeRepo.addRecipe(cheeseCake);
-        RecipeRepo.addRecipe(galloPinto);
+//        SinglyList<DishTag> galloPintoTags = new SinglyList<>();
+//        galloPintoTags.add(DishTag.VEGAN);
+//
+//        SinglyList<Ingredient> galloPintoIngredients = new SinglyList<>();
+//        galloPintoIngredients.add(new Ingredient("Arroz",1, MeasurementUnit.CUP));
+//        galloPintoIngredients.add(new Ingredient("Frijoles",1,MeasurementUnit.CUP));
+//        galloPintoIngredients.add(new Ingredient("Especies Mixtas",(float)1/2,MeasurementUnit.CUP));
+//        galloPintoIngredients.add(new Ingredient("Lizano, obvio",(float) 1/2, MeasurementUnit.CUP));
+//
+//        SinglyList<String> galloPintoInstructions = new SinglyList<>();
+//        galloPintoInstructions.add("Revolver las varas");
+//        galloPintoInstructions.add("Cocinar");
+//
+//        Recipe galloPinto = new Recipe("Gallo Pinto",UserRepo.getUser("elmagias@gmail.com"), DishTime.BREAKFAST,
+//                5,15, DishType.MAIN_DISH,3,galloPintoTags,galloPintoIngredients,galloPintoInstructions);
+//
+//        //CheeseCake
+//        SinglyList<DishTag> CheeseCakeTags = new SinglyList<>();
+//        CheeseCakeTags.add(DishTag.VEGETARIAN);
+//
+//        SinglyList<Ingredient> cheeseCakeIngredients = new SinglyList<>();
+//        cheeseCakeIngredients.add(new Ingredient("Queso Crema",300,MeasurementUnit.GRAM));
+//        cheeseCakeIngredients.add(new Ingredient("Azucar",1,MeasurementUnit.CUP));
+//        cheeseCakeIngredients.add(new Ingredient("Galleta Maria",500,MeasurementUnit.GRAM));
+//        cheeseCakeIngredients.add(new Ingredient("Mantequilla",150,MeasurementUnit.GRAM));
+//        cheeseCakeIngredients.add(new Ingredient("Huevos", 3,MeasurementUnit.UNIT));
+//        cheeseCakeIngredients.add(new Ingredient("Natilla",1,MeasurementUnit.CUP));
+//        cheeseCakeIngredients.add(new Ingredient("Jalea de Fresa",(float)1/2,MeasurementUnit.CUP));
+//
+//        SinglyList<String> cheeseCakeInstructions = new SinglyList<>();
+//        cheeseCakeInstructions.add("Precalentar horno a 350°F ");
+//        cheeseCakeInstructions.add("Pulverize la galleta maria y mézclela con la mantequilla" +
+//                " y recubra el interior de un molde para queques");
+//        cheeseCakeInstructions.add("Mezcle el queso crema y la azucar hasta que tenga una consistencia suave, " +
+//                "agregue los huevos uno a uno, mezclando despues de cada uno");
+//        cheeseCakeInstructions.add("Hornee en el horno precalentado por 50 minutos, espere a que se enfrie por completo antes de remover del molde");
+//
+//        Recipe cheeseCake = new Recipe("Cheese Cake",UserRepo.getUser("elmagias@gmail.com"), DishTime.BREAKFAST,
+//                5,15, DishType.MAIN_DISH,3,CheeseCakeTags,cheeseCakeIngredients,cheeseCakeInstructions);
+//
+//        RecipeRepo.addRecipe(cheeseCake);
+//        RecipeRepo.addRecipe(galloPinto);
 
     }
 

@@ -1,6 +1,9 @@
 package com.btp.dataStructures.trees;
 
-import com.btp.dataStructures.nodes.AVLNode;
+import com.btp.dataStructures.nodes.RecipeNode;
+import com.btp.dataStructures.nodes.UserTreeNode;
+import com.btp.serverData.clientObjects.Recipe;
+import com.btp.serverData.clientObjects.User;
 
 /**
  * the public class for the SplayTree instances. This code is based in the tutorial found in
@@ -8,13 +11,13 @@ import com.btp.dataStructures.nodes.AVLNode;
  * for using generic type nodes and getter/setter methods for data-scope reduction.
  * @param <T> generic type of objects to possibly contain in the tree instance
  */
-public class AVLTree<T extends Comparable<T>>{
-    protected AVLNode<T> root;
+public class RecipeTree<T extends Comparable<T>>{
+    protected RecipeNode root;
 
     /**
      * Constructor for the class
      */
-    public AVLTree(){this.root = null;}
+    public RecipeTree(){this.root = null;}
 
     /**
      * Checks if the tree is empty
@@ -26,29 +29,29 @@ public class AVLTree<T extends Comparable<T>>{
 
     /**
      * Checks if an element is inside the tree. Calls the private constructor method
-     * @param element The element to be checked
+     * @param id The Recipe id to be checked
      * @return boolean true if the element is contained, false if not
      */
-    public boolean contains(T element){
-        return this.contains(element, this.root);
+    public boolean checkById(int id){
+        return this.checkById(id, this.root);
     }
 
     /**
      * Checks if an element is inside the tree. Calls itself recursively
-     * @param element The element to be checked
+     * @param id The id to be checked
      * @param node The current node is checking
      * @return boolean true if the element is contained, false if not
      */
-    private boolean contains(T element, AVLNode<T> node){
+    private boolean checkById(int id, RecipeNode node){
         if (node == null){
             return false;
         } else {
-            int compareValue = element.compareTo(node.getElement());
+            int compareValue = id - node.getElement().getId();
 
             if (compareValue < 0){
-                return contains(element, node.getLeft());
+                return checkById(id, node.getLeft());
             } else if (compareValue > 0){
-                return contains(element, node.getRight());
+                return checkById(id, node.getRight());
             } else {
                 return true;
             }
@@ -56,12 +59,42 @@ public class AVLTree<T extends Comparable<T>>{
     }
 
     /**
-     * Finds the minimun element in the tree.
+     * Gets a Recipe of the tree using its id. Calls the private getElementById method
+     * @param id the id of the Recipe to be searched
+     * @return the Recipe of that respective id
+     */
+    public Recipe getElementById(int id){
+        return getElementById(id, this.root);
+    }
+
+    /**
+     * Gets a Recipe of the tree using its id. Calls itself recursively
+     * @param id the id of the user to be searched
+     * @param node the current node is searching
+     * @return the user of that respective id
+     */
+    private Recipe getElementById(int id, RecipeNode node){
+        if (node == null){
+            return null;
+        }
+        int compareValue = id - node.getElement().getId();
+
+        if(compareValue < 0){
+            return getElementById(id, node.getLeft());
+        } else if (compareValue > 0) {
+            return getElementById(id, node.getRight());
+        } else {
+            return node.getElement();
+        }
+    }
+
+    /**
+     * Finds the minimum element in the tree.
      * Calls the recursive method findMin
      *
      * @return the smallest element found
      */
-    public T findMin() {
+    public Recipe findMin() {
         if (this.isEmpty()) {
             return null;
         } else {
@@ -75,13 +108,14 @@ public class AVLTree<T extends Comparable<T>>{
      * @param node The node on which the method starts checking
      * @return The found min element
      */
-    private AVLNode<T> findMin(AVLNode<T> node){
-        if (node != null){
-            while (node.getLeft() != null){
-                node = node.getRight();
-            }
+    private RecipeNode findMin(RecipeNode node){
+        if (node == null) {
+            return null;
+        } else if (node.getLeft() == null) {
+            return node;
+        } else {
+            return findMin(node.getLeft());
         }
-        return node;
     }
 
     /**
@@ -90,7 +124,7 @@ public class AVLTree<T extends Comparable<T>>{
      *
      * @return the biggest element found
      */
-    public T findMax() {
+    public Recipe findMax() {
         if (this.isEmpty()) {
             return null;
         } else {
@@ -104,7 +138,7 @@ public class AVLTree<T extends Comparable<T>>{
      * @param node The node on which the method starts checking
      * @return The found max element
      */
-    private AVLNode<T> findMax(AVLNode<T> node) {
+    private RecipeNode findMax(RecipeNode node) {
         if (node != null) {
             while (node.getRight() != null) {
                 node = node.getRight();
@@ -118,7 +152,7 @@ public class AVLTree<T extends Comparable<T>>{
      * @param N Node to get its height
      * @return int height of the Node
      */
-    private int height(AVLNode<T> N){
+    private int height(RecipeNode N){
         if (N == null){
             return 0;
         }
@@ -140,9 +174,9 @@ public class AVLTree<T extends Comparable<T>>{
      * @param y node to be rotated around
      * @return new node in that position after rotation
      */
-    private AVLNode<T> rightRotate(AVLNode<T> y){
-        AVLNode<T> x = y.getLeft();
-        AVLNode<T> T2 = x.getRight();
+    private RecipeNode rightRotate(RecipeNode y){
+        RecipeNode x = y.getLeft();
+        RecipeNode T2 = x.getRight();
 
         x.setRight(y);
         y.setLeft(T2);
@@ -158,9 +192,9 @@ public class AVLTree<T extends Comparable<T>>{
      * @param x node to be rotated around
      * @return new node in that position after rotation
      */
-    private AVLNode<T> leftRotate(AVLNode<T> x){
-        AVLNode<T> y = x.getRight();
-        AVLNode<T> T2 = y.getLeft();
+    private RecipeNode leftRotate(RecipeNode x){
+        RecipeNode y = x.getRight();
+        RecipeNode T2 = y.getLeft();
 
         y.setLeft(x);
         x.setRight(T2);
@@ -176,7 +210,7 @@ public class AVLTree<T extends Comparable<T>>{
      * @param Node Node to check the balance of
      * @return the balance of the node
      */
-    private int getBalance(AVLNode<T> Node){
+    private int getBalance(RecipeNode Node){
         if (Node == null){
             return 0;
         }
@@ -189,7 +223,7 @@ public class AVLTree<T extends Comparable<T>>{
      *
      * @param element the element to be inserted
      */
-    public void insert(T element) {
+    public void insert(Recipe element) {
         this.root = this.insert(element, this.root);
     }
 
@@ -200,12 +234,13 @@ public class AVLTree<T extends Comparable<T>>{
      * @param current the current node being compared
      * @return the new TreeNode to be inserted
      */
-    public AVLNode<T> insert(T element, AVLNode<T> current){
+    public RecipeNode insert(Recipe element, RecipeNode current){
         if (current == null){
-            return new AVLNode<T>(element);
+            RecipeNode recipeNode = new RecipeNode();
+            recipeNode.setElement(element);
+            return recipeNode;
         }
-
-        int compareValue = element.compareTo(current.getElement());
+        int compareValue = element.getId() - current.getElement().getId();
 
         if (compareValue < 0){
             current.setLeft(this.insert(element, current.getLeft()));
@@ -218,23 +253,23 @@ public class AVLTree<T extends Comparable<T>>{
         int balance = getBalance(current);
 
         // Left Left Case
-        if (balance > 1 && element.compareTo(current.getLeft().getElement()) < 0){
+        if (balance > 1 && element.getId() - current.getElement().getId() < 0){
             return leftRotate(current);
         }
 
         // Right Right Case
-        if (balance < -1 && element.compareTo(current.getRight().getElement()) > 0){
+        if (balance < -1 && element.getId() - current.getElement().getId() > 0){
             return rightRotate(current);
         }
 
         // Left Right Case
-        if (balance > 1 && element.compareTo(current.getRight().getElement()) > 0) {
+        if (balance > 1 && element.getId() - current.getElement().getId() > 0) {
             current.setLeft(leftRotate(current.getLeft()));
             return rightRotate(current);
         }
 
         // Right Left Case
-        if (balance < -1 && element.compareTo(current.getLeft().getElement()) < 0){
+        if (balance < -1 && element.getId() - current.getElement().getId() < 0){
             current.setRight(rightRotate(current.getRight()));
             return leftRotate(current);
         }
@@ -246,9 +281,9 @@ public class AVLTree<T extends Comparable<T>>{
      * Prints the tree using preOrder
      * @param node Current Node to be printed
      */
-    public void preOrder(AVLNode<T> node) {
+    public void preOrder(RecipeNode node) {
         if (node != null) {
-            System.out.print(node.getElement() + " ");
+            System.out.print(node.getElement().getName() + " ");
             preOrder(node.getLeft());
             preOrder(node.getRight());
         }
@@ -257,33 +292,33 @@ public class AVLTree<T extends Comparable<T>>{
     /**
      * Calls the recursive method remove
      *
-     * @param element the element to be removed
+     * @param id the element to be removed
      */
-    public void delete(T element){
-        this.root = this.delete(element, this.root);
+    public void delete(int id){
+        this.root = this.delete(id, this.root);
     }
 
     /**
      * Recursive method that removes a certain node
-     * @param element the element that will be searched and deleted
+     * @param id the element that will be searched and deleted
      * @param current the current node being compared
      * @return The node that was checked to be processed recursively
      */
-    private AVLNode delete(T element, AVLNode<T> current) {
+    private RecipeNode delete(int id, RecipeNode current) {
 
         if (current == null)
             return current;
 
-        int compareValue = element.compareTo(current.getElement());
+        int compareValue = id - current.getElement().getId();
 
         if (compareValue < 0){
-            current.setLeft(this.delete(element, current.getLeft()));
+            current.setLeft(this.delete(id, current.getLeft()));
         } else if (compareValue > 0) {
-            current.setRight(this.delete(element, current.getRight()));
+            current.setRight(this.delete(id, current.getRight()));
         } else {
             if ((current.getLeft() == null) || (current.getRight() == null))
             {
-                AVLNode tmp = null;
+                RecipeNode tmp = null;
                 if (tmp == current.getLeft()) {
                     tmp = current.getRight();
                 } else {
@@ -299,11 +334,11 @@ public class AVLTree<T extends Comparable<T>>{
             }
             else
             {
-                AVLNode tmp = findMin(current.getRight());
+                RecipeNode tmp = findMin(current.getRight());
 
-                current.setElement((T) tmp.getElement());
+                current.setElement(tmp.getElement());
 
-                current.setRight(delete((T) tmp.getElement(), current.getRight()));
+                current.setRight(delete(tmp.getElement().getId(), current.getRight()));
             }
         }
         if (current == null)
