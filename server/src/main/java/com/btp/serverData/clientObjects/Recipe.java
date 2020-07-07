@@ -19,7 +19,7 @@ public class Recipe implements Comparable<Recipe> {
     private int portions;
     private int duration; //in minutes
     private DishType dishType;
-    private float difficulty;
+    private int difficulty;
     private SinglyList<DishTag> dishTags;
     //TODO picture
     private SinglyList<Ingredient> ingredientsList;
@@ -138,7 +138,7 @@ public class Recipe implements Comparable<Recipe> {
      * Getter of the difficulty attribute
      * @return int the difficulty attribute
      */
-    public float getDifficulty() {
+    public int getDifficulty() {
         return difficulty;
     }
 
@@ -146,12 +146,14 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the  difficulty attribute
      * @param difficulty int difficulty to be set
      */
-    public void setDifficulty(float difficulty) {
+    public void setDifficulty(int difficulty) {
         if(difficulty<1){
             this.difficulty = 1;
         }
         else if(difficulty>5){
             this.difficulty = 5;
+        } else {
+            this.difficulty = difficulty;
         }
     }
 
@@ -289,7 +291,7 @@ public class Recipe implements Comparable<Recipe> {
      * @param instructions list of Strings of the instructions that need to be followed
      */
     public Recipe(String name, User author, DishTime dishTime, int portions, int duration, DishType dishType,
-                  float difficulty, SinglyList<DishTag> dishTags, SinglyList<Ingredient> ingredientsList,
+                  int difficulty, SinglyList<DishTag> dishTags, SinglyList<Ingredient> ingredientsList,
                   SinglyList<String> instructions) {
 
         this.name = name;

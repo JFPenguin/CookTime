@@ -127,7 +127,15 @@ public class Sorter {
         }
     }
 
-
+    public static void radixSort(SinglyList list){
+        if (list.getHead().getData().getClass() == Integer.class) {
+            radixSortInteger(list);
+        } else if (list.getHead().getData().getClass() == Recipe.class){
+            insertionSortRecipe(list);
+        } else{
+            System.out.println("Can't sort this data type");
+        }
+    }
 
     /**
      * main method for radixSort implementation. Takes an integer list and sorts it using
@@ -137,7 +145,7 @@ public class Sorter {
      * with only minor implementation-related changes.
      * @param numberList the integer-containing instance that the user desires to sort.
      */
-    public static void radixSort(SinglyList<Integer> numberList){
+    private static void radixSortInteger(SinglyList<Integer> numberList){
         int n = numberList.getLength();
 
         // Uses getMax method to get the max value in the list
@@ -153,7 +161,30 @@ public class Sorter {
     }
 
     /**
-     * Method for the counting sorth algorithm, working over an unsorted list.
+     * main method for radixSort implementation. Takes a Recipe list and sorts it using
+     * the Radix Sorting algorithm.
+     * note:
+     * This method is based on the tutorial recovered from https://www.geeksforgeeks.org/radix-sort/
+     * with only minor implementation-related changes.
+     * @param recipeList the recipe-containing instance that the user desires to sort.
+     */
+    public static void radixSortRecipe(SinglyList<Recipe> recipeList){
+        int n = recipeList.getLength();
+
+        // Uses getMax method to get the max value in the list
+        int m = getMaxRecipe(recipeList, n);
+
+        // starts doing counting sort for every digit.
+        // passes an exponent of 10 (10 ^i) with i being the current positional value.
+        while (!checkSortedRadix(recipeList)){
+            for (int exp = 1; m/exp > 0; exp *= 10){
+                countSortRecipe(recipeList, n , exp);
+            }
+        }
+    }
+
+    /**
+     * Method for the counting sort algorithm, working over an unsorted list.
      * note:
      * This method is based on the tutorial recovered from https://www.geeksforgeeks.org/radix-sort/
      * with only minor implementation-related changes.
@@ -192,6 +223,45 @@ public class Sorter {
     }
 
     /**
+     * Method for the counting sorth algorithm, working over an unsorted list.
+     * note:
+     * This method is based on the tutorial recovered from https://www.geeksforgeeks.org/radix-sort/
+     * with only minor implementation-related changes.
+     * @param numberList list to be sorted according to the digit being watched by Radix.
+     * @param n amount of elements in the list (length)
+     * @param exponent current digit being sorted by the main algorithm (base 10)
+     */
+    private static void countSortRecipe(SinglyList<Recipe> numberList, int n, int exponent){
+        Recipe[] output = new Recipe[n]; //output array
+        int i;
+        int[] count = new int[10];
+        Arrays.fill(count,0);
+
+        // Store count of found values in count[]
+        for (i = 0; i < n; i++) {
+            count[ (numberList.get(i).getData().getDifficulty()/exponent) % 10 ]++;
+        }
+
+        // Change count[i] so that it contains
+        // an actual position of this digit in output array.
+        for (i = 1; i < 10; i++){
+            count[i] += count[i - 1];
+        }
+
+        // Build the output array
+        for (i = n - 1; i >= 0; i--){
+            output[ count[ (numberList.get(i).getData().getDifficulty()/exponent) % 10] - 1 ] = numberList.get(i).getData();
+            count [ (numberList.get(i).getData().getDifficulty() / exponent) % 10]--;
+        }
+
+        // Copy the output array to the list, so that the list now contains
+        // sorted numbers according to current digit
+        for (i = 0; i < n; i++){
+            numberList.get(i).setData(output[i]);
+        }
+    }
+
+    /**
      * this method is used to get the highest value in a singly-linked list.
      * can be modified to use a different data structure by declaring a different type in the parameters.
      * @param numberList the specific singly-linked instance that the user desires to check.
@@ -203,6 +273,16 @@ public class Sorter {
         for (int i = 1; i < n; i++) {
             if (numberList.get(i).getData() > mx){
                 mx = numberList.get(i).getData();
+            }
+        }
+        return mx;
+    }
+
+    private static int getMaxRecipe(SinglyList<Recipe> recipeList, int n){
+        int mx = recipeList.getHead().getData().getDifficulty();
+        for (int i = 1; i < n; i++) {
+            if (recipeList.get(i).getData().getDifficulty() > mx){
+                mx = recipeList.get(i).getData().getDifficulty();
             }
         }
         return mx;
@@ -244,6 +324,24 @@ public class Sorter {
             tmp = list.get(i);
             next = list.get(i + 1);
             if(Duration.between(tmp.getData().getPostTime(), next.getData().getPostTime()).toMillis() < 0){
+                sorted = false;
+                i = list.getLength();
+            }
+            else{
+                sorted = true;
+            }
+        }
+        return sorted;
+    }
+
+    private static boolean checkSortedRadix(SinglyList<Recipe> list){
+        boolean sorted = false;
+        Node<Recipe> tmp;
+        Node<Recipe> next;
+        for (int i = 0; i < list.getLength()-1; i++) {
+            tmp = list.get(i);
+            next = list.get(i + 1);
+            if(tmp.getData().getDifficulty() < next.getData().getDifficulty()){
                 sorted = false;
                 i = list.getLength();
             }
