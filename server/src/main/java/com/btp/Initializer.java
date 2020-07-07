@@ -9,6 +9,9 @@ import com.btp.serverData.repos.UserRepo;
 import javax.servlet.http.HttpServlet;
 import javax.swing.*;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
+import static com.btp.security.HashPassword.hashPassword;
 
 
 public class Initializer extends HttpServlet {

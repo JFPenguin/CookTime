@@ -256,12 +256,12 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the score attribute
      * @param score score by one of the other users
      */
-    public void setScore(float score) {
+    public void addScore(float score) {
         float tmp = this.score*this.scoreTimes;
         this.scoreTimes ++;
-        if (score < 0){
+        if (score < 0.0){
             score = 0;
-        } else if (score > 5){
+        } else if (score > 5.0){
             score = 5;
         }
         this.score = (tmp + score)/this.scoreTimes;
