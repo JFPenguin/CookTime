@@ -7,7 +7,10 @@ import com.btp.serverData.repos.UserRepo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+
+import static com.btp.security.HashPassword.hashPassword;
 
 /**
  * Root resource (exposed at "myresource" path)
@@ -59,7 +62,7 @@ public class Resources {
 
     @POST
     @Path("createUser")
-    public void createUser(User user, @QueryParam("uniqueID") boolean uniqueID) {
+    public void createUser(User user, @QueryParam("uniqueID") boolean uniqueID) throws NoSuchAlgorithmException {
         System.out.println("new user!");
         System.out.println("name: "+ user.fullName()+" email: "+user.getEmail()+ " password: "+user.getPassword()+ " age: "+user.getAge());
         if(Initializer.isGUIOnline()){
@@ -80,6 +83,7 @@ public class Resources {
 //                Initializer.getServerGUI().printLn("id in use, generating new id...");
 //            }
 //        }
+        user.setPassword(hashPassword(user.getPassword()));
         UserRepo.addUser(user);
     }
 
