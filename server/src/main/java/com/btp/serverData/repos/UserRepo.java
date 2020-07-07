@@ -25,12 +25,12 @@ public class UserRepo {
 
     }
 
-    public static User getUser(int id){
-        return userTree.getElementById(id);
+    public static User getUser(String email){
+        return userTree.getElementByEmail(email);
     }
 
-    public static boolean checkByID(int id) {
-        return userTree.checkById(id);
+    public static boolean checkByID(String email) {
+        return userTree.checkByEmail(email);
     }
 
 

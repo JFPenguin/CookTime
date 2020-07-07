@@ -1,5 +1,7 @@
 package com.btp.serverData.clientObjects;
 
+import com.btp.dataStructures.lists.SinglyList;
+
 /**
  * This is the Class for the User obj, it holds the user data
  */
@@ -8,6 +10,10 @@ public class User implements Comparable<User> {
     private String lastName;
     private String email;
     private String password;
+    private boolean isChef;
+    private SinglyList<String> followerEmails;
+    private SinglyList<String> followingEmails;
+    private SinglyList<Integer> recipeList;
     private int age;
 
     /**
@@ -98,6 +104,10 @@ public class User implements Comparable<User> {
     @Override
     public int compareTo(User user) {
         return this.getEmail().compareToIgnoreCase(user.getEmail());
+    }
+
+    public String fullName() {
+        return getFirstName()+" "+getLastName();
     }
 }
 
