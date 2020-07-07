@@ -2,6 +2,9 @@ package com.btp.serverData.clientObjects;
 
 import com.btp.dataStructures.lists.SinglyList;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
+
 /**
  * This is the Class for the User obj, it holds the user data
  */
@@ -11,9 +14,9 @@ public class User implements Comparable<User> {
     private String email;
     private String password;
     private boolean isChef;
-    private SinglyList<String> followerEmails;
-    private SinglyList<String> followingEmails;
-    private SinglyList<Integer> recipeList;
+    private ArrayList<String> followerEmails = new ArrayList<String>();
+    private ArrayList<String> followingEmails = new ArrayList<String>();
+    private ArrayList<Integer> recipeList = new ArrayList<Integer>();
     private int age;
 
     /**
@@ -94,6 +97,30 @@ public class User implements Comparable<User> {
      */
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void addRecipe(int id) {
+        this.recipeList.add(id);
+    }
+
+    public ArrayList<Integer> getRecipeList(){
+        return this.recipeList;
+    }
+
+    public void addFollower(String email){
+        this.followerEmails.add(email);
+    }
+
+    public void addFollowing(String email){
+        this.followingEmails.add(email);
+    }
+
+    public ArrayList<String> getFollowerEmails(){
+        return this.followerEmails;
+    }
+
+    public ArrayList<String> getFollowingEmails(){
+        return this.followingEmails;
     }
 
     /**
