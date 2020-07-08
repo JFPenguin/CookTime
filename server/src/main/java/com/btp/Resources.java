@@ -89,8 +89,16 @@ public class Resources {
 
     @GET
     @Path("isEmailNew")
-    public boolean isEmailNew(String email){
-        return UserRepo.checkByID(email);
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isEmailNew(@QueryParam("email") String email){
+        String value;
+        if (UserRepo.checkByID(email)) {
+            value = "1";
+        }
+        else {
+            value = "0";
+        }
+        return value;
     }
 
 //    @Path("createRecipe")
