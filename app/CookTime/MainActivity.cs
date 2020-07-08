@@ -3,6 +3,7 @@ using Android.App;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using Newtonsoft.Json;
 
 namespace CookTime {
     /// <summary>
@@ -56,38 +57,37 @@ namespace CookTime {
         /// <param name="e"></param>
         private void signUpResult(object sender, SignUpEvent e) {
             string toastText;
-            if (e.Empty) {
+            if (e.Message == "2") {
                 toastText = "Please fill in all of the information";
             }
+            else if (e.Message == "1")
+            {
+                toastText = "The email entered is already taken";
+            }
             else {
+                var toast1 = Toast.MakeText(this, "else", ToastLength.Short);
+                toast1.Show();
+                
                 toastText = "You have succesfully signed up to the platform";
                 var newUserName = e.UserName;
                 var newUserLastName = e.UserLastName;
                 var newUserAge = e.UserAge;
                 var newUserEmail = e.UserEmail;
-                var newUserPassword = e.UserPassword; 
+                var newUserPassword = e.UserPassword;
                 
-                // try {  
-                //     using (var webClient = new WebClient()) {  
-                //         webClient.BaseAddress = "http://181.194.46.33:8080/CookTime_war/";
-                //         var url = "resources/createUser";
-                //         webClient.Headers[HttpRequestHeader.ContentType] = "application/json";  
-                //         string data = JsonConvert.SerializeObject(city);  
-                //         var response = webClient.UploadString(url, data);
-                //         result = JsonConvert.DeserializeObject<ReturnMessageInfo>(response);
-                //     }  
-                // } catch (Exception ex) {  
-                //     throw ex;  
-                // }  
-                // var thread = new Thread(request);
-                // thread.Start();
+                var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, newUserLastName, 
+                    newUserPassword);
+
+                var JSONresult = JsonConvert.SerializeObject(user);
+
+                using var webClient = new WebClient {BaseAddress = "http://192.168.1.9:8080/CookTime_war/cookAPI/"};
+
+                const string url = "resources/createUser";
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                webClient.UploadString(url, JSONresult);
             }
             toast = Toast.MakeText(this, toastText, ToastLength.Short);
             toast.Show();
         }
-        
-        // private void request() {
-        //     
-        // }
     }
 }

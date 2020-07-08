@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Net;
 using Android.OS;
 using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
 
 namespace CookTime {
     /// <summary>
@@ -54,24 +56,37 @@ namespace CookTime {
             var userAgeInput = userAge.Text;
             var userEmailInput = userEmail.Text;
             var userPasswordInput = userPassword.Text;
-            bool empty;
-            
+            string value;
+
             if (userNameInput.Equals("") || userLastNameInput.Equals("") || userAgeInput.Equals("") ||
                 userEmail.Text.Equals("") || userPasswordInput.Equals(""))
             {
-                empty = true;
+                value = "2";
             }
+            
             else {
-                empty = false;
-                Dismiss();
-            }
+                using (var webClient = new WebClient()) {
+                    webClient.BaseAddress = "http://192.168.1.9:8080/CookTime_war/cookAPI/";
+
+                    var url = "resources/isEmailNew?email=" + userEmailInput;
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var send = webClient.DownloadString(url);
+
+                    var response = JsonConvert.DeserializeObject<string>(send);
+                    
+                    value = response;
+
+                    if (value == "0") {
+                        Dismiss();
+                    }
+                }
+            }            
             
             if (eventHandlerSignUp != null)
                 eventHandlerSignUp.Invoke(this, new SignUpEvent(userNameInput, userLastNameInput, 
-                    userAgeInput, userEmailInput, userPasswordInput, empty));
+                    userAgeInput, userEmailInput, userPasswordInput, value));
         }
-        
-        
+
         /// <summary>
         /// This method is run when the fragment finished its creation. The animations are set in here.
         /// </summary>
@@ -96,15 +111,15 @@ namespace CookTime {
         /// <param name="userAge"> The user's age </param>
         /// <param name="userEmail"> The user's email </param>
         /// <param name="userPassword"> The user's password </param>
-        /// <param name="empty"> Boolean that indicates if all of  </param>
+        /// <param name="message"> String that will indicate the text in a message for the user  </param>
         public SignUpEvent(string userName, string userLastName, string userAge, string userEmail, string userPassword, 
-            bool empty) {
+            string message) {
             UserName = userName;
             UserLastName = userLastName;
             UserAge = userAge;
             UserEmail = userEmail;
             UserPassword = userPassword;
-            Empty = empty;
+            Message = message;
         }
 
         /// <summary>
@@ -133,8 +148,8 @@ namespace CookTime {
         public string UserPassword { get; }
         
         /// <summary>
-        /// Property for the empty attribute
+        /// Property for the message attribute
         /// </summary>
-        public new bool Empty { get; }
+        public string Message { get; }
     }
 } 
