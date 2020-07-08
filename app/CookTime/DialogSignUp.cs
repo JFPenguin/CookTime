@@ -16,7 +16,7 @@ namespace CookTime {
         private EditText userPassword;
         private Button btnSendSingUp;
         public event EventHandler<SignUpEvent> eventHandlerSignUp;
-        
+
         /// <summary>
         /// Creates the fragment, instantiates its user interface view and returns the view.
         /// </summary>
@@ -49,11 +49,33 @@ namespace CookTime {
         /// <param name="sender"> Reference to the object that raised the event</param>
         /// <param name="e"> Contains the event data </param>
         void sendSignUp(object sender, EventArgs e) {
+            var userNameInput = userName.Text;
+            var userLastNameInput = userLastName.Text;
+            var userAgeInput = userAge.Text;
+            var userEmailInput = userEmail.Text;
+            var userPasswordInput = userPassword.Text;
+            bool empty;
+            
+            if (userNameInput.Equals("") || userLastNameInput.Equals("") || userAgeInput.Equals("") ||
+                userEmail.Text.Equals("") || userPasswordInput.Equals(""))
+            {
+                empty = true;
+            }
+            else {
+                empty = false;
+                Dismiss();
+            }
+            
             if (eventHandlerSignUp != null)
-                eventHandlerSignUp.Invoke(this, new SignUpEvent(userName.Text, userLastName.Text, userAge.Text, userEmail.Text, userPassword.Text));
-            Dismiss();
+                eventHandlerSignUp.Invoke(this, new SignUpEvent(userNameInput, userLastNameInput, 
+                    userAgeInput, userEmailInput, userPasswordInput, empty));
         }
         
+        
+        /// <summary>
+        /// This method is run when the fragment finished its creation. The animations are set in here.
+        /// </summary>
+        /// <param name="savedInstanceState"></param>
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
@@ -74,14 +96,17 @@ namespace CookTime {
         /// <param name="userAge"> The user's age </param>
         /// <param name="userEmail"> The user's email </param>
         /// <param name="userPassword"> The user's password </param>
-        public SignUpEvent(string userName, string userLastName, string userAge, string userEmail, string userPassword) {
+        /// <param name="empty"> Boolean that indicates if all of  </param>
+        public SignUpEvent(string userName, string userLastName, string userAge, string userEmail, string userPassword, 
+            bool empty) {
             UserName = userName;
             UserLastName = userLastName;
             UserAge = userAge;
             UserEmail = userEmail;
             UserPassword = userPassword;
+            Empty = empty;
         }
-        
+
         /// <summary>
         /// Property for the userName attribute
         /// </summary>
@@ -106,5 +131,10 @@ namespace CookTime {
         /// Property for the userPassword attribute
         /// </summary>
         public string UserPassword { get; }
+        
+        /// <summary>
+        /// Property for the empty attribute
+        /// </summary>
+        public new bool Empty { get; }
     }
 } 

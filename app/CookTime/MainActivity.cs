@@ -1,4 +1,4 @@
-﻿using System.Threading;
+﻿using System.Net;
 using Android.App;
 using Android.OS;
 using Android.Support.V7.App;
@@ -13,6 +13,7 @@ namespace CookTime {
     public class MainActivity : AppCompatActivity {
         private Button signUpButton;
         private Button signInButton;
+        private Toast toast;
         
         /// <summary>
         /// This method is called when the activity is starting.
@@ -54,18 +55,39 @@ namespace CookTime {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void signUpResult(object sender, SignUpEvent e) {
-            var newUserName = e.UserName;
-            var newUserLastName = e.UserLastName;
-            var newUserAge = e.UserAge;
-            var newUserEmail = e.UserEmail;
-            var newUserPassword = e.UserPassword;
-
-            var thread = new Thread(ActsLikeRequest);
-            thread.Start();
+            string toastText;
+            if (e.Empty) {
+                toastText = "Please fill in all of the information";
+            }
+            else {
+                toastText = "You have succesfully signed up to the platform";
+                var newUserName = e.UserName;
+                var newUserLastName = e.UserLastName;
+                var newUserAge = e.UserAge;
+                var newUserEmail = e.UserEmail;
+                var newUserPassword = e.UserPassword; 
+                
+                // try {  
+                //     using (var webClient = new WebClient()) {  
+                //         webClient.BaseAddress = "http://181.194.46.33:8080/CookTime_war/";
+                //         var url = "resources/createUser";
+                //         webClient.Headers[HttpRequestHeader.ContentType] = "application/json";  
+                //         string data = JsonConvert.SerializeObject(city);  
+                //         var response = webClient.UploadString(url, data);
+                //         result = JsonConvert.DeserializeObject<ReturnMessageInfo>(response);
+                //     }  
+                // } catch (Exception ex) {  
+                //     throw ex;  
+                // }  
+                // var thread = new Thread(request);
+                // thread.Start();
+            }
+            toast = Toast.MakeText(this, toastText, ToastLength.Short);
+            toast.Show();
         }
         
-        private void ActsLikeRequest() {
-            Thread.Sleep(3000);
-        }
+        // private void request() {
+        //     
+        // }
     }
 }
