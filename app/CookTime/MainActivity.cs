@@ -49,14 +49,16 @@ namespace CookTime {
                     var transaction = SupportFragmentManager.BeginTransaction();
                     var dialogSignIn = new DialogSignIn();
                     dialogSignIn.Show(transaction, "sign in");
+
+                    dialogSignIn.EventHandlerSignIn += SignInResult;
                 };
         }
         
         /// <summary>
-        /// This method is in charge of retrieving the data entered by the user in the Sign Up dialog.
+        /// This method is in charge of retrieving the data entered by the user in the Sign Up dialog fragment.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
         private void SignUpResult(object sender, SignUpEvent e) {
             string toastText;
             if (e.Message == "2") {
@@ -67,9 +69,6 @@ namespace CookTime {
                 toastText = "The email entered is already taken";
             }
             else {
-                var toast1 = Toast.MakeText(this, "else", ToastLength.Short);
-                toast1.Show();
-                
                 toastText = "You have successfully signed up to the platform";
                 var newUserName = e.UserName;
                 var newUserLastName = e.UserLastName;
@@ -87,6 +86,29 @@ namespace CookTime {
                 const string url = "resources/createUser";
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 webClient.UploadString(url, jsonResult);
+            }
+            _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+            _toast.Show();
+        }
+        
+        /// <summary>
+        /// This method is in charge of retrieving the data entered by the user in the Sign In dialog fragment.
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
+        private void SignInResult(object sender, SignInEvent e) {
+            string toastText;
+            if (e.Message == "3") {
+                toastText = "Please fill in all of the information";
+            }
+            else if (e.Message == "2") {
+                toastText = "The combination of user/password doesn't exist";
+            }
+            else if (e.Message == "0") {
+                toastText = "Incorrect password";
+            }
+            else {
+                toastText = "Signed in!";
             }
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();

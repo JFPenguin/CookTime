@@ -48,7 +48,7 @@ namespace CookTime {
         /// It invokes the SignUpEvent event, instantiating the class and passing all the data.
         /// Finally it closes the fragment.
         /// </summary>
-        /// <param name="sender"> Reference to the object that raised the event</param>
+        /// <param name="sender"> Reference to the object that raised the event </param>
         /// <param name="e"> Contains the event data </param>
         private void SendSignUp(object sender, EventArgs e) {
             var userNameInput = _userName.Text;
