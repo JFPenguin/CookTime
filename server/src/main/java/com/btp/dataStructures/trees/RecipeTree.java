@@ -59,8 +59,8 @@ public class RecipeTree{
 
     /**
      * Gets a Recipe of the tree using its id. Calls the private getElementById method
-     * @param id the id of the user to be searched
-     * @return the user of that respective id
+     * @param id the id of the Recipe to be searched
+     * @return the Recipe of that respective id
      */
     public Recipe getElementById(int id){
         return getElementById(id, this.root);
@@ -88,7 +88,7 @@ public class RecipeTree{
     }
 
     /**
-     * Finds the minimun element in the tree.
+     * Finds the minimum element in the tree.
      * Calls the recursive method findMin
      *
      * @return the smallest element found

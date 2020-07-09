@@ -1,6 +1,6 @@
-package com.btp.dataStructures.trees;
+package com.btp.dataStructures.trees.GenericTrees;
 
-import com.btp.dataStructures.nodes.SplayNode;
+import com.btp.dataStructures.nodes.GenericNodes.SplayNode;
 
 /**
  * the public class for the SplayTree instances. This code is based in the tutorial found in

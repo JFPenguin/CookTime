@@ -1,4 +1,4 @@
-package com.btp.dataStructures.nodes;
+package com.btp.dataStructures.nodes.GenericNodes;
 
 /**
  * Nodes used for the Splay Tree data structure
