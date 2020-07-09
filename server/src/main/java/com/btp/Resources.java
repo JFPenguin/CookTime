@@ -1,6 +1,7 @@
 package com.btp;
 
 import com.btp.gui.ServerGUI;
+import com.btp.security.HashPassword;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.RecipeRepo;
@@ -45,8 +46,14 @@ public class Resources {
     @Path("getUser")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-        public User getUser(@QueryParam("id") String email){
-        return UserRepo.getUser(email);
+        public User getUser(@QueryParam("id") String email,@QueryParam("pw") String password) throws NoSuchAlgorithmException {
+        User user = UserRepo.getUser(email);
+        if (user.getPassword().equals(hashPassword(password))) {
+            return UserRepo.getUser(email);
+        }
+        else {
+            return null;
+        }
     }
 
     /**
@@ -108,7 +115,7 @@ public class Resources {
     @Produces(MediaType.APPLICATION_JSON)
     public String authUserAndPassword(@QueryParam("email") String email, @QueryParam("password") String password) throws NoSuchAlgorithmException {
         if(UserRepo.checkByID(email)){
-            User user = getUser(email);
+            User user = UserRepo.getUser(email);
             String userPassword = user.getPassword();
             String hashPassword = hashPassword(password);
             if(hashPassword.equals(userPassword)){
@@ -123,6 +130,8 @@ public class Resources {
         }
 
     }
+
+
 
 //    @PUT
 //    @Path("rateRecipe")
