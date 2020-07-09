@@ -10,14 +10,14 @@ namespace CookTime {
     /// <summary>
     /// This class represents the dialog fragment that shows when the user wants to sign up
     /// </summary>
-    class DialogSignUp : DialogFragment {
-        private EditText userName;
-        private EditText userLastName;
-        private EditText userAge;
-        private EditText userEmail;
-        private EditText userPassword;
-        private Button btnSendSingUp;
-        public event EventHandler<SignUpEvent> eventHandlerSignUp;
+    public class DialogSignUp : DialogFragment {
+        private EditText _userName;
+        private EditText _userLastName;
+        private EditText _userAge;
+        private EditText _userEmail;
+        private EditText _userPassword;
+        private Button _btnSendSingUp;
+        public event EventHandler<SignUpEvent> EventHandlerSignUp;
 
         /// <summary>
         /// Creates the fragment, instantiates its user interface view and returns the view.
@@ -31,42 +31,41 @@ namespace CookTime {
 
             var view = inflater.Inflate(Resource.Layout.DialogSignUp, container, false);
 
-            userName = view.FindViewById<EditText>(Resource.Id.userName);
-            userLastName = view.FindViewById<EditText>(Resource.Id.userLastName);
-            userAge = view.FindViewById<EditText>(Resource.Id.userAge);
-            userEmail = view.FindViewById<EditText>(Resource.Id.userEmail);
-            userPassword = view.FindViewById<EditText>(Resource.Id.userPassword);
-            btnSendSingUp = view.FindViewById<Button>(Resource.Id.btnSendSignUp);
+            _userName = view.FindViewById<EditText>(Resource.Id.userName);
+            _userLastName = view.FindViewById<EditText>(Resource.Id.userLastName);
+            _userAge = view.FindViewById<EditText>(Resource.Id.userAge);
+            _userEmail = view.FindViewById<EditText>(Resource.Id.userEmail);
+            _userPassword = view.FindViewById<EditText>(Resource.Id.userPassword);
+            _btnSendSingUp = view.FindViewById<Button>(Resource.Id.btnSendSignUp);
 
-            btnSendSingUp.Click += sendSignUp;
+            _btnSendSingUp.Click += SendSignUp;
 
             return view;
         }
 
         /// <summary>
         /// This method is called when the user presses the button to sign up.
-        /// It invokes the SignUpEvent event, instantating the class and passing all the data.
+        /// It invokes the SignUpEvent event, instantiating the class and passing all the data.
         /// Finally it closes the fragment.
         /// </summary>
         /// <param name="sender"> Reference to the object that raised the event</param>
         /// <param name="e"> Contains the event data </param>
-        void sendSignUp(object sender, EventArgs e) {
-            var userNameInput = userName.Text;
-            var userLastNameInput = userLastName.Text;
-            var userAgeInput = userAge.Text;
-            var userEmailInput = userEmail.Text;
-            var userPasswordInput = userPassword.Text;
+        private void SendSignUp(object sender, EventArgs e) {
+            var userNameInput = _userName.Text;
+            var userLastNameInput = _userLastName.Text;
+            var userAgeInput = _userAge.Text;
+            var userEmailInput = _userEmail.Text;
+            var userPasswordInput = _userPassword.Text;
             string value;
 
             if (userNameInput.Equals("") || userLastNameInput.Equals("") || userAgeInput.Equals("") ||
-                userEmail.Text.Equals("") || userPasswordInput.Equals(""))
+                userEmailInput.Equals("") || userPasswordInput.Equals(""))
             {
                 value = "2";
             }
             
-            else
-            {
-                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.ipv4 + ":8080/CookTime_war/cookAPI/"};
+            else {
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
                 var url = "resources/isEmailNew?email=" + userEmailInput;
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
@@ -81,15 +80,15 @@ namespace CookTime {
                 }
             }            
             
-            if (eventHandlerSignUp != null)
-                eventHandlerSignUp.Invoke(this, new SignUpEvent(userNameInput, userLastNameInput, 
+            if (EventHandlerSignUp != null)
+                EventHandlerSignUp.Invoke(this, new SignUpEvent(userNameInput, userLastNameInput, 
                     userAgeInput, userEmailInput, userPasswordInput, value));
         }
 
         /// <summary>
         /// This method is run when the fragment finished its creation. The animations are set in here.
         /// </summary>
-        /// <param name="savedInstanceState"></param>
+        /// <param name="savedInstanceState"> Used to reconstruct the fragment from a previous state </param>
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
@@ -101,7 +100,7 @@ namespace CookTime {
     /// This class represents an event. It contains all of the data that the user entered.
     /// The properties inside this class will let the main view access the user data.
     /// </summary>
-    class SignUpEvent : EventArgs {
+    public class SignUpEvent : EventArgs {
         /// <summary>
         /// Constructor for the SignUpEvent class
         /// </summary>
