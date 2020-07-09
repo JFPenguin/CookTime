@@ -11,13 +11,13 @@ namespace CookTime {
     /// This class represents the dialog fragment that shows when the user wants to sign up
     /// </summary>
     class DialogSignUp : DialogFragment {
-        private EditText userName;
-        private EditText userLastName;
-        private EditText userAge;
-        private EditText userEmail;
-        private EditText userPassword;
-        private Button btnSendSingUp;
-        public event EventHandler<SignUpEvent> eventHandlerSignUp;
+        private EditText _userName;
+        private EditText _userLastName;
+        private EditText _userAge;
+        private EditText _userEmail;
+        private EditText _userPassword;
+        private Button _btnSendSingUp;
+        public event EventHandler<SignUpEvent> EventHandlerSignUp;
 
         /// <summary>
         /// Creates the fragment, instantiates its user interface view and returns the view.
@@ -31,14 +31,14 @@ namespace CookTime {
 
             var view = inflater.Inflate(Resource.Layout.DialogSignUp, container, false);
 
-            userName = view.FindViewById<EditText>(Resource.Id.userName);
-            userLastName = view.FindViewById<EditText>(Resource.Id.userLastName);
-            userAge = view.FindViewById<EditText>(Resource.Id.userAge);
-            userEmail = view.FindViewById<EditText>(Resource.Id.userEmail);
-            userPassword = view.FindViewById<EditText>(Resource.Id.userPassword);
-            btnSendSingUp = view.FindViewById<Button>(Resource.Id.btnSendSignUp);
+            _userName = view.FindViewById<EditText>(Resource.Id.userName);
+            _userLastName = view.FindViewById<EditText>(Resource.Id.userLastName);
+            _userAge = view.FindViewById<EditText>(Resource.Id.userAge);
+            _userEmail = view.FindViewById<EditText>(Resource.Id.userEmail);
+            _userPassword = view.FindViewById<EditText>(Resource.Id.userPassword);
+            _btnSendSingUp = view.FindViewById<Button>(Resource.Id.btnSendSignUp);
 
-            btnSendSingUp.Click += sendSignUp;
+            _btnSendSingUp.Click += SendSignUp;
 
             return view;
         }
@@ -50,16 +50,16 @@ namespace CookTime {
         /// </summary>
         /// <param name="sender"> Reference to the object that raised the event</param>
         /// <param name="e"> Contains the event data </param>
-        void sendSignUp(object sender, EventArgs e) {
-            var userNameInput = userName.Text;
-            var userLastNameInput = userLastName.Text;
-            var userAgeInput = userAge.Text;
-            var userEmailInput = userEmail.Text;
-            var userPasswordInput = userPassword.Text;
+        private void SendSignUp(object sender, EventArgs e) {
+            var userNameInput = _userName.Text;
+            var userLastNameInput = _userLastName.Text;
+            var userAgeInput = _userAge.Text;
+            var userEmailInput = _userEmail.Text;
+            var userPasswordInput = _userPassword.Text;
             string value;
 
             if (userNameInput.Equals("") || userLastNameInput.Equals("") || userAgeInput.Equals("") ||
-                userEmail.Text.Equals("") || userPasswordInput.Equals(""))
+                _userEmail.Text.Equals("") || userPasswordInput.Equals(""))
             {
                 value = "2";
             }
@@ -82,8 +82,8 @@ namespace CookTime {
                 }
             }            
             
-            if (eventHandlerSignUp != null)
-                eventHandlerSignUp.Invoke(this, new SignUpEvent(userNameInput, userLastNameInput, 
+            if (EventHandlerSignUp != null)
+                EventHandlerSignUp.Invoke(this, new SignUpEvent(userNameInput, userLastNameInput, 
                     userAgeInput, userEmailInput, userPasswordInput, value));
         }
 

@@ -12,9 +12,9 @@ namespace CookTime {
     /// </summary>
     [Activity(Label = "CookTime", MainLauncher = true)]
     public class MainActivity : AppCompatActivity {
-        private Button signUpButton;
-        private Button signInButton;
-        private Toast toast;
+        private Button _signUpButton;
+        private Button _signInButton;
+        private Toast _toast;
         
         /// <summary>
         /// This method is called when the activity is starting.
@@ -29,19 +29,19 @@ namespace CookTime {
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            signUpButton = FindViewById<Button>(Resource.Id.btnSignUp);
-            signUpButton.Click += (sender, args) =>
+            _signUpButton = FindViewById<Button>(Resource.Id.btnSignUp);
+            _signUpButton.Click += (sender, args) =>
                 {
                     //Brings dialog fragment forward
                     var transaction = SupportFragmentManager.BeginTransaction();
                     var dialogSignUp = new DialogSignUp();
                     dialogSignUp.Show(transaction, "sign up");
                     
-                    dialogSignUp.eventHandlerSignUp += signUpResult;
+                    dialogSignUp.EventHandlerSignUp += SignUpResult;
                 };
             
-            signInButton = FindViewById<Button>(Resource.Id.btnSignIn);
-            signInButton.Click += (sender, args) =>
+            _signInButton = FindViewById<Button>(Resource.Id.btnSignIn);
+            _signInButton.Click += (sender, args) =>
                 {
                     //Brings dialog fragment forward
                     var transaction = SupportFragmentManager.BeginTransaction();
@@ -55,7 +55,7 @@ namespace CookTime {
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void signUpResult(object sender, SignUpEvent e) {
+        private void SignUpResult(object sender, SignUpEvent e) {
             string toastText;
             if (e.Message == "2") {
                 toastText = "Please fill in all of the information";
@@ -78,16 +78,16 @@ namespace CookTime {
                 var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, newUserLastName, 
                     newUserPassword);
 
-                var JSONresult = JsonConvert.SerializeObject(user);
+                var jsonResult = JsonConvert.SerializeObject(user);
 
                 using var webClient = new WebClient {BaseAddress = "http://192.168.1.9:8080/CookTime_war/cookAPI/"};
 
                 const string url = "resources/createUser";
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                webClient.UploadString(url, JSONresult);
+                webClient.UploadString(url, jsonResult);
             }
-            toast = Toast.MakeText(this, toastText, ToastLength.Short);
-            toast.Show();
+            _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+            _toast.Show();
         }
     }
 }
