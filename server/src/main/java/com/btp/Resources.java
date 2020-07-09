@@ -124,39 +124,39 @@ public class Resources {
 
     }
 
-    @PUT
-    @Path("rateRecipe")
-    public void rateRecipe(@QueryParam("id") int id,@QueryParam("rating") float rating){
-        RecipeRepo.getRecipe(id).addScore(rating);
-    }
+//    @PUT
+//    @Path("rateRecipe")
+//    public void rateRecipe(@QueryParam("id") int id,@QueryParam("rating") float rating){
+//        RecipeRepo.getRecipe(id).addScore(rating);
+//    }
 
-    @PUT
-    @Path("updateUserData")
-    public void updateUserData(String email, String dataType, String data){
-        User user = UserRepo.getUser(email);
-        switch (dataType){
-            case "firstName":
-                user.setFirstName(data);
-                break;
-            case "lastName":
-                user.setLastName(data);
-                break;
-            case "email":
-                user.setEmail(data);
-                break;
-            case "password":
-                user.setPassword(data);
-                break;
-            case "age":
-                user.setAge(Integer.parseInt(data));
-                break;
-            default:
-                System.out.println("incorrect update request type: "+dataType);
-                if(Initializer.isGUIOnline()){
-                    Initializer.serverGUI.printLn("incorrect update request type: "+dataType);
-                }
-        }
-    }
+//    @PUT
+//    @Path("updateUserData")
+//    public void updateUserData(String email, String dataType, String data){
+//        User user = UserRepo.getUser(email);
+//        switch (dataType){
+//            case "firstName":
+//                user.setFirstName(data);
+//                break;
+//            case "lastName":
+//                user.setLastName(data);
+//                break;
+//            case "email":
+//                user.setEmail(data);
+//                break;
+//            case "password":
+//                user.setPassword(data);
+//                break;
+//            case "age":
+//                user.setAge(Integer.parseInt(data));
+//                break;
+//            default:
+//                System.out.println("incorrect update request type: "+dataType);
+//                if(Initializer.isGUIOnline()){
+//                    Initializer.serverGUI.printLn("incorrect update request type    : "+dataType);
+//                }
+//        }
+//    }
 
 
 
