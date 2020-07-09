@@ -15,6 +15,7 @@ namespace CookTime {
         private Button _signUpButton;
         private Button _signInButton;
         private Toast _toast;
+        public const string Ipv4 = "192.168.1.9";
         
         /// <summary>
         /// This method is called when the activity is starting.
@@ -68,7 +69,7 @@ namespace CookTime {
                 var toast1 = Toast.MakeText(this, "else", ToastLength.Short);
                 toast1.Show();
                 
-                toastText = "You have succesfully signed up to the platform";
+                toastText = "You have successfully signed up to the platform";
                 var newUserName = e.UserName;
                 var newUserLastName = e.UserLastName;
                 var newUserAge = e.UserAge;
@@ -80,7 +81,7 @@ namespace CookTime {
 
                 var jsonResult = JsonConvert.SerializeObject(user);
 
-                using var webClient = new WebClient {BaseAddress = "http://192.168.1.9:8080/CookTime_war/cookAPI/"};
+                using var webClient = new WebClient {BaseAddress = "http://" + Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
                 const string url = "resources/createUser";
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";

@@ -10,7 +10,7 @@ namespace CookTime {
     /// <summary>
     /// This class represents the dialog fragment that shows when the user wants to sign up
     /// </summary>
-    class DialogSignUp : DialogFragment {
+    public class DialogSignUp : DialogFragment {
         private EditText _userName;
         private EditText _userLastName;
         private EditText _userAge;
@@ -45,7 +45,7 @@ namespace CookTime {
 
         /// <summary>
         /// This method is called when the user presses the button to sign up.
-        /// It invokes the SignUpEvent event, instantating the class and passing all the data.
+        /// It invokes the SignUpEvent event, instantiating the class and passing all the data.
         /// Finally it closes the fragment.
         /// </summary>
         /// <param name="sender"> Reference to the object that raised the event</param>
@@ -59,26 +59,24 @@ namespace CookTime {
             string value;
 
             if (userNameInput.Equals("") || userLastNameInput.Equals("") || userAgeInput.Equals("") ||
-                _userEmail.Text.Equals("") || userPasswordInput.Equals(""))
+                userEmailInput.Equals("") || userPasswordInput.Equals(""))
             {
                 value = "2";
             }
             
             else {
-                using (var webClient = new WebClient()) {
-                    webClient.BaseAddress = "http://192.168.1.9:8080/CookTime_war/cookAPI/";
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
-                    var url = "resources/isEmailNew?email=" + userEmailInput;
-                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    var send = webClient.DownloadString(url);
+                var url = "resources/isEmailNew?email=" + userEmailInput;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var send = webClient.DownloadString(url);
 
-                    var response = JsonConvert.DeserializeObject<string>(send);
+                var response = JsonConvert.DeserializeObject<string>(send);
                     
-                    value = response;
+                value = response;
 
-                    if (value == "0") {
-                        Dismiss();
-                    }
+                if (value == "0") {
+                    Dismiss();
                 }
             }            
             
@@ -90,7 +88,7 @@ namespace CookTime {
         /// <summary>
         /// This method is run when the fragment finished its creation. The animations are set in here.
         /// </summary>
-        /// <param name="savedInstanceState"></param>
+        /// <param name="savedInstanceState"> Used to reconstruct the fragment from a previous state </param>
         public override void OnActivityCreated(Bundle savedInstanceState)
         {
             base.OnActivityCreated(savedInstanceState);
@@ -102,7 +100,7 @@ namespace CookTime {
     /// This class represents an event. It contains all of the data that the user entered.
     /// The properties inside this class will let the main view access the user data.
     /// </summary>
-    class SignUpEvent : EventArgs {
+    public class SignUpEvent : EventArgs {
         /// <summary>
         /// Constructor for the SignUpEvent class
         /// </summary>
