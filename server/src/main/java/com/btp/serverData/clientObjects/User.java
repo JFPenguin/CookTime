@@ -14,9 +14,11 @@ public class User implements Comparable<User> {
     private String email;
     private String password;
     private boolean isChef;
-    private ArrayList<String> followerEmails = new ArrayList<String>();
-    private ArrayList<String> followingEmails = new ArrayList<String>();
-    private ArrayList<Integer> recipeList = new ArrayList<Integer>();
+    private ArrayList<String> followerEmails = new ArrayList<>();
+    private ArrayList<String> followingEmails = new ArrayList<>();
+    private ArrayList<Integer> recipeList = new ArrayList<>();
+    private NewsFeed newsFeed = new NewsFeed();
+
     private int age;
 
     /**

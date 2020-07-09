@@ -9,9 +9,8 @@ import com.btp.serverData.clientObjects.User;
  * the public class for the SplayTree instances. This code is based in the tutorial found in
  * https://www.geeksforgeeks.org/avl-tree-set-1-insertion/, with major syntax modifications
  * for using generic type nodes and getter/setter methods for data-scope reduction.
- * @param <T> generic type of objects to possibly contain in the tree instance
  */
-public class RecipeTree<T extends Comparable<T>>{
+public class RecipeTree{
     protected RecipeNode root;
 
     /**

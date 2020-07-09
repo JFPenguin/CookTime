@@ -1,5 +1,6 @@
 package com.btp;
 
+import com.btp.gui.ServerGUI;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.RecipeRepo;
@@ -7,6 +8,7 @@ import com.btp.serverData.repos.UserRepo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
@@ -100,6 +102,63 @@ public class Resources {
         }
         return value;
     }
+
+    @GET
+    @Path("auth")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String authUserAndPassword(@QueryParam("email") String email, @QueryParam("password") String password) throws NoSuchAlgorithmException {
+        if(UserRepo.checkByID(email)){
+            User user = getUser(email);
+            String userPassword = user.getPassword();
+            String hashPassword = hashPassword(password);
+            if(hashPassword.equals(userPassword)){
+                return "1";
+            }
+            else {
+                return "0";
+            }
+        }
+        else {
+            return "2";
+        }
+
+    }
+
+//    @PUT
+//    @Path("rateRecipe")
+//    public void rateRecipe(@QueryParam("id") int id,@QueryParam("rating") float rating){
+//        RecipeRepo.getRecipe(id).addScore(rating);
+//    }
+
+//    @PUT
+//    @Path("updateUserData")
+//    public void updateUserData(String email, String dataType, String data){
+//        User user = UserRepo.getUser(email);
+//        switch (dataType){
+//            case "firstName":
+//                user.setFirstName(data);
+//                break;
+//            case "lastName":
+//                user.setLastName(data);
+//                break;
+//            case "email":
+//                user.setEmail(data);
+//                break;
+//            case "password":
+//                user.setPassword(data);
+//                break;
+//            case "age":
+//                user.setAge(Integer.parseInt(data));
+//                break;
+//            default:
+//                System.out.println("incorrect update request type: "+dataType);
+//                if(Initializer.isGUIOnline()){
+//                    Initializer.serverGUI.printLn("incorrect update request type    : "+dataType);
+//                }
+//        }
+//    }
+
+
 
 //    @Path("createRecipe")
 //    @POST
