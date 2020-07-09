@@ -93,6 +93,14 @@ public class Resources {
         return UserRepo.checkByID(email);
     }
 
+    @GET
+    @Path("auth")
+    public String authUserAndPassword(String email, String password){
+         UserRepo.checkByID(email);
+         return "holi";
+
+    }
+
 //    @Path("createRecipe")
 //    @POST
 //    public void createRecipe(String name,User author,DishTime dishTime,int portions, int duration,DishType dishType,
