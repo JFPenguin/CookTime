@@ -12,6 +12,7 @@ namespace CookTime {
     /// </summary>
     [Activity(Label = "CookTime", MainLauncher = true)]
     public class MainActivity : AppCompatActivity {
+        public static string ipv4 = "192.168.100.245";
         private Button signUpButton;
         private Button signInButton;
         private Toast toast;
@@ -78,13 +79,13 @@ namespace CookTime {
                 var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, newUserLastName, 
                     newUserPassword);
 
-                var JSONresult = JsonConvert.SerializeObject(user);
+                var jsonResult = JsonConvert.SerializeObject(user);
 
-                using var webClient = new WebClient {BaseAddress = "http://192.168.1.9:8080/CookTime_war/cookAPI/"};
+                using var webClient = new WebClient {BaseAddress = "http://" + ipv4 + ":8080/CookTime_war/cookAPI/"};
 
                 const string url = "resources/createUser";
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                webClient.UploadString(url, JSONresult);
+                webClient.UploadString(url, jsonResult);
             }
             toast = Toast.MakeText(this, toastText, ToastLength.Short);
             toast.Show();

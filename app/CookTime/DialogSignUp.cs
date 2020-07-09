@@ -64,21 +64,20 @@ namespace CookTime {
                 value = "2";
             }
             
-            else {
-                using (var webClient = new WebClient()) {
-                    webClient.BaseAddress = "http://192.168.1.9:8080/CookTime_war/cookAPI/";
+            else
+            {
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.ipv4 + ":8080/CookTime_war/cookAPI/"};
 
-                    var url = "resources/isEmailNew?email=" + userEmailInput;
-                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    var send = webClient.DownloadString(url);
+                var url = "resources/isEmailNew?email=" + userEmailInput;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var send = webClient.DownloadString(url);
 
-                    var response = JsonConvert.DeserializeObject<string>(send);
+                var response = JsonConvert.DeserializeObject<string>(send);
                     
-                    value = response;
+                value = response;
 
-                    if (value == "0") {
-                        Dismiss();
-                    }
+                if (value == "0") {
+                    Dismiss();
                 }
             }            
             
