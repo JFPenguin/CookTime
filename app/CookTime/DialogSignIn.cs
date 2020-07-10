@@ -57,7 +57,7 @@ namespace CookTime {
             else {
                 using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
-                var url = "resources/auth?email=" + userEmailInput;
+                var url = "resources/auth?email=" + userEmailInput + "&password=" + userPasswordInput;
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var send = webClient.DownloadString(url);
 
