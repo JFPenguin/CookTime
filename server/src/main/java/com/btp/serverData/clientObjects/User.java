@@ -1,8 +1,6 @@
 package com.btp.serverData.clientObjects;
 
 import com.btp.dataStructures.lists.SinglyList;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 
 /**
