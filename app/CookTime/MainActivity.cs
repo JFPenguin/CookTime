@@ -16,7 +16,7 @@ namespace CookTime {
         private Button _signUpButton;
         private Button _signInButton;
         private Toast _toast;
-        public const string Ipv4 = "192.168.1.9";
+        public const string Ipv4 = "192.168.100.9";
         
         /// <summary>
         /// This method is called when the activity is starting.

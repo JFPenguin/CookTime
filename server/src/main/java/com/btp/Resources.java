@@ -8,7 +8,6 @@ import com.btp.serverData.repos.UserRepo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
