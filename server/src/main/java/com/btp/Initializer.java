@@ -1,18 +1,12 @@
 package com.btp;
 
-import com.btp.dataStructures.lists.SinglyList;
 import com.btp.gui.ServerGUI;
 import com.btp.serverData.clientObjects.*;
-import com.btp.serverData.repos.RecipeRepo;
 import com.btp.serverData.repos.UserRepo;
 
 import javax.servlet.http.HttpServlet;
 import javax.swing.*;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-
-import static com.btp.security.HashPassword.hashPassword;
-
 
 public class Initializer extends HttpServlet {
 
