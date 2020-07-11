@@ -76,8 +76,8 @@ namespace CookTime {
                 var newUserEmail = e.UserEmail;
                 var newUserPassword = e.UserPassword;
                 
-                var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, newUserLastName, 
-                    newUserPassword);
+                var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, null,
+                    null, newUserLastName, newUserPassword, null);
 
                 var jsonResult = JsonConvert.SerializeObject(user);
 
@@ -110,9 +110,10 @@ namespace CookTime {
             }
             else {
                 toastText = "Signed in!";
-                
+
                 Intent intent = new Intent(this, typeof(ProfileActivity));
                 StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
                 Finish();
             }
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
