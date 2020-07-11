@@ -46,14 +46,8 @@ public class Resources {
     @Path("getUser")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-        public User getUser(@QueryParam("id") String email,@QueryParam("pw") String password) throws NoSuchAlgorithmException {
-        User user = UserRepo.getUser(email);
-        if (user.getPassword().equals(hashPassword(password))) {
-            return UserRepo.getUser(email);
-        }
-        else {
-            return null;
-        }
+        public User getUser(@QueryParam("id") String email) {
+        return UserRepo.getUser(email);
     }
 
     /**
