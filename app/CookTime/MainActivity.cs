@@ -75,9 +75,17 @@ namespace CookTime {
                 var newUserAge = e.UserAge;
                 var newUserEmail = e.UserEmail;
                 var newUserPassword = e.UserPassword;
-                
-                var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, null,
-                    null, newUserLastName, newUserPassword, null);
+
+                var user = new User() {
+                    Age = int.Parse(newUserAge),
+                    Email = newUserEmail,
+                    FirstName = newUserName,
+                    FollowerEmails = null,
+                    FollowingEmails = null,
+                    LastName = newUserLastName,
+                    Password = newUserPassword,
+                    RecipeList = null,
+                };
 
                 var jsonResult = JsonConvert.SerializeObject(user);
 
