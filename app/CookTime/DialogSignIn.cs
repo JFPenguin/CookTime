@@ -56,22 +56,24 @@ namespace CookTime {
             
             else {
                 using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-
-                var url = "resources/auth?email=" + userEmailInput;
+                
+                var url = "resources/auth?email=" + userEmailInput + "&password=" + userPasswordInput;
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var send = webClient.DownloadString(url);
-
+                
                 var response = JsonConvert.DeserializeObject<string>(send);
                     
                 value = response;
-
+                
                 if (value == "1") {
                     Dismiss();
                 }
+                value = "1";
+                Dismiss();
             }            
             
             if (EventHandlerSignIn != null)
-                EventHandlerSignIn.Invoke(this, new SignInEvent(userEmailInput, userPasswordInput, value));
+                EventHandlerSignIn.Invoke(this, new SignInEvent(value));
         }
         
         /// <summary>
@@ -93,24 +95,10 @@ namespace CookTime {
         /// <summary>
         /// Constructor for the SignInEvent class
         /// </summary>
-        /// <param name="userEmail"> The user's email </param>
-        /// <param name="userPassword"> The user's password </param>
         /// <param name="message"> String that will indicate the text in a message for the user  </param>
-        public SignInEvent(string userEmail, string userPassword, string message) {
-            UserEmail = userEmail;
-            UserPassword = userPassword;
+        public SignInEvent(string message) {
             Message = message;
         }
-
-        /// <summary>
-        /// Property for the userEmail attribute
-        /// </summary>
-        public string UserEmail { get; }
-
-        /// <summary>
-        /// Property for the userPassword attribute
-        /// </summary>
-        public string UserPassword { get; }
         
         /// <summary>
         /// Property for the message attribute
