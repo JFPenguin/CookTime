@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
@@ -10,9 +11,8 @@ namespace CookTime {
     /// This class represents the first view seen when the app is opened.
     /// It inherits from the base class for Android activities
     /// </summary>
-    [Activity(Label = "CookTime", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity {
-
         private Button _signUpButton;
         private Button _signInButton;
         private Toast _toast;
@@ -24,34 +24,34 @@ namespace CookTime {
         /// </summary>
         /// <param name="savedInstanceState"> a Bundle that contains the data the activity most recently
         /// supplied if the activity is being re-initialized after previously being shut down. </param>
-        protected override void OnCreate(Bundle savedInstanceState) {
-
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
             base.OnCreate(savedInstanceState);
-            
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
-
+            
             _signUpButton = FindViewById<Button>(Resource.Id.btnSignUp);
             _signUpButton.Click += (sender, args) =>
-                {
-                    //Brings dialog fragment forward
-                    var transaction = SupportFragmentManager.BeginTransaction();
-                    var dialogSignUp = new DialogSignUp();
-                    dialogSignUp.Show(transaction, "sign up");
+            {
+                //Brings dialog fragment forward
+                var transaction = SupportFragmentManager.BeginTransaction();
+                var dialogSignUp = new DialogSignUp();
+                dialogSignUp.Show(transaction, "sign up");
                     
-                    dialogSignUp.EventHandlerSignUp += SignUpResult;
-                };
+                dialogSignUp.EventHandlerSignUp += SignUpResult;
+            };
+            
             
             _signInButton = FindViewById<Button>(Resource.Id.btnSignIn);
             _signInButton.Click += (sender, args) =>
-                {
-                    //Brings dialog fragment forward
-                    var transaction = SupportFragmentManager.BeginTransaction();
-                    var dialogSignIn = new DialogSignIn();
-                    dialogSignIn.Show(transaction, "sign in");
+            {
+                //Brings dialog fragment forward
+                var transaction = SupportFragmentManager.BeginTransaction();
+                var dialogSignIn = new DialogSignIn();
+                dialogSignIn.Show(transaction, "sign in");
 
-                    dialogSignIn.EventHandlerSignIn += SignInResult;
-                };
+                dialogSignIn.EventHandlerSignIn += SignInResult;
+            };
         }
         
         /// <summary>
@@ -91,6 +91,7 @@ namespace CookTime {
             _toast.Show();
         }
         
+        
         /// <summary>
         /// This method is in charge of retrieving the data entered by the user in the Sign In dialog fragment.
         /// </summary>
@@ -109,6 +110,10 @@ namespace CookTime {
             }
             else {
                 toastText = "Signed in!";
+                
+                Intent intent = new Intent(this, typeof(ProfileActivity));
+                StartActivity(intent);
+                Finish();
             }
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();
