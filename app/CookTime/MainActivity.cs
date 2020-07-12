@@ -111,7 +111,14 @@ namespace CookTime {
             else {
                 toastText = "Signed in!";
 
-                Intent intent = new Intent(this, typeof(ProfileActivity));
+                using var webClient = new WebClient {BaseAddress = "http://" + Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+                var url = "resources/getUser?id=" + e.UserEmail;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var send = webClient.DownloadString(url);
+
+                Intent intent = new Intent(this, typeof(MyMenuActivity));
+                intent.PutExtra("User", send);
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
                 Finish();

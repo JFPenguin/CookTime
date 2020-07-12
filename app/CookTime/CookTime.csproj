@@ -58,7 +58,7 @@
         <Compile Include="DialogSignIn.cs" />
         <Compile Include="DialogSignUp.cs" />
         <Compile Include="MainActivity.cs" />
-        <Compile Include="ProfileActivity.cs" />
+        <Compile Include="MyMenuActivity.cs" />
         <Compile Include="Recipe.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
