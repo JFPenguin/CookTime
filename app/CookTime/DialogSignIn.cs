@@ -70,7 +70,7 @@ namespace CookTime {
             }            
             
             if (EventHandlerSignIn != null)
-                EventHandlerSignIn.Invoke(this, new SignInEvent(value));
+                EventHandlerSignIn.Invoke(this, new SignInEvent(userEmailInput, value));
         }
         
         /// <summary>
@@ -92,15 +92,22 @@ namespace CookTime {
         /// <summary>
         /// Constructor for the SignInEvent class
         /// </summary>
+        /// <param name="userEmail"> The email input from the user </param>
         /// <param name="message"> String that will indicate the text in a message for the user  </param>
-        public SignInEvent(string message) {
+        public SignInEvent(string UserEmail, string message) {
+            UserEmail = UserEmail;
             Message = message;
+            
         }
-        
         /// <summary>
-        /// Property for the message attribute
+        /// Accessor/getter method for the message attribute
         /// </summary>
         public string Message { get; }
+        
+        /// <summary>
+        /// Accessor/getter method for the email Attribute
+        /// </summary>
+        public string UserEmail { get; }
     }
     
 }
