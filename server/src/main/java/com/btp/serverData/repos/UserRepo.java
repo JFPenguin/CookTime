@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class UserRepo {
     private static UserBST userTree = new UserBST();
@@ -33,6 +34,9 @@ public class UserRepo {
         return userTree.checkByEmail(email);
     }
 
+    public static ArrayList<String> searchUsers(String data){
+        return userTree.searchPreOrder(data);
+    }
 
     public static void loadTree() throws IOException {
         System.out.println("loading user data base...");
