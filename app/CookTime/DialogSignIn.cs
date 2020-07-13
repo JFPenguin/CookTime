@@ -94,8 +94,8 @@ namespace CookTime {
         /// </summary>
         /// <param name="userEmail"> The email input from the user </param>
         /// <param name="message"> String that will indicate the text in a message for the user  </param>
-        public SignInEvent(string UserEmail, string message) {
-            UserEmail = UserEmail;
+        public SignInEvent(string userEmail, string message) {
+            UserEmail = userEmail;
             Message = message;
             
         }
