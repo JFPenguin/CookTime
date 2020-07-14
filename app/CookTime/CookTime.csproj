@@ -55,6 +55,7 @@
         <Reference Include="Mono.Android" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="DialogSettings.cs" />
         <Compile Include="DialogSignIn.cs" />
         <Compile Include="DialogSignUp.cs" />
         <Compile Include="MainActivity.cs" />
@@ -73,6 +74,7 @@
         <AndroidResource Include="Resources\anim\SlideRight.xml" />
         <AndroidResource Include="Resources\anim\SlideUp.xml" />
         <AndroidResource Include="Resources\drawable\ButtonStyle.xml" />
+        <AndroidResource Include="Resources\layout\DialogSettings.axml" />
         <AndroidResource Include="Resources\layout\DialogSignIn.axml" />
         <AndroidResource Include="Resources\layout\DialogSignUp.axml" />
         <AndroidResource Include="Resources\layout\Main.axml">
