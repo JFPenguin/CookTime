@@ -125,9 +125,22 @@ public class Resources {
         }
 
     }
+
+    @PUT
+    @Path("followUser")
+    public void followUser(@QueryParam("ownEmail") String ownEmail, @QueryParam("followingEmail") String followingEmail){
+        User ownUser = UserRepo.getUser(ownEmail);
+        User followingUser = UserRepo.getUser(followingEmail);
+
+        ownUser.addFollowing(followingEmail);
+        followingUser.addFollower(ownEmail);
+
+        //TODO notify followingUser
+    }
+
     @PUT
     @Path("editUserPassword")
-    public void editUser(@QueryParam("email") String email, @QueryParam("newpassword") String newPassword,
+    public void editUser(@QueryParam("email") String email, @QueryParam("newPassword") String newPassword,
                          @QueryParam("password") String password) throws NoSuchAlgorithmException {
         User user = UserRepo.getUser(email);
         if (user.getPassword().equals(hashPassword(password))){
