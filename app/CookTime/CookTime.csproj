@@ -58,7 +58,7 @@
         <Compile Include="DialogSignIn.cs" />
         <Compile Include="DialogSignUp.cs" />
         <Compile Include="MainActivity.cs" />
-        <Compile Include="MyMenuActivity.cs" />
+        <Compile Include="ProfileActivity.cs" />
         <Compile Include="Recipe.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
@@ -73,7 +73,6 @@
         <AndroidResource Include="Resources\anim\SlideRight.xml" />
         <AndroidResource Include="Resources\anim\SlideUp.xml" />
         <AndroidResource Include="Resources\drawable\ButtonStyle.xml" />
-        <AndroidResource Include="Resources\drawable\ProgressBarStyle.xml" />
         <AndroidResource Include="Resources\layout\DialogSignIn.axml" />
         <AndroidResource Include="Resources\layout\DialogSignUp.axml" />
         <AndroidResource Include="Resources\layout\Main.axml">

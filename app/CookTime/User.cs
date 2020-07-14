@@ -10,7 +10,7 @@ namespace CookTime {
         public string email;
         public string firstName;
         public List<string> followerEmails;
-        public List<string> follingEmails;
+        public List<string> followingEmails;
         public string lastName;
         public string password;
         public List<Recipe> recipeList;
@@ -35,7 +35,7 @@ namespace CookTime {
             this.lastName = lastName;
             this.password = password;
             this.followerEmails = followerEmails;
-            this.follingEmails = followingEmails;
+            this.followingEmails = followingEmails;
             this.recipeList = recipeList;
         }
         

@@ -5,51 +5,121 @@
         android:layout_height="fill_parent"
         android:background="#597A88"
         android:weightSum="100">
-    <TextView
-            android:text="My Menu"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:textColor="#3E4465"
-            android:background="#C09891"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="35sp"/>
-    <TextView
-            android:text="Name"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:id="@+id/nameView"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:textColor="#3E4465"
-            android:background="#C09891"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
-    <TextView
-            android:text="Age"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:id="@+id/ageView"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:textColor="#3E4465"
-            android:background="#C09891"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
-    <TextView
-            android:text="Email"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:id="@+id/emailView"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:textColor="#3E4465"
-            android:background="#C09891"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <TextView
+                    android:text="My Profile"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:textColor="#D2F1E4"
+                    android:background="#3E4465"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="30sp"/>
+            <TextView
+                    android:text="My Info"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:textColor="#3E4465"
+                    android:background="#C09891"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="25sp"/>
+            <TextView
+                    android:text="Name"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:id="@+id/nameView"
+                    android:layout_height="25dp"
+                    android:textColor="#3E4465"
+                    android:background="#C09891"
+                    android:textStyle="bold"
+                    android:paddingLeft="5dp"
+                    android:textSize="20sp"/>
+            <TextView
+                    android:text="Age"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:id="@+id/ageView"
+                    android:layout_height="27dp"
+                    android:textColor="#3E4465"
+                    android:background="#C09891"
+                    android:textStyle="bold"
+                    android:paddingLeft="5dp"
+                    android:textSize="20sp"/>
+            <TextView
+                    android:text="Email"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:id="@+id/emailView"
+                    android:layout_height="25dp"
+                    android:textColor="#3E4465"
+                    android:background="#C09891"
+                    android:textStyle="bold"
+                    android:paddingLeft="5dp"
+                    android:textSize="20sp"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#C09891">
+                <Button
+                        android:text="Followers: 500"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="50dp"
+                        android:layout_marginLeft="60dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:id="@+id/btnFollowers" />
+                <Button
+                        android:text="Following: 500"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="60dp"
+                        android:layout_marginLeft="15dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:id="@+id/btnFollowing" />
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="#C09891">
+                <Button
+                        android:text="Settings"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="50dp"
+                        android:layout_marginLeft="60dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:id="@+id/btnEditInfo" />
+                <Button
+                        android:text="Business"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="60dp"
+                        android:layout_marginLeft="15dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:id="@+id/btnCreateBsns" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
