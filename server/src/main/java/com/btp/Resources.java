@@ -140,12 +140,18 @@ public class Resources {
 
     @PUT
     @Path("editUserPassword")
-    public void editUser(@QueryParam("email") String email, @QueryParam("newPassword") String newPassword,
+    @Produces(MediaType.APPLICATION_JSON)
+    public String editUser(@QueryParam("email") String email, @QueryParam("newPassword") String newPassword,
                          @QueryParam("password") String password) throws NoSuchAlgorithmException {
+        String response;
         User user = UserRepo.getUser(email);
         if (user.getPassword().equals(hashPassword(password))){
             user.setPassword(hashPassword(newPassword));
+            response = "1";
+        } else {
+            response = "0";
         }
+        return response;
     }
 
     @PUT
