@@ -5,6 +5,8 @@ import com.btp.dataStructures.nodes.RecipeNode;
 import com.btp.serverData.clientObjects.Business;
 import com.btp.serverData.clientObjects.Recipe;
 
+import java.util.ArrayList;
+
 /**
  * the public class for the SplayTree instances. This code is based in the tutorial found in
  * https://www.sanfoundry.com/java-program-implement-splay-tree/, with major syntax modifications
@@ -13,6 +15,7 @@ import com.btp.serverData.clientObjects.Recipe;
 public class BusinessTree {
     private BusinessNode root;
     int values = 0;
+    private ArrayList<String> businessList = new ArrayList<>();
 
     /**
      * Constructor for the class
@@ -374,5 +377,21 @@ public class BusinessTree {
         } else {
             System.out.println("root is empty");
         }
+    }
+
+    public ArrayList<String> search(String data) {
+        return searchByName(data.toLowerCase(), this.root);
+    }
+
+    private ArrayList<String> searchByName(String data, BusinessNode root){
+        if (root != null && this.businessList.size() < 5) {
+            Business business = root.getElement();
+            if (business.getName().toLowerCase().contains(data)){
+                this.businessList.add(business.getName()+";"+business.getId());
+            }
+            searchByName(data, root.getLeft());
+            searchByName(data, root.getRight());
+        }
+        return this.businessList;
     }
 }

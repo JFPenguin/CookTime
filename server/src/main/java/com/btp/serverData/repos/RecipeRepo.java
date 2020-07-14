@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * This class represents the main repository for recipes
@@ -24,9 +25,9 @@ public class RecipeRepo {
      */
     public static void addRecipe(Recipe recipe){
         recipeTree.insert(recipe);
-        System.out.println("user added");
+        System.out.println("Recipe added");
         if(Initializer.isGUIOnline()){
-            Initializer.getServerGUI().printLn("user added");
+            Initializer.getServerGUI().printLn("Recipe added");
         }
         dataWriter.writeData(recipeTree, path);
 
@@ -39,6 +40,10 @@ public class RecipeRepo {
      */
     public static Recipe getRecipe(int id){
         return recipeTree.getElementById(id);
+    }
+
+    public static ArrayList<String> searchByName(String data){
+        return recipeTree.searchByName(data);
     }
 
     public static void loadTree() throws IOException {

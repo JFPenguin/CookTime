@@ -1,15 +1,15 @@
 package com.btp;
 
-import com.btp.gui.ServerGUI;
-import com.btp.security.HashPassword;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
+import com.btp.serverData.repos.BusinessRepo;
 import com.btp.serverData.repos.RecipeRepo;
 import com.btp.serverData.repos.UserRepo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Random;
 
 import static com.btp.security.HashPassword.hashPassword;
@@ -39,25 +39,27 @@ public class Resources {
 
     /**
      * API getter for the user obj
+     *
      * @param email String value of the email of the user
      * @return User obj
      */
     @Path("getUser")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-        public User getUser(@QueryParam("id") String email) {
+    public User getUser(@QueryParam("id") String email) {
         return UserRepo.getUser(email);
     }
 
     /**
      * API getter for the recipe obj
+     *
      * @param id int value of the id of the recipe
      * @return recipe obj
      */
     @Path("getRecipe")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Recipe getRecipe(@QueryParam("id") int id){
+    public Recipe getRecipe(@QueryParam("id") int id) {
         return RecipeRepo.getRecipe(id);
     }
 
@@ -66,10 +68,10 @@ public class Resources {
     @Path("createUser")
     public void createUser(User user, @QueryParam("uniqueID") boolean uniqueID) throws NoSuchAlgorithmException {
         System.out.println("new user!");
-        System.out.println("name: "+ user.fullName()+" email: "+user.getEmail()+ " password: "+user.getPassword()+ " age: "+user.getAge());
-        if(Initializer.isGUIOnline()){
+        System.out.println("name: " + user.fullName() + " email: " + user.getEmail() + " password: " + user.getPassword() + " age: " + user.getAge());
+        if (Initializer.isGUIOnline()) {
             Initializer.getServerGUI().printLn("new user!");
-            Initializer.getServerGUI().printLn("name: "+ user.fullName()+"\nemail: "+user.getEmail()+ "\npassword: "+user.getPassword()+ "\nage: "+user.getAge());
+            Initializer.getServerGUI().printLn("name: " + user.fullName() + "\nemail: " + user.getEmail() + "\npassword: " + user.getPassword() + "\nage: " + user.getAge());
         }
 //        int i = random.nextInt(999) + 1;
 //        System.out.println("generating id...");
@@ -123,8 +125,64 @@ public class Resources {
         }
 
     }
+    @PUT
+    @Path("editUserPassword")
+    public void editUser(@QueryParam("email") String email, @QueryParam("newpassword") String newPassword,
+                         @QueryParam("password") String password) throws NoSuchAlgorithmException {
+        User user = UserRepo.getUser(email);
+        if (user.getPassword().equals(hashPassword(password))){
+            user.setPassword(hashPassword(newPassword));
+        }
+    }
 
+    @PUT
+    @Path("rateUser")
+    public void rateChef(@QueryParam("email") String email, @QueryParam("rating") float rating) {
+        System.out.println("Rating user...");
+        User user = UserRepo.getUser(email);
 
+        if (user.isChef()) {
+            user.addChefScore(rating);
+            System.out.println("Chef rated");
+        }
+    }
+
+    @GET
+    @Path("search")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<ArrayList> search(@QueryParam("search") String search, @QueryParam("filter") String filter){
+        System.out.println("Searching recipes");
+        ArrayList<ArrayList> profilesList = new ArrayList<>();
+        ArrayList<String> userList = new ArrayList<>();
+        ArrayList<String> recipeList = new ArrayList<>();
+        ArrayList<String> businessList = new ArrayList<>();
+
+        System.out.println(search);
+
+        switch (filter){
+            case "filter1":
+                System.out.println("Filter 1");
+                break;
+            case "filter2":
+                System.out.println("Filter 2");
+                break;
+            case "filter3":
+                System.out.println("Filter 3");
+                break;
+            default:
+                System.out.println("Default Filter");
+                userList = UserRepo.searchUsers(search);
+                recipeList = RecipeRepo.searchByName(search);
+                businessList = BusinessRepo.search(search);
+          }
+        System.out.println(profilesList);
+        userList = prioChef(userList);
+        recipeList = prioChef(recipeList);
+        profilesList.add(userList);
+        profilesList.add(recipeList);
+        profilesList.add(businessList);
+        return profilesList;
+    }
 
 //    @PUT
 //    @Path("rateRecipe")
@@ -179,4 +237,17 @@ public class Resources {
 //        return new Ingredient(ingredient, qty, measurementUnit);
 //    }
 
+    private ArrayList<String> prioChef(ArrayList<String> list){
+        ArrayList<String> prioList= new ArrayList<>();
+        int i = 0;
+        for (String prioString:list) {
+            if (prioString.split(";")[0].equals("true") && i < 3){
+                prioList.add(i, prioString);
+                i++;
+            } else{
+                prioList.add(prioString);
+            }
+        }
+        return prioList;
+    }
 }

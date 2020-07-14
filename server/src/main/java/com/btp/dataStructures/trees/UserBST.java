@@ -3,12 +3,16 @@ import com.btp.dataStructures.nodes.UserTreeNode;
 import com.btp.serverData.clientObjects.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.ArrayList;
+
 /**
  * A class that represents a Binary Tree
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserBST {
     private UserTreeNode root;
+    // List used for searches
+    private ArrayList<String> userList = new ArrayList<>();
 
     /**
      * Constructor for the class
@@ -224,6 +228,25 @@ public class UserBST {
      */
     public UserTreeNode getRoot() {
         return root;
+    }
+
+    public ArrayList<String> searchPreOrder(String data) {
+        this.userList.clear();
+        return searchPreOrder(data.toLowerCase(), this.root);
+    }
+
+    private ArrayList<String> searchPreOrder(String data, UserTreeNode root){
+        if (root != null && userList.size() < 5) {
+            User user = root.getElement();
+            System.out.println(data);
+            System.out.println(user.fullName());
+            if (user.fullName().toLowerCase().contains(data)){
+                this.userList.add(user.isChef()+";"+user.fullName()+";"+user.getEmail());
+            }
+            searchPreOrder(data, root.getLeft());
+            searchPreOrder(data, root.getRight());
+        }
+        return this.userList;
     }
 
     /**
