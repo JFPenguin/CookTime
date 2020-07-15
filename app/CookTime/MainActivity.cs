@@ -16,7 +16,7 @@ namespace CookTime {
         private Button _signUpButton;
         private Button _signInButton;
         private Toast _toast;
-        public const string Ipv4 = "192.168.1.8";
+        public const string Ipv4 = "192.168.100.49";
         
         /// <summary>
         /// This method is called when the activity is starting.
@@ -76,8 +76,8 @@ namespace CookTime {
                 var newUserEmail = e.UserEmail;
                 var newUserPassword = e.UserPassword;
                 
-                var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, null, null, newUserLastName, 
-                    newUserPassword, null);
+                var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, null, null, newUserLastName, newUserPassword, 
+                    null);
 
                 var jsonResult = JsonConvert.SerializeObject(user);
 
@@ -110,25 +110,24 @@ namespace CookTime {
             }
             else {
                 toastText = "Signed in!";
-            }
 
-            _toast = Toast.MakeText(this, toastText, ToastLength.Short);
-            _toast.Show();
-            
-            if (toastText.Equals("Signed in!"))
-            {
+                _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                _toast.Show();
+                
                 using var webClient = new WebClient {BaseAddress = "http://" + Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
                 var url = "resources/getUser?id=" + e.UserEmail;
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var send = webClient.DownloadString(url);
-
-                Intent intent = new Intent(this, typeof(ProfileActivity));
+                
+                Intent intent = new Intent(this, typeof(NewsfeedActivity));
                 intent.PutExtra("User", send);
                 StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
                 Finish();
             }
+            _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+            _toast.Show();
         }
     }
 }
