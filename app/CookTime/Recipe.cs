@@ -1,5 +1,8 @@
 ﻿namespace CookTime {
     public class Recipe {
-        private string ingredient = "sugar";
+        private string ingredient;
+
+        public string Ingredient => ingredient;
+        
     }
 }
