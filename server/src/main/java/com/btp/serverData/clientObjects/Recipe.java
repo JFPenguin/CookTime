@@ -9,15 +9,15 @@ import java.util.ArrayList;
  */
 public class Recipe implements Comparable<Recipe> {
     private String name;
-    private final User author;
-    private DishTime dishTime;
+    private String authorEmail;
+    private String dishTime;
     private int portions;
     private int duration; //in minutes
-    private DishType dishType;
+    private String dishType;
     private int difficulty;
-    private ArrayList<DishTag> dishTags;
+    private ArrayList<String> dishTags;
     //TODO picture
-    private ArrayList<Ingredient> ingredientsList;
+    private ArrayList<String> ingredientsList;
     private ArrayList<String> instructions;
     private float price;
     private int id;
@@ -61,15 +61,19 @@ public class Recipe implements Comparable<Recipe> {
      * Getter of the author attribute
      * @return User the author attribute
      */
-    public User getAuthor() {
-        return author;
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
     }
 
     /**
      * Getter of the dishTime attribute
      * @return ENUM the dishTime attribute
      */
-    public DishTime getDishTime() {
+    public String getDishTime() {
         return dishTime;
     }
 
@@ -77,7 +81,7 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the dishTime attribute
      * @param dishTime ENUM the dishTime to be set
      */
-    public void setDishTime(DishTime dishTime) {
+    public void setDishTime(String dishTime) {
         this.dishTime = dishTime;
     }
 
@@ -117,7 +121,7 @@ public class Recipe implements Comparable<Recipe> {
      * Getter of the dishType attribute
      * @return ENUM of the dishType attribute
      */
-    public DishType getDishType() {
+    public String getDishType() {
         return dishType;
     }
 
@@ -125,7 +129,7 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the dishType attribute
      * @param dishType ENUM of the DishType to be set
      */
-    public void setDishType(DishType dishType) {
+    public void setDishType(String dishType) {
         this.dishType = dishType;
     }
 
@@ -156,7 +160,7 @@ public class Recipe implements Comparable<Recipe> {
      * Getter of the dishTags attribute
      * @return ArrayList<DishTag> of the dishTags attribute
      */
-    public ArrayList<DishTag> getDishTags() {
+    public ArrayList<String> getDishTags() {
         return dishTags;
     }
 
@@ -164,7 +168,7 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the dishTags attribute
      * @param dishTags ArrayList<DishTag> of the dishTags to be set
      */
-    public void setDishTags(ArrayList<DishTag> dishTags) {
+    public void setDishTags(ArrayList<String> dishTags) {
         this.dishTags = dishTags;
     }
 
@@ -172,7 +176,7 @@ public class Recipe implements Comparable<Recipe> {
      * Getter of the ingredientsList attribute
      * @return ArrayList<Ingredient> of the ingredientsList attribute
      */
-    public ArrayList<Ingredient> getIngredientsList() {
+    public ArrayList<String> getIngredientsList() {
         return ingredientsList;
     }
 
@@ -180,7 +184,7 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the ingredientsList attribute
      * @param ingredientsList ArrayList<Ingredient> of the ingredientList to be set
      */
-    public void setIngredientsList(ArrayList<Ingredient> ingredientsList) {
+    public void setIngredientsList(ArrayList<String> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 
@@ -270,47 +274,6 @@ public class Recipe implements Comparable<Recipe> {
      */
     public int getScoreTimes() {
         return scoreTimes;
-    }
-
-    /**
-     * Constructor for the Recipe Class
-     * @param name A String representing the name of the dish
-     * @param author An user obj, determined by the creator of the recipe
-     * @param dishTime Enum DishTime to determine the time of day intended for this dish ej: BREAKFAST, LUNCH, etc
-     * @param portions int value of the number of portions from the recipe
-     * @param duration int value of the minutes it takes to make the dish
-     * @param dishType Enum of the type of dish this is, ej: MAIN_DISH, DESSERT, etc
-     * @param difficulty a float value that determines the difficulty of this dish from a minimal value of 1, to a maximum of 5
-     * @param dishTags list of tags associated with this dish
-     * @param ingredientsList list of Strings of the ingredients used in the recipe
-     * @param instructions list of Strings of the instructions that need to be followed
-     */
-    public Recipe(String name, User author, DishTime dishTime, int portions, int duration, DishType dishType,
-                  int difficulty, ArrayList<DishTag> dishTags, ArrayList<Ingredient> ingredientsList,
-                  ArrayList<String> instructions) {
-
-        this.name = name;
-        this.author = author;
-        this.dishTime = dishTime;
-        this.portions = portions;
-        this.duration = duration;
-        this.dishType = dishType;
-        if(difficulty<1){
-            this.difficulty = 1;
-        }
-        else if(difficulty>5){
-            this.difficulty = 5;
-        }
-        else {
-            this.difficulty = difficulty;
-        }
-        this.dishTags = dishTags;
-        this.ingredientsList = ingredientsList;
-        this.instructions = instructions;
-        this.postTime = LocalDateTime.now();
-        System.out.println(this.getPostTimeString());
-        this.scoreTimes = 0;
-        this.score = 0;
     }
 
     /**

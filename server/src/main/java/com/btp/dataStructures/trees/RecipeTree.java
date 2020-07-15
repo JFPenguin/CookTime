@@ -1,9 +1,11 @@
 package com.btp.dataStructures.trees;
 
 import com.btp.dataStructures.nodes.RecipeNode;
-import com.btp.dataStructures.nodes.UserTreeNode;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
+import com.btp.serverData.repos.UserRepo;
+
+import java.util.ArrayList;
 
 /**
  * the public class for the SplayTree instances. This code is based in the tutorial found in
@@ -12,6 +14,8 @@ import com.btp.serverData.clientObjects.User;
  */
 public class RecipeTree{
     protected RecipeNode root;
+    // List used to make searches
+    private ArrayList<String> recipeList = new ArrayList<>();
 
     /**
      * Constructor for the class
@@ -286,6 +290,23 @@ public class RecipeTree{
             preOrder(node.getLeft());
             preOrder(node.getRight());
         }
+    }
+
+    public ArrayList<String> searchByName(String data) {
+        return searchByName(data.toLowerCase(), this.root);
+    }
+
+    private ArrayList<String> searchByName(String data, RecipeNode root){
+        if (root != null && this.recipeList.size() < 5) {
+            Recipe recipe = root.getElement();
+            User recipeAuthor = UserRepo.getUser(recipe.getAuthorEmail());
+            if (recipe.getName().toLowerCase().contains(data)){
+                this.recipeList.add(recipeAuthor.isChef()+";"+recipe.getName()+";"+recipe.getId());
+            }
+            searchByName(data, root.getLeft());
+            searchByName(data, root.getRight());
+        }
+        return this.recipeList;
     }
 
     /**
