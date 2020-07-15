@@ -39,7 +39,8 @@ public class Resources {
         return "Resources Main page, \n\nIf you want to check user's JSONs do the following:" +
                 "\n\non your browser address bar add the following to the url: /getUser?id= followed by the int value of the id" +
                 "\n\nif you want to check the recipe's JSONs do the following:\n\n" +
-                "on your browser address bar add the following to the url: /getRecipe?id= followed by the int value of the id";
+                "on your browser address bar add the following to the url: /getRecipe?id= followed by the int value of the id"+
+                "to se the cheeseCake, put /getPicture?id=cheesecake-picture0";
     }
 
     /**
