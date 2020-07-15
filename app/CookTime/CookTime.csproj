@@ -55,6 +55,7 @@
         <Reference Include="Mono.Android" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="FollowAdapter.cs" />
         <Compile Include="DialogSettings.cs" />
         <Compile Include="DialogSignIn.cs" />
         <Compile Include="DialogSignUp.cs" />
@@ -79,6 +80,7 @@
         <AndroidResource Include="Resources\layout\DialogSignIn.axml" />
         <AndroidResource Include="Resources\layout\DialogSignUp.axml" />
         <AndroidResource Include="Resources\layout\Follow.axml" />
+        <AndroidResource Include="Resources\layout\ListViewRow.axml" />
         <AndroidResource Include="Resources\layout\Main.axml">
             <SubType>Designer</SubType>
         </AndroidResource>
