@@ -128,14 +128,32 @@ public class Resources {
 
     @GET
     @Path("followUser")
-    public void followUser(@QueryParam("ownEmail") String ownEmail, @QueryParam("followingEmail") String followingEmail){
+    @Produces (MediaType.APPLICATION_JSON)
+    public String followUser(@QueryParam("ownEmail") String ownEmail, @QueryParam("followingEmail") String followingEmail){
+        String response;
         User ownUser = UserRepo.getUser(ownEmail);
         User followingUser = UserRepo.getUser(followingEmail);
 
-        ownUser.addFollowing(followingEmail);
-        followingUser.addFollower(ownEmail);
+        boolean alreadyFollows = false;
+
+        for (String email:ownUser.getFollowingEmails()) {
+            if (email.equals(followingEmail)){
+                alreadyFollows = true;
+                break;
+            }
+        }
+        
+        if (alreadyFollows){
+            response = "0";
+        }else{
+            ownUser.addFollowing(followingEmail);
+            followingUser.addFollower(ownEmail);
+            response = "1";
+        }
 
         //TODO notify followingUser
+        UserRepo.updateTree();
+        return response;
     }
 
     @GET
