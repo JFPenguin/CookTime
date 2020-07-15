@@ -126,7 +126,7 @@ public class Resources {
 
     }
 
-    @PUT
+    @GET
     @Path("followUser")
     public void followUser(@QueryParam("ownEmail") String ownEmail, @QueryParam("followingEmail") String followingEmail){
         User ownUser = UserRepo.getUser(ownEmail);
@@ -138,23 +138,28 @@ public class Resources {
         //TODO notify followingUser
     }
 
-    @PUT
+    @GET
     @Path("editUserPassword")
     @Produces(MediaType.APPLICATION_JSON)
     public String editUser(@QueryParam("email") String email, @QueryParam("newPassword") String newPassword,
                          @QueryParam("password") String password) throws NoSuchAlgorithmException {
         String response;
+        System.out.println(email);
         User user = UserRepo.getUser(email);
+        System.out.println(password);
+        System.out.println(newPassword);
         if (user.getPassword().equals(hashPassword(password))){
             user.setPassword(hashPassword(newPassword));
             response = "1";
         } else {
             response = "0";
         }
+        System.out.println(response);
+        UserRepo.updateTree();
         return response;
     }
 
-    @PUT
+    @GET
     @Path("rateUser")
     public void rateChef(@QueryParam("email") String email, @QueryParam("rating") float rating) {
         System.out.println("Rating user...");
@@ -239,16 +244,13 @@ public class Resources {
 
 
 
-//    @Path("createRecipe")
-//    @POST
-//    public void createRecipe(String name,User author,DishTime dishTime,int portions, int duration,DishType dishType,
-//                             float difficulty, SinglyList<DishTag> dishTags, SinglyList<Ingredient> ingredients,
-//                             SinglyList<String> instructions){
-//
-//        Recipe recipe = new Recipe(name,author,dishTime,portions,duration,dishType,
-//                difficulty,dishTags,ingredients,instructions);
-//        recipeRepo.addRecipe(recipe);
-//    }
+    @Path("createRecipe")
+    @POST
+    public void createRecipe(Recipe recipe){
+        String authorEmail = recipe.getAuthorEmail();
+        User author = UserRepo.getUser(authorEmail);
+        RecipeRepo.addRecipe(recipe);
+    }
 
 //    @Path("getIngredient")
 //    @GET

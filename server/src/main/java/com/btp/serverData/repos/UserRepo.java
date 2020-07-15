@@ -26,6 +26,10 @@ public class UserRepo {
 
     }
 
+    public static void updateTree(){
+        dataWriter.writeData(userTree, path);
+    }
+
     public static User getUser(String email){
         return userTree.getElementByEmail(email);
     }
