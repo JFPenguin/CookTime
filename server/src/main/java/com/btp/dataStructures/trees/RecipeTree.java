@@ -1,10 +1,9 @@
 package com.btp.dataStructures.trees;
 
 import com.btp.dataStructures.nodes.RecipeNode;
-import com.btp.dataStructures.nodes.UserTreeNode;
-import com.btp.serverData.clientObjects.DishTag;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
+import com.btp.serverData.repos.UserRepo;
 
 import java.util.ArrayList;
 
@@ -300,8 +299,9 @@ public class RecipeTree{
     private ArrayList<String> searchByName(String data, RecipeNode root){
         if (root != null && this.recipeList.size() < 5) {
             Recipe recipe = root.getElement();
+            User recipeAuthor = UserRepo.getUser(recipe.getAuthorEmail());
             if (recipe.getName().toLowerCase().contains(data)){
-                this.recipeList.add(recipe.getAuthor().isChef()+";"+recipe.getName()+";"+recipe.getId());
+                this.recipeList.add(recipeAuthor.isChef()+";"+recipe.getName()+";"+recipe.getId());
             }
             searchByName(data, root.getLeft());
             searchByName(data, root.getRight());

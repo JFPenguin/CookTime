@@ -53,4 +53,7 @@ public class RecipeRepo {
         recipeTree = objectMapper.readValue(file, recipeTree.getClass());
     }
 
+    public static boolean checkId(int id){
+        return true;
+    }
 }

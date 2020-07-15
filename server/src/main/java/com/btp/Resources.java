@@ -242,15 +242,27 @@ public class Resources {
 //        }
 //    }
 
-
-
-    @Path("createRecipe")
-    @POST
-    public void createRecipe(Recipe recipe){
-        String authorEmail = recipe.getAuthorEmail();
-        User author = UserRepo.getUser(authorEmail);
-        RecipeRepo.addRecipe(recipe);
-    }
+//    @Path("createRecipe")
+//    @POST
+//    public void createRecipe(Recipe recipe){
+//        int i = random.nextInt(999) + 1;
+//        System.out.println("generating id...");
+//        System.out.println("userID: "+i);
+//        if(Initializer.isGUIOnline()){
+//            Initializer.getServerGUI().printLn("generating id...");
+//            Initializer.getServerGUI().printLn("userID: "+i);
+//        }
+//        while (RecipeRepo.checkByID(i)){
+//            i = random.nextInt(999) + 1;
+//            System.out.println("id in use, generating new id...");
+//            if(Initializer.isGUIOnline()){
+//                Initializer.getServerGUI().printLn("id in use, generating new id...");
+//            }
+//        }
+//        String authorEmail = recipe.getAuthorEmail();
+//        User author = UserRepo.getUser(authorEmail);
+//        RecipeRepo.addRecipe(recipe);
+//    }
 
 //    @Path("getIngredient")
 //    @GET
