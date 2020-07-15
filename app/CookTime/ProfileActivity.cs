@@ -14,7 +14,6 @@ namespace CookTime {
         private User _loggedUser;
         private TextView _nameView;
         private TextView _ageView;
-        private TextView _emailView;
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnSettings;
@@ -36,7 +35,6 @@ namespace CookTime {
             
             _nameView = FindViewById<TextView>(Resource.Id.nameView);
             _ageView = FindViewById<TextView>(Resource.Id.ageView);
-            _emailView = FindViewById<TextView>(Resource.Id.emailView);
 
             _btnFollowers = FindViewById<Button>(Resource.Id.btnFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
@@ -44,7 +42,6 @@ namespace CookTime {
 
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
-            _emailView.Text = "Email: " + _loggedUser.email;
 
             _btnFollowers.Text = "FOLLOWERS: " + _loggedUser.followerEmails.Count;
             _btnFollowing.Text = "FOLLOWING: " + _loggedUser.followingEmails.Count;

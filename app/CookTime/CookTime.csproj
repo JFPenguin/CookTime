@@ -61,7 +61,6 @@
         <Compile Include="MainActivity.cs" />
         <Compile Include="NewsfeedActivity.cs" />
         <Compile Include="ProfileActivity.cs" />
-        <Compile Include="Recipe.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="User.cs" />
