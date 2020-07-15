@@ -8,8 +8,11 @@ import com.btp.serverData.repos.UserRepo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 
-import java.io.File;
+import javax.imageio.IIOException;
+import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -231,15 +234,47 @@ public class Resources {
     @GET
     @Path("getPicture")
     @Produces("image/png")
-    public Response getPicture( @QueryParam("photoID") String photoID){
-        File file = new File(System.getProperty("project.folder")+"/dataBase/photos/"+photoID+".png");
+    public Response getPicture( @QueryParam("id") String id){
+        File file = new File(System.getProperty("project.folder")+"/dataBase/photos/"+id+".png");
         Response.ResponseBuilder response = Response.ok(file);
-        response.header("Photo","attachment:filename=DisplayName-"+photoID+".png");
+        response.header("Photo","attachment:filename=DisplayName-"+id+".png");
         return response.build();
     }
 
+    @POST
+    @Path("addRecipePicture")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public static void addRecipePicture(@QueryParam("id") int id, @FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail){
+        String location = System.getProperty("project.folder")+"/dataBase/photos/";
+        RecipeRepo.getRecipe(id).addPhotos(saveToDisk(uploadedInputStream, fileDetail,(String.valueOf(id)),location));
+    }
 
+    @POST
+    @Path("addUserPicture")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public static void addUserPicture(@QueryParam("id") String id, @FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail){
+        String location = System.getProperty("project.folder")+"/dataBase/photos";
+        UserRepo.getUser(id).addPhoto(saveToDisk(uploadedInputStream, fileDetail,id,location));
 
+    }
+
+    private static String saveToDisk(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String id, String location) {
+        try{
+            OutputStream out = new FileOutputStream(new File(location+id+"-"+fileDetail.getName()));
+            int read = 0;
+            byte[] bytes = new byte[1024];
+
+            out = new FileOutputStream(new File(location+id+"-"+fileDetail.getName()));
+            while ((read = uploadedInputStream.read(bytes)) != -1){
+                out.write(bytes,0,read);
+            }
+            out.flush();
+            out.close();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return id+"-"+fileDetail.getName();
+    }
 
 
 //    @PUT
