@@ -9,47 +9,24 @@
             android:text="Newsfeed"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
+            android:layout_height="35dp"
+            android:padding="5dp"
+            android:layout_weight="5"
             android:textColor="#3E4465"
             android:background="#C09891"
             android:gravity="center"
             android:textStyle="bold"
-            android:textSize="35sp"/>
-    <TextView
-            android:text="Name"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="30sp"/>
+    
+    <SearchView
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent" 
+            android:layout_height="wrap_content"
+            android:layout_weight="7"/>
+            
+    <ListView
+            android:id="@+id/recipeList"
             android:layout_width="match_parent"
-            android:id="@+id/nameView"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:textColor="#3E4465"
-            android:background="#C09891"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
-    <TextView
-            android:text="Age"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:id="@+id/ageView"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:textColor="#3E4465"
-            android:background="#C09891"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
-    <TextView
-            android:text="Email"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="match_parent"
-            android:id="@+id/emailView"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:textColor="#3E4465"
-            android:background="#C09891"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:layout_height="wrap_content" 
+            android:layout_weight="88"/>
 </LinearLayout>

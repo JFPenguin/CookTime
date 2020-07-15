@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System.Collections.Generic;
+using Android.App;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
@@ -12,9 +13,9 @@ namespace CookTime {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
     public class NewsfeedActivity : AppCompatActivity {
         private User _loggedUser;
-        private TextView _nameView;
-        private TextView _ageView;
-        private TextView _emailView;
+        private List<string> _followedMails;
+        private List<User> _followed;
+        
 
         /// <summary>
         /// This method is called when the activity is starting.
@@ -28,14 +29,8 @@ namespace CookTime {
 
             string json = Intent.GetStringExtra("User");
             _loggedUser = JsonConvert.DeserializeObject<User>(json);
-
-            _nameView = FindViewById<TextView>(Resource.Id.nameView);
-            _ageView = FindViewById<TextView>(Resource.Id.ageView);
-            _emailView = FindViewById<TextView>(Resource.Id.emailView);
-
-            _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
-            _ageView.Text = "Age: " + _loggedUser.age;
-            _emailView.Text = "Email: " + _loggedUser.email;
+            _followedMails = _loggedUser.followingEmails;
+            //TODO get each user from the list via API requests to create the user list that allows to obtain the recipes from each user.
         }
     }
 }
