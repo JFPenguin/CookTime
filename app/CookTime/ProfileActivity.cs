@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
@@ -6,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace CookTime {
     /// <summary>
-    /// This class represents the MyMenu view.
+    /// This class represents the My Profile view.
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
@@ -55,6 +56,22 @@ namespace CookTime {
 
                 dialogSettings.Email = _loggedUser.email;
                 dialogSettings.EventHandlerPass += PassResult;
+            };
+            
+            _btnFollowers.Click += (sender, args) =>
+            {
+                Intent intent = new Intent(this, typeof(FollowActivity));
+                intent.PutExtra("Title", "Followers");
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            };
+            
+            _btnFollowing.Click += (sender, args) =>
+            {
+                Intent intent = new Intent(this, typeof(FollowActivity));
+                intent.PutExtra("Title", "Following");
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
         }
         

@@ -58,6 +58,7 @@
         <Compile Include="DialogSettings.cs" />
         <Compile Include="DialogSignIn.cs" />
         <Compile Include="DialogSignUp.cs" />
+        <Compile Include="FollowActivity.cs" />
         <Compile Include="MainActivity.cs" />
         <Compile Include="NewsfeedActivity.cs" />
         <Compile Include="ProfileActivity.cs" />
@@ -77,9 +78,11 @@
         <AndroidResource Include="Resources\layout\DialogSettings.axml" />
         <AndroidResource Include="Resources\layout\DialogSignIn.axml" />
         <AndroidResource Include="Resources\layout\DialogSignUp.axml" />
+        <AndroidResource Include="Resources\layout\Follow.axml" />
         <AndroidResource Include="Resources\layout\Main.axml">
             <SubType>Designer</SubType>
         </AndroidResource>
+        <AndroidResource Include="Resources\layout\Newsfeed.axml" />
         <AndroidResource Include="Resources\layout\Profile.axml" />
         <AndroidResource Include="Resources\values\colors.xml" />
         <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
