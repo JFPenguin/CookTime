@@ -7,7 +7,9 @@ import com.btp.serverData.repos.RecipeRepo;
 import com.btp.serverData.repos.UserRepo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
+import java.io.File;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -225,6 +227,20 @@ public class Resources {
         profilesList.add(businessList);
         return profilesList;
     }
+
+    @GET
+    @Path("getPicture")
+    @Produces("image/png")
+    public Response getPicture( @QueryParam("photoID") String photoID){
+        File file = new File(System.getProperty("project.folder")+"/dataBase/photos/"+photoID+".png");
+        Response.ResponseBuilder response = Response.ok(file);
+        response.header("Photo","attachment:filename=DisplayName-"+photoID+".png");
+        return response.build();
+    }
+
+
+
+
 
 //    @PUT
 //    @Path("rateRecipe")

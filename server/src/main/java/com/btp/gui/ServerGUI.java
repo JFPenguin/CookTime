@@ -32,5 +32,7 @@ public class ServerGUI extends JFrame{
         serverConsoleMonitor.append(txt+"\n");
         serverConsoleMonitor.setEditable(false);
     }
+
+
 }
 
