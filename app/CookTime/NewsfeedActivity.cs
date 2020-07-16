@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Net;
 using Android.App;
 using Android.OS;
 using Android.Support.V7.App;
@@ -26,11 +27,18 @@ namespace CookTime {
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Newsfeed);
-
+            
             string json = Intent.GetStringExtra("User");
             _loggedUser = JsonConvert.DeserializeObject<User>(json);
+            
             _followedMails = _loggedUser.followingEmails;
             //TODO get each user from the list via API requests to create the user list that allows to obtain the recipes from each user.
+            using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            var url = "resources/getNewsfeed?id=" + _loggedUser.email;
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var request = webClient.DownloadString(url);
+            var response = JsonConvert.DeserializeObject<string>(request);
+            //TODO solve request-response relation to properly get the newsfeed from server
         }
     }
 }
