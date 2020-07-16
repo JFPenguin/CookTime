@@ -11,9 +11,9 @@ namespace CookTime {
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
     public class FollowActivity : AppCompatActivity {
-        private TextView _titleView;
-        private ListView _followView;
-        private List<string> strList;
+        private TextView _titleText;
+        private ListView _followListView;
+        private IList<string> followList;
         
         /// <summary>
         /// This method is called when the activity is starting.
@@ -26,18 +26,17 @@ namespace CookTime {
 
             SetContentView(Resource.Layout.Follow);
             
-            _titleView = FindViewById<TextView>(Resource.Id.titleView);
-            _followView = FindViewById<ListView>(Resource.Id.followList);
+            _titleText = FindViewById<TextView>(Resource.Id.titleView);
+            _followListView = FindViewById<ListView>(Resource.Id.followList);
 
             var title = Intent.GetStringExtra("Title");
-            _titleView.Text = title;
+            _titleText.Text = title;
+
+            followList = Intent.GetStringArrayListExtra("FollowList");
             
-            strList = new List<string> {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
-                "q", "r", "s", "t", "u", "v"};
+            FollowAdapter adapter = new FollowAdapter(this, followList);
             
-            FollowAdapter adapter = new FollowAdapter(this, strList);
-            
-            _followView.Adapter = adapter;
+            _followListView.Adapter = adapter;
         }
     }
 }

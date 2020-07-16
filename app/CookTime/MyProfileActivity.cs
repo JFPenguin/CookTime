@@ -19,7 +19,7 @@ namespace CookTime {
         private Button _btnFollowing;
         private Button _btnSettings;
         private Toast _toast;
-        
+
         /// <summary>
         /// This method is called when the activity is starting.
         /// It contains the logic for the buttons shown in the first view.
@@ -62,6 +62,8 @@ namespace CookTime {
             {
                 Intent intent = new Intent(this, typeof(FollowActivity));
                 intent.PutExtra("Title", "Followers");
+                intent.PutStringArrayListExtra("FollowList", _loggedUser.followerEmails);
+                
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
@@ -70,6 +72,8 @@ namespace CookTime {
             {
                 Intent intent = new Intent(this, typeof(FollowActivity));
                 intent.PutExtra("Title", "Following");
+                intent.PutStringArrayListExtra("FollowList", _loggedUser.followingEmails);
+                
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };

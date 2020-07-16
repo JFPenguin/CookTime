@@ -21,11 +21,8 @@ namespace CookTime {
         /// <param name="age"> The user's age </param>
         /// <param name="email"> The user's email </param>
         /// <param name="firstName"> The user's first name </param>
-        /// <param name="followerEmails"> The user's followers' emails </param>
-        /// <param name="followingEmails"> The emails of the user that follow this user </param>
         /// <param name="lastName"> The user's last name </param>
         /// <param name="password"> The user's password </param>
-        /// <param name="recipeList"> The user's recipe list </param>
         public User(int age, string email, string firstName, string lastName, string password) {
             this.age = age;
             this.email = email;
