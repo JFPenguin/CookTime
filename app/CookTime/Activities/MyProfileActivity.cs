@@ -3,9 +3,10 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
-namespace CookTime {
+namespace CookTime.Activities {
     /// <summary>
     /// This class represents the My Profile view.
     /// It inherits from the base class for Android activities

@@ -55,15 +55,15 @@
         <Reference Include="Mono.Android" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Activities\FollowActivity.cs" />
+        <Compile Include="Activities\MainActivity.cs" />
+        <Compile Include="Activities\MyProfileActivity.cs" />
+        <Compile Include="Activities\NewsfeedActivity.cs" />
+        <Compile Include="Activities\PrivProfileActivity.cs" />
+        <Compile Include="DialogFragments\DialogSettings.cs" />
+        <Compile Include="DialogFragments\DialogSignIn.cs" />
+        <Compile Include="DialogFragments\DialogSignUp.cs" />
         <Compile Include="FollowAdapter.cs" />
-        <Compile Include="DialogSettings.cs" />
-        <Compile Include="DialogSignIn.cs" />
-        <Compile Include="DialogSignUp.cs" />
-        <Compile Include="FollowActivity.cs" />
-        <Compile Include="MainActivity.cs" />
-        <Compile Include="NewsfeedActivity.cs" />
-        <Compile Include="MyProfileActivity.cs" />
-        <Compile Include="PrivProfileActivity.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="User.cs" />

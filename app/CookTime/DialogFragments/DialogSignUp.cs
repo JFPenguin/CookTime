@@ -4,9 +4,10 @@ using Android.OS;
 using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
+using CookTime.Activities;
 using Newtonsoft.Json;
 
-namespace CookTime {
+namespace CookTime.DialogFragments {
     /// <summary>
     /// This class represents the dialog fragment that shows when the user wants to sign up
     /// </summary>

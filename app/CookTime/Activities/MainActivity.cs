@@ -4,9 +4,10 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
-namespace CookTime {
+namespace CookTime.Activities {
     /// <summary>
     /// This class represents the first view seen when the app is opened.
     /// It inherits from the base class for Android activities
@@ -16,7 +17,7 @@ namespace CookTime {
         private Button _signUpButton;
         private Button _signInButton;
         private Toast _toast;
-        public const string Ipv4 = "192.168.100.49";
+        public const string Ipv4 = "192.168.1.8";
         
         /// <summary>
         /// This method is called when the activity is starting.
@@ -119,7 +120,7 @@ namespace CookTime {
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var send = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(NewsfeedActivity));
+                Intent intent = new Intent(this, typeof(MyProfileActivity));
                 intent.PutExtra("User", send);
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);

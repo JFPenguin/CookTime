@@ -5,7 +5,7 @@ using Android.Support.V7.App;
 using Android.Widget;
 using Newtonsoft.Json;
 
-namespace CookTime {
+namespace CookTime.Activities {
     /// <summary>
     /// This class represents the Private Profile view.
     /// It inherits from the base class for Android activities
