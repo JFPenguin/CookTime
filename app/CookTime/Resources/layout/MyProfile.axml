@@ -3,14 +3,24 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#597A88"
+        android:background="#3E4465"
         android:weightSum="100">
-    <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical">
+        <LinearLayout 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <Button
+                    android:text="Newsfeed"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/ButtonStyle"
+                    android:textColor="#405863"
+                    android:textStyle="bold"
+                    android:id="@+id/btnNewsfeed" 
+                    android:gravity="center" 
+                    android:layout_gravity="center"/>
             <TextView
                     android:text="My Profile"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -147,5 +157,4 @@
                     android:id="@+id/btnRecipe" android:gravity="center"
                     android:layout_gravity="left"/>
         </LinearLayout>
-    </ScrollView>
 </LinearLayout>

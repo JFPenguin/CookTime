@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using System.Net;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
@@ -49,6 +50,14 @@ namespace CookTime.Activities {
             _btnFollowers.Text = "FOLLOWERS: " + _user.followerEmails.Count;
             _btnFollowing.Text = "FOLLOWING: " + _user.followingEmails.Count;
 
+            using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+            var url = "resources/isFollowing?ownEmail=" + _loggedId + "&followingEmail=" + _user.email;
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var response = webClient.DownloadString(url);
+
+            _btnFollow.Text = response == "0" ? "Follow" : "Unfollow";
+            
             _btnFollowers.Click += (sender, args) =>
             {
                 Intent intent = new Intent(this, typeof(FollowActivity));
