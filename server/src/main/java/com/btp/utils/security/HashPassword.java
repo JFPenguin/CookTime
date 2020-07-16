@@ -1,4 +1,4 @@
-package com.btp.security;
+package com.btp.utils.security;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

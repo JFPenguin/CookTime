@@ -4,6 +4,7 @@ import com.btp.dataStructures.nodes.RecipeNode;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.UserRepo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 
@@ -12,10 +13,15 @@ import java.util.ArrayList;
  * https://www.geeksforgeeks.org/avl-tree-set-1-insertion/, with major syntax modifications
  * for using generic type nodes and getter/setter methods for data-scope reduction.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RecipeTree{
     protected RecipeNode root;
     // List used to make searches
-    private ArrayList<String> recipeList = new ArrayList<>();
+    private final ArrayList<String> recipeList = new ArrayList<>();
+
+    public RecipeNode getRoot() {
+        return root;
+    }
 
     /**
      * Constructor for the class

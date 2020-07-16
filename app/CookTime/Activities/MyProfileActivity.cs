@@ -1,50 +1,49 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
-namespace CookTime {
+namespace CookTime.Activities {
     /// <summary>
-    /// This class represents the MyMenu view.
+    /// This class represents the My Profile view.
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
-    public class ProfileActivity : AppCompatActivity {
+    public class MyProfileActivity : AppCompatActivity {
         private User _loggedUser;
         private TextView _nameView;
         private TextView _ageView;
-        private TextView _emailView;
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnSettings;
         private Toast _toast;
-        
+
         /// <summary>
         /// This method is called when the activity is starting.
-        /// It contains the logic for the buttons shown in the first view.
+        /// It contains the logic for the buttons shown in this activity.
         /// </summary>
         /// <param name="savedInstanceState"> a Bundle that contains the data the activity most recently
         /// supplied if the activity is being re-initialized after previously being shut down. </param>
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
             
-            SetContentView(Resource.Layout.Profile);
+            SetContentView(Resource.Layout.MyProfile);
 
             var json = Intent.GetStringExtra("User");
             _loggedUser = JsonConvert.DeserializeObject<User>(json);
             
-            _nameView = FindViewById<TextView>(Resource.Id.nameView);
-            _ageView = FindViewById<TextView>(Resource.Id.ageView);
-            _emailView = FindViewById<TextView>(Resource.Id.emailView);
+            _nameView = FindViewById<TextView>(Resource.Id.myNameView);
+            _ageView = FindViewById<TextView>(Resource.Id.myAgeView);
 
-            _btnFollowers = FindViewById<Button>(Resource.Id.btnFollowers);
-            _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
+            _btnFollowers = FindViewById<Button>(Resource.Id.btnMyFollowers);
+            _btnFollowing = FindViewById<Button>(Resource.Id.btnMyFollowing);
             _btnSettings = FindViewById<Button>(Resource.Id.btnSettings);
 
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
-            _emailView.Text = "Email: " + _loggedUser.email;
 
             _btnFollowers.Text = "FOLLOWERS: " + _loggedUser.followerEmails.Count;
             _btnFollowing.Text = "FOLLOWING: " + _loggedUser.followingEmails.Count;
@@ -58,6 +57,28 @@ namespace CookTime {
 
                 dialogSettings.Email = _loggedUser.email;
                 dialogSettings.EventHandlerPass += PassResult;
+            };
+            
+            _btnFollowers.Click += (sender, args) =>
+            {
+                Intent intent = new Intent(this, typeof(FollowActivity));
+                intent.PutExtra("Title", "Followers");
+                intent.PutExtra("LoggedId", _loggedUser.email);
+                intent.PutStringArrayListExtra("FollowList", _loggedUser.followerEmails);
+                
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            };
+            
+            _btnFollowing.Click += (sender, args) =>
+            {
+                Intent intent = new Intent(this, typeof(FollowActivity));
+                intent.PutExtra("Title", "Following");
+                intent.PutExtra("LoggedId", _loggedUser.email);
+                intent.PutStringArrayListExtra("FollowList", _loggedUser.followingEmails);
+                
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
         }
         

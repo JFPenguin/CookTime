@@ -10,29 +10,26 @@ import java.util.ArrayList;
 public class Recipe implements Comparable<Recipe> {
     private String name;
     private String authorEmail;
-    private String dishTime;
+    private DishTime dishTime;
     private int portions;
     private int duration; //in minutes
-    private String dishType;
+    private DishType dishType;
     private int difficulty;
-    private ArrayList<String> dishTags;
-    private ArrayList<String> photos;
-
-    public ArrayList<String> getPhotos() {
-        return photos;
-    }
-
-    public void addPhotos(String name) {
-        this.photos.add(name);
-    }
-
+    private ArrayList<DishTag> dishTags;
+    private final ArrayList<String> photos = new ArrayList<>();
     private ArrayList<String> ingredientsList;
     private ArrayList<String> instructions;
     private float price;
     private int id;
-    private LocalDateTime postTime;
+    private long postTime;
     private float score;
     private int scoreTimes;
+
+
+
+    public void addPhotos(String name) {
+        this.photos.add(name);
+    }
 
     /**
      * Getter of the id attribute
@@ -82,7 +79,7 @@ public class Recipe implements Comparable<Recipe> {
      * Getter of the dishTime attribute
      * @return ENUM the dishTime attribute
      */
-    public String getDishTime() {
+    public DishTime getDishTime() {
         return dishTime;
     }
 
@@ -90,7 +87,7 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the dishTime attribute
      * @param dishTime ENUM the dishTime to be set
      */
-    public void setDishTime(String dishTime) {
+    public void setDishTime(DishTime dishTime) {
         this.dishTime = dishTime;
     }
 
@@ -130,7 +127,7 @@ public class Recipe implements Comparable<Recipe> {
      * Getter of the dishType attribute
      * @return ENUM of the dishType attribute
      */
-    public String getDishType() {
+    public DishType getDishType() {
         return dishType;
     }
 
@@ -138,7 +135,7 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the dishType attribute
      * @param dishType ENUM of the DishType to be set
      */
-    public void setDishType(String dishType) {
+    public void setDishType(DishType dishType) {
         this.dishType = dishType;
     }
 
@@ -169,7 +166,7 @@ public class Recipe implements Comparable<Recipe> {
      * Getter of the dishTags attribute
      * @return ArrayList<DishTag> of the dishTags attribute
      */
-    public ArrayList<String> getDishTags() {
+    public ArrayList<DishTag> getDishTags() {
         return dishTags;
     }
 
@@ -177,7 +174,7 @@ public class Recipe implements Comparable<Recipe> {
      * Setter of the dishTags attribute
      * @param dishTags ArrayList<DishTag> of the dishTags to be set
      */
-    public void setDishTags(ArrayList<String> dishTags) {
+    public void setDishTags(ArrayList<DishTag> dishTags) {
         this.dishTags = dishTags;
     }
 
@@ -229,28 +226,32 @@ public class Recipe implements Comparable<Recipe> {
         this.price = price;
     }
 
+    public ArrayList<String> getPhotos() {
+        return photos;
+    }
+
     /**
      * Getter of the postTime attribute
      * @return LocalDateTime of the postTime attribute
      */
-    public LocalDateTime getPostTime() {
+    public long getPostTime() {
         return postTime;
     }
 
-    /**
-     * Gets the postTime attribute but in String
-     * @return String of the postTime attribute using YYYY/MM/dd HH:mm:ss
-     */
-    public String getPostTimeString() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        return dtf.format(this.postTime);
-    }
+//    /**
+//     * Gets the postTime attribute but in String
+//     * @return String of the postTime attribute using YYYY/MM/dd HH:mm:ss
+//     */
+//    public String postTimeString() {
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+//        return dtf.format(this.postTime);
+//    }
 
     /**
      * Setter of the postTime attribute
      * @param postTime LocalDateTime of the postTime to be set
      */
-    public void setPostTime(LocalDateTime postTime) {
+    public void setPostTime(long postTime) {
         this.postTime = postTime;
     }
 

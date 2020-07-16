@@ -24,8 +24,9 @@ public class RecipeRepo {
      * @param recipe Recipe to be added
      */
     public static void addRecipe(Recipe recipe){
+        System.out.println("adding recipe...");
         recipeTree.insert(recipe);
-        System.out.println("Recipe added");
+        System.out.println("Recipe added...");
         if(Initializer.isGUIOnline()){
             Initializer.getServerGUI().printLn("Recipe added");
         }
@@ -47,7 +48,7 @@ public class RecipeRepo {
     }
 
     public static void loadTree() throws IOException {
-        System.out.println("loading user data base...");
+        System.out.println("loading recipe data base...");
         ObjectMapper objectMapper = new ObjectMapper();
         FileReader file = new FileReader(path);
         recipeTree = objectMapper.readValue(file, recipeTree.getClass());
