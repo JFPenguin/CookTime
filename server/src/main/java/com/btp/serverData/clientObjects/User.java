@@ -16,6 +16,16 @@ public class User implements Comparable<User> {
     private ArrayList<String> followingEmails = new ArrayList<>();
     private ArrayList<Integer> recipeList = new ArrayList<>();
     private ArrayList<String> businessList = new ArrayList<>();
+    private ArrayList<String> userPhotos = new ArrayList<>();
+
+    public ArrayList<String> getUserPhotos() {
+        return userPhotos;
+    }
+
+    public void addPhoto(String photo) {
+        this.userPhotos.add(photo);
+    }
+
     private NewsFeed newsFeed = new NewsFeed();
     private float chefScore = 0;
     private int chefScoreTimes = 0;

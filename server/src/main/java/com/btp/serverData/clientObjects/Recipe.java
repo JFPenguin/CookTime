@@ -16,7 +16,16 @@ public class Recipe implements Comparable<Recipe> {
     private String dishType;
     private int difficulty;
     private ArrayList<String> dishTags;
-    //TODO picture
+    private ArrayList<String> photos;
+
+    public ArrayList<String> getPhotos() {
+        return photos;
+    }
+
+    public void addPhotos(String name) {
+        this.photos.add(name);
+    }
+
     private ArrayList<String> ingredientsList;
     private ArrayList<String> instructions;
     private float price;
