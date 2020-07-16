@@ -108,6 +108,7 @@ public class Resources {
         return value;
     }
 
+
     @GET
     @Path("auth")
     @Produces(MediaType.APPLICATION_JSON)
