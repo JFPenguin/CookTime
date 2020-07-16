@@ -11,7 +11,7 @@ namespace CookTime {
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
-    public class ProfileActivity : AppCompatActivity {
+    public class MyProfileActivity : AppCompatActivity {
         private User _loggedUser;
         private TextView _nameView;
         private TextView _ageView;
@@ -29,7 +29,7 @@ namespace CookTime {
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
             
-            SetContentView(Resource.Layout.Profile);
+            SetContentView(Resource.Layout.MyProfile);
 
             var json = Intent.GetStringExtra("User");
             _loggedUser = JsonConvert.DeserializeObject<User>(json);
