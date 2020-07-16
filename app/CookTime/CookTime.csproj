@@ -77,6 +77,7 @@
         <AndroidResource Include="Resources\anim\SlideRight.xml" />
         <AndroidResource Include="Resources\anim\SlideUp.xml" />
         <AndroidResource Include="Resources\drawable\ButtonStyle.xml" />
+        <AndroidResource Include="Resources\drawable\ListRowStyle.xml" />
         <AndroidResource Include="Resources\layout\DialogSettings.axml" />
         <AndroidResource Include="Resources\layout\DialogSignIn.axml" />
         <AndroidResource Include="Resources\layout\DialogSignUp.axml" />
