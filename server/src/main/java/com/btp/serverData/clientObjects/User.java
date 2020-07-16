@@ -26,7 +26,6 @@ public class User implements Comparable<User> {
         this.userPhotos.add(photo);
     }
 
-    private NewsFeed newsFeed = new NewsFeed();
     private float chefScore = 0;
     private int chefScoreTimes = 0;
     private int age;

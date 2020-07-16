@@ -16,15 +16,15 @@ public class Sorter {
      * Bubble sort method, calls the respective method according to its class
      * @param list a SinglyList with any type (Only sorts Integers and Recipes)
      */
-    public static void bubbleSort(SinglyList list) {
-        if (list.getHead().getData().getClass() == Integer.class) {
-            bubbleSortInteger(list);
-        } else if (list.getHead().getData().getClass() == Recipe.class){
-            bubbleSortRecipe(list);
-        } else{
-            System.out.println("Can't sort this data type");
-        }
-    }
+//    public static void bubbleSort(SinglyList list) {
+//        if (list.getHead().getData().getClass() == Integer.class) {
+//            bubbleSortInteger(list);
+//        } else if (list.getHead().getData().getClass() == Recipe.class){
+//            bubbleSortRecipe(list);
+//        } else{
+//            System.out.println("Can't sort this data type");
+//        }
+//    }
 
     /**
      * Bubble sort method, takes an integer list and orders it using the bubble sort algorithm
@@ -44,24 +44,24 @@ public class Sorter {
         }
     }
 
-    /**
-     * Bubble sort method, takes a recipe list and orders it using the bubble sort algorithm
-     * using as a parameter the postTime of the Recipe
-     * @param recipeList a Recipe list
-     */
-    private static void bubbleSortRecipe(SinglyList<Recipe> recipeList){
-        Node<Recipe> tmp;
-        Node<Recipe> next;
-        while (!checkSortedRecipe(recipeList)) {
-            for (int i = 0; i < recipeList.getLength() - 1; i++) {
-                tmp = recipeList.get(i);
-                next = recipeList.get(i + 1);
-                if(Duration.between(tmp.getData().getPostTime(), next.getData().getPostTime()).toMillis() < 0){
-                    recipeList.swap(tmp,next);
-                }
-            }
-        }
-    }
+//    /**
+//     * Bubble sort method, takes a recipe list and orders it using the bubble sort algorithm
+//     * using as a parameter the postTime of the Recipe
+//     * @param recipeList a Recipe list
+//     */
+//    private static void bubbleSortRecipe(SinglyList<Recipe> recipeList){
+//        Node<Recipe> tmp;
+//        Node<Recipe> next;
+//        while (!checkSortedRecipe(recipeList)) {
+//            for (int i = 0; i < recipeList.getLength() - 1; i++) {
+//                tmp = recipeList.get(i);
+//                next = recipeList.get(i + 1);
+//                if(Duration.between(tmp.getData().getPostTime(), next.getData().getPostTime()).toMillis() < 0){
+//                    recipeList.swap(tmp,next);
+//                }
+//            }
+//        }
+//    }
 
     /**
      * Insertion sort method, calls the respective method according to its class
@@ -311,28 +311,28 @@ public class Sorter {
         return sorted;
     }
 
-    /**
-     * This method takes a list and returns a boolean value, true if the list is sorted, false otherwise.
-     * @param list a recipe list
-     * @return boolean true if sorted, false if not
-     */
-    private static boolean checkSortedRecipe(SinglyList<Recipe> list){
-        boolean sorted = false;
-        Node<Recipe> tmp;
-        Node<Recipe> next;
-        for (int i = 0; i < list.getLength()-1; i++) {
-            tmp = list.get(i);
-            next = list.get(i + 1);
-            if(Duration.between(tmp.getData().getPostTime(), next.getData().getPostTime()).toMillis() < 0){
-                sorted = false;
-                i = list.getLength();
-            }
-            else{
-                sorted = true;
-            }
-        }
-        return sorted;
-    }
+//    /**
+//     * This method takes a list and returns a boolean value, true if the list is sorted, false otherwise.
+//     * @param list a recipe list
+//     * @return boolean true if sorted, false if not
+//     */
+//    private static boolean checkSortedRecipe(SinglyList<Recipe> list){
+//        boolean sorted = false;
+//        Node<Recipe> tmp;
+//        Node<Recipe> next;
+//        for (int i = 0; i < list.getLength()-1; i++) {
+//            tmp = list.get(i);
+//            next = list.get(i + 1);
+//            if(Duration.between(tmp.getData().getPostTime(), next.getData().getPostTime()).toMillis() < 0){
+//                sorted = false;
+//                i = list.getLength();
+//            }
+//            else{
+//                sorted = true;
+//            }
+//        }
+//        return sorted;
+//    }
 
     private static boolean checkSortedRadix(SinglyList<Recipe> list){
         boolean sorted = false;
