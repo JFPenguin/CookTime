@@ -129,6 +129,24 @@ public class Resources {
     }
 
     @GET
+    @Path("isFollowing")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isFollowing(@QueryParam("ownEmail") String ownEmail, @QueryParam("followingEmail") String followingEmail){
+        User ownUser = UserRepo.getUser(ownEmail);
+        User followingUser = UserRepo.getUser(followingEmail);
+
+        String response = "0";
+
+        for (String email : ownUser.getFollowingEmails()) {
+            if (email.equals(followingEmail+";"+followingUser.fullName())) {
+                response = "1";
+                break;
+            }
+        }
+        return response;
+    }
+
+    @GET
     @Path("followUser")
     @Produces(MediaType.APPLICATION_JSON)
     public String followUser(@QueryParam("ownEmail") String ownEmail, @QueryParam("followingEmail") String followingEmail) {
@@ -139,13 +157,15 @@ public class Resources {
         boolean alreadyFollows = false;
 
         for (String email : ownUser.getFollowingEmails()) {
-            if (email.equals(followingEmail)) {
+            if (email.equals(followingEmail+";"+followingUser.fullName())) {
                 alreadyFollows = true;
                 break;
             }
         }
 
         if (alreadyFollows) {
+            ownUser.unFollowing(followingEmail+";"+followingUser.fullName());
+            followingUser.unFollower(ownEmail+";"+ownUser.fullName());
             response = "0";
         }else{
             ownUser.addFollowing(followingEmail+";"+followingUser.fullName());
