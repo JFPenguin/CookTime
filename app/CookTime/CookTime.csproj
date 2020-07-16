@@ -63,6 +63,7 @@
         <Compile Include="MainActivity.cs" />
         <Compile Include="NewsfeedActivity.cs" />
         <Compile Include="MyProfileActivity.cs" />
+        <Compile Include="PrivProfileActivity.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="User.cs" />
@@ -86,6 +87,7 @@
         </AndroidResource>
         <AndroidResource Include="Resources\layout\Newsfeed.axml" />
         <AndroidResource Include="Resources\layout\MyProfile.axml" />
+        <AndroidResource Include="Resources\layout\PrivateProfile.axml" />
         <AndroidResource Include="Resources\values\colors.xml" />
         <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
         <AndroidResource Include="Resources\values\strings.xml" />
