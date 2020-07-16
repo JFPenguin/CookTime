@@ -57,4 +57,8 @@ public class RecipeRepo {
     public static boolean checkId(int id){
         return true;
     }
+
+    public static void updateTree() {
+        dataWriter.writeData(recipeTree, path);
+    }
 }
