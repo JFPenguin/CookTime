@@ -55,7 +55,7 @@ public class RecipeRepo {
     }
 
     public static boolean checkId(int id){
-        return true;
+        return recipeTree.checkById(id);
     }
 
     public static void updateTree() {

@@ -263,12 +263,12 @@ public class RecipeTree{
 
         // Left Left Case
         if (balance > 1 && element.getId() - current.getElement().getId() < 0){
-            return leftRotate(current);
+            return rightRotate(current);
         }
 
         // Right Right Case
         if (balance < -1 && element.getId() - current.getElement().getId() > 0){
-            return rightRotate(current);
+            return leftRotate(current);
         }
 
         // Left Right Case
@@ -307,7 +307,7 @@ public class RecipeTree{
             Recipe recipe = root.getElement();
             User recipeAuthor = UserRepo.getUser(recipe.getAuthorEmail());
             if (recipe.getName().toLowerCase().contains(data)){
-                this.recipeList.add(recipeAuthor.isChef()+";"+recipe.getName()+";"+recipe.getId());
+                this.recipeList.add(recipeAuthor.isChef()+";"+recipe.getName()+";"+recipe.getId()+recipeAuthor.fullName());
             }
             searchByName(data, root.getLeft());
             searchByName(data, root.getRight());
