@@ -1,5 +1,8 @@
 package com.btp;
 
+import com.btp.dataStructures.lists.SinglyList;
+import com.btp.dataStructures.nodes.SinglyNode;
+import com.btp.dataStructures.sorters.Sorter;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.BusinessRepo;
@@ -126,6 +129,64 @@ public class Resources {
             return "2";
         }
 
+    }
+
+    @GET
+    @Path("myMenu")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<String> myMenu(@QueryParam("email") String email, @QueryParam("filter") String filter){
+        ArrayList<String> myMenuList = new ArrayList<>();
+        User user = UserRepo.getUser(email);
+        SinglyList<Recipe> sortList = new SinglyList<>();
+
+        for (int i:user.getRecipeList()) {
+            Recipe recipe = RecipeRepo.getRecipe(i);
+            sortList.add(recipe);
+        }
+
+        switch (filter){
+            case "date":
+                Sorter.bubbleSort(sortList);
+                break;
+            case "score":
+                Sorter.quickSort(sortList);
+                break;
+            case "difficulty":
+                Sorter.radixSort(sortList);
+                break;
+        }
+        SinglyNode tmp = sortList.getHead();
+        while (tmp!=null){
+            Recipe recipe = (Recipe) tmp.getData();
+            myMenuList.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+UserRepo.getUser(recipe.getAuthorEmail()).fullName()+";"+recipe.getAuthorEmail());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+        return myMenuList;
+    }
+
+    @GET
+    @Path("newsfeed")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<String> newsfeed(@QueryParam("email") String email){
+        ArrayList<String> newsfeed = new ArrayList<>();
+        User user = UserRepo.getUser(email);
+        SinglyList<Recipe> sortList = new SinglyList<>();
+
+        for (int i:user.getNewsFeed()) {
+            Recipe recipe = RecipeRepo.getRecipe(i);
+            sortList.add(recipe);
+        }
+        Sorter.bubbleSort(sortList);
+
+        SinglyNode tmp = sortList.getHead();
+        while (tmp!=null){
+            Recipe recipe = (Recipe) tmp.getData();
+            newsfeed.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+UserRepo.getUser(recipe.getAuthorEmail()).fullName()+";"+recipe.getAuthorEmail());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+        return newsfeed;
     }
 
     @GET
