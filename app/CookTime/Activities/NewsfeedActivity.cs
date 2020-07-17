@@ -17,6 +17,7 @@ namespace CookTime.Activities {
     public class NewsfeedActivity : AppCompatActivity {
         private User _loggedUser;
         private Button _profileButton;
+        private Button _searchButton;
         private ListView _newsfeedList;
         private List<string> _recipes;
 
@@ -36,7 +37,9 @@ namespace CookTime.Activities {
             
             _profileButton = FindViewById<Button>(Resource.Id.profileButton);
             _profileButton.Click += ProfileClick;
-            
+
+            _searchButton = FindViewById<Button>(Resource.Id.searchButton);
+            _searchButton.Click += searchClick;
             _newsfeedList = FindViewById<ListView>(Resource.Id.recipeList);
 
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
@@ -79,8 +82,19 @@ namespace CookTime.Activities {
             Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
             recipeIntent.PutExtra("Recipe", request);
             recipeIntent.PutExtra("AuthorName", authorName);
+            recipeIntent.PutExtra("LoggedId", _loggedUser.email);
             StartActivity(recipeIntent);
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+        }
+
+        private void searchClick(object sender, EventArgs eventArgs)
+        {
+            var send = JsonConvert.SerializeObject(_loggedUser);
+            Intent searchIntent = new Intent(this, typeof(SearchActivity));
+            searchIntent.PutExtra("User", send);
+            StartActivity(searchIntent);
+            OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
+            Finish();
         }
     }
 }
