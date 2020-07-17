@@ -18,7 +18,7 @@ namespace CookTime.Activities {
         private User _loggedUser;
         private Button _profileButton;
         private ListView _newsfeedList;
-        List<string> _recipes;
+        private List<string> _recipes;
 
         /// <summary>
         /// This method is called when the activity is starting.
