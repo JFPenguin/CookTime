@@ -1,4 +1,6 @@
-﻿using Android.App;
+﻿using System.Collections.Generic;
+using System.Net;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
@@ -19,6 +21,9 @@ namespace CookTime.Activities {
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnSettings;
+        private Button _btnNewsfeed;
+        private ListView _myMenuListView;
+        private IList<string> _myMenuList;
         private Toast _toast;
 
         /// <summary>
@@ -41,12 +46,39 @@ namespace CookTime.Activities {
             _btnFollowers = FindViewById<Button>(Resource.Id.btnMyFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnMyFollowing);
             _btnSettings = FindViewById<Button>(Resource.Id.btnSettings);
+            _btnNewsfeed = FindViewById<Button>(Resource.Id.btnNewsfeed);
+            
+            _myMenuListView = FindViewById<ListView>(Resource.Id.myMenuListView);
 
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
 
             _btnFollowers.Text = "FOLLOWERS: " + _loggedUser.followerEmails.Count;
             _btnFollowing.Text = "FOLLOWING: " + _loggedUser.followingEmails.Count;
+            
+            using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+            var url = "resources/myMenu?email=" + _loggedUser.email + "&filter=date";
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var send = webClient.DownloadString(url);
+
+            _myMenuList = JsonConvert.DeserializeObject<IList<string>>(send);
+            
+            RecipeAdapter adapter = new RecipeAdapter(this, _myMenuList);
+
+            _myMenuListView.Adapter = adapter;
+            
+            _btnNewsfeed.Click += (sender, args) =>
+            {
+                var userJson = JsonConvert.SerializeObject(_loggedUser);
+                
+                Intent intent = new Intent(this, typeof(NewsfeedActivity));
+                intent.PutExtra("User", userJson);
+                
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Finish();
+            };
             
             _btnSettings.Click += (sender, args) =>
             {

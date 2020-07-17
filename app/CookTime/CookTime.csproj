@@ -65,7 +65,7 @@
         <Compile Include="DialogFragments\DialogSignIn.cs" />
         <Compile Include="DialogFragments\DialogSignUp.cs" />
         <Compile Include="FollowAdapter.cs" />
-        <Compile Include="NewsfeedAdapter.cs" />
+        <Compile Include="RecipeAdapter.cs" />
         <Compile Include="Recipe.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
