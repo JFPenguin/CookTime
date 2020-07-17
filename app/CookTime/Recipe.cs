@@ -49,26 +49,26 @@ namespace CookTime {
         /// <param name="comments">list of comments left under the recipe profile</param>
         /// <param name="ratedBy">reference to the users that have rated the recipe</param>
         public Recipe(string authorEmail, int difficulty, string dishTime, string dishType, int duration,
-            int id, string name, int portions, long postTime, string postTimeString, 
-            float price, float score, int scoreTimes)
+            int id, string name, int portions, long postTime, string postTimeString, float price, float score, int scoreTimes,
+            List<string> dishTags, List<string> ratedBy, List<string> photos, List<string> instructions, List<string> ingredientsList, List<string> comments)
         {
             this.authorEmail = authorEmail;
-            //this.comments = comments;
+            this.comments = comments;
             this.difficulty = difficulty;
-            //this.dishTags = dishTags;
+            this.dishTags = dishTags;
             this.dishTime = dishTime;
             this.dishType = dishType;
             this.duration = duration;
             this.id = id;
-            //this.ingredientsList = ingredientsList;
-            //this.instructions = instructions;
+            this.ingredientsList = ingredientsList;
+            this.instructions = instructions;
             this.name = name;
-            //this.photos = photos;
+            this.photos = photos;
             this.portions = portions;
             this.postTime = postTime;
             this.postTimeString = postTimeString;
             this.price = price;
-            //this.ratedBy = ratedBy;
+            this.ratedBy = ratedBy;
             this.score = score;
             this.scoreTimes = scoreTimes;
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Net.Mime;
 using Android.App;
 using Android.OS;
@@ -41,6 +42,10 @@ namespace CookTime.Activities {
             _recipe = JsonConvert.DeserializeObject<Recipe>(recipe);
             //TODO fix the line above, it crashes the application when loading this activity.
             authorName = Intent.GetStringExtra("Author");
+            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            var url = "resources/getPicture?id=" + _recipe.photos[0];
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var photo = webClient.DownloadString(url);
 
             // setting all the fields to axml file identities
             shareButton = FindViewById<Button>(Resource.Id.shareButton);
@@ -64,18 +69,19 @@ namespace CookTime.Activities {
 
             //setting all the text values to the recipe attribute
             recipeNameText.Text = _recipe.name;
-            authorText.Text = authorName;
-            dishTimeText.Text = _recipe.dishTime;
-            portionsText.Text = _recipe.portions.ToString();
-            durationText.Text = _recipe.duration.ToString();
-            difficultyText.Text = _recipe.difficulty.ToString();
-            dishTagsText.Text = "not yet";
-            ingredientsText.Text = "not yet";
-            instructionText.Text = "not yet";
-            priceText.Text = _recipe.price.ToString();
-            scoreText.Text = _recipe.score.ToString();
-            ratedByText.Text = "none yet";
-            scoreTimes.Text = _recipe.scoreTimes.ToString();
+            authorText.Text = "author: " + authorName;
+            dishTimeText.Text = "time: " + _recipe.dishTime;
+            portionsText.Text = "portions: " + _recipe.portions;
+            durationText.Text = "duration: " + _recipe.duration + " minutes";
+            difficultyText.Text = "difficulty: " + _recipe.difficulty;
+            dishTagsText.Text = "tags: " + _recipe.dishTags[0];
+            ingredientsText.Text = "ingredients: " + _recipe.ingredientsList[0];
+            instructionText.Text = "instructions: " + _recipe.instructions[0];
+            priceText.Text = "price: " + _recipe.price + " $";
+            scoreText.Text = "score: " + _recipe.score;
+            ratedByText.Text = "rated by: " + "none yet"; //so far, this array contains no elements and caused nullpointerexceptions to crash the app.
+            scoreTimes.Text = "times rated: " + _recipe.scoreTimes;
+            //TODO set the image in the ImageView
         }
     }
 }
