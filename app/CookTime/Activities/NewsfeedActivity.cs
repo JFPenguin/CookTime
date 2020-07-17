@@ -47,11 +47,7 @@ namespace CookTime.Activities {
 
         private void ProfileClick(object sender, EventArgs e)
         {
-            string toastText = "opening MyProfile...";
-            _toast = Toast.MakeText(this, toastText, ToastLength.Short);
-            _toast.Show();
-            
-             // converting the existing user to a json string
+            // converting the existing user to a json string
              var send = JsonConvert.SerializeObject(_loggedUser);
 
             Intent profileIntent = new Intent(this, typeof(MyProfileActivity));
