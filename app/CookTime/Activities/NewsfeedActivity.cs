@@ -37,8 +37,6 @@ namespace CookTime.Activities {
             _profileButton = FindViewById<Button>(Resource.Id.profileButton);
             _profileButton.Click += ProfileClick;
             
-            
-
             _newsfeedList = FindViewById<ListView>(Resource.Id.recipeList);
 
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
