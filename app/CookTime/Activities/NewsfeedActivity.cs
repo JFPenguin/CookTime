@@ -48,7 +48,7 @@ namespace CookTime.Activities {
             var response = JsonConvert.DeserializeObject<List<string>>(request);
             _recipes = response;
 
-            NewsfeedAdapter recipeAdapter = new NewsfeedAdapter(this, _recipes);
+            RecipeAdapter recipeAdapter = new RecipeAdapter(this, _recipes);
             _newsfeedList.Adapter = recipeAdapter;
             _newsfeedList.ItemClick += ListClick;
         }
