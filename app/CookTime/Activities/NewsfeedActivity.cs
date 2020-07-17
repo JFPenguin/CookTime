@@ -30,11 +30,10 @@ namespace CookTime.Activities {
             
             string json = Intent.GetStringExtra("User");
             _loggedUser = JsonConvert.DeserializeObject<User>(json);
-            
             _followedMails = _loggedUser.followingEmails;
-            //TODO get each user from the list via API requests to create the user list that allows to obtain the recipes from each user.
+            
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            var url = "resources/getNewsfeed?id=" + _loggedUser.email;
+            var url = "resources/newsfeed?id=" + _loggedUser.email;
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var request = webClient.DownloadString(url);
             var response = JsonConvert.DeserializeObject<string>(request);
