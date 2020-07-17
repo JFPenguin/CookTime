@@ -269,4 +269,22 @@ public class UserBST {
             preorderUser(root.getRight());
         }
     }
+
+    public void messageAll(String message) {
+        messageUser(this.root,message);
+    }
+
+    /**
+     * Prints the tree using each user's name attribute in preorder
+     * Calls itself recursively
+     * @param root the current node is printing
+     */
+    private void messageUser(UserTreeNode root, String message){
+        if (root != null) {
+            root.getElement().sendMessage(message);
+            preorderUser(root.getLeft());
+            preorderUser(root.getRight());
+        }
+    }
+
 }

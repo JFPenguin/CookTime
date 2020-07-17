@@ -23,7 +23,9 @@ namespace CookTime {
         public string showTime;
         public float score;
         public int scoreTimes;
-        
+        public List<string> comments;
+        public List<string> ratedBy;
+
         /// <summary>
         /// public constructor for Recipe class
         /// </summary>
@@ -44,10 +46,11 @@ namespace CookTime {
         /// <param name="showTime">posted time string to show in recipe profile</param>
         /// <param name="score">rating value category</param>
         /// <param name="scoreTimes"></param>
+        /// <param name="comments">list of comments left under the recipe profile</param>
+        /// <param name="ratedBy">reference to the users that have rated the recipe</param>
         public Recipe(string name, string authorEmail, string dishTime, int portions, int duration, string dishType, int difficulty, List<string> dishTags,
             string picture, List<string> ingredients, List<string> instructions, float price, int id, long realPostedTime, string showTime, 
-            float score, int scoreTimes)
-        {
+            float score, int scoreTimes, List<string> comments, List<string> ratedBy) {
             this.name = name; 
             this.authorEmail = authorEmail;
             this.dishTime = dishTime;
@@ -65,6 +68,8 @@ namespace CookTime {
             this.showTime = showTime;
             this.score = score;
             this.scoreTimes = scoreTimes;
+            this.comments = comments;
+            this.ratedBy = ratedBy;
         }
     }
 }
