@@ -27,8 +27,8 @@ public class Recipe implements Comparable<Recipe> {
     private String postTimeString;
     private float score;
     private int scoreTimes;
-
-
+    private ArrayList<String> comments = new ArrayList<>();
+    private ArrayList<String> ratedBy = new ArrayList<>();
 
     public void addPhotos(String name) {
         this.photos.add(name);
@@ -294,6 +294,22 @@ public class Recipe implements Comparable<Recipe> {
      */
     public int getScoreTimes() {
         return scoreTimes;
+    }
+
+    public ArrayList<String> getRatedBy() {
+        return ratedBy;
+    }
+
+    public void addRating(String email){
+        this.ratedBy.add(email);
+    }
+
+    public ArrayList<String> getComments() {
+        return comments;
+    }
+
+    public void addComment(String comment){
+        this.comments.add(comment);
     }
 
     /**
