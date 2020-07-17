@@ -17,9 +17,7 @@ namespace CookTime.Activities {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
     public class NewsfeedActivity : AppCompatActivity {
         private User _loggedUser;
-        private Toast _toast;
         private Button _profileButton;
-        
 
         /// <summary>
         /// This method is called when the activity is starting.
