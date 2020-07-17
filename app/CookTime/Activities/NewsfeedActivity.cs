@@ -6,7 +6,6 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
-using Java.Util;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
@@ -18,6 +17,8 @@ namespace CookTime.Activities {
     public class NewsfeedActivity : AppCompatActivity {
         private User _loggedUser;
         private Button _profileButton;
+        private ListView _newsfeedList;
+        List<string> _recipes;
 
         /// <summary>
         /// This method is called when the activity is starting.
@@ -36,17 +37,26 @@ namespace CookTime.Activities {
             _profileButton = FindViewById<Button>(Resource.Id.profileButton);
             _profileButton.Click += ProfileClick;
             
+            
+
+            _newsfeedList = FindViewById<ListView>(Resource.Id.recipeList);
+
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             var url = "resources/newsfeed?email=" + _loggedUser.email;
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var request = webClient.DownloadString(url);
             var response = JsonConvert.DeserializeObject<List<string>>(request);
+            _recipes = response;
+
+            NewsfeedAdapter recipeAdapter = new NewsfeedAdapter(this, _recipes);
+            _newsfeedList.Adapter = recipeAdapter;
+            _newsfeedList.ItemClick += ListClick;
         }
 
         private void ProfileClick(object sender, EventArgs e)
         {
             // converting the existing user to a json string
-             var send = JsonConvert.SerializeObject(_loggedUser);
+            var send = JsonConvert.SerializeObject(_loggedUser);
 
             Intent profileIntent = new Intent(this, typeof(MyProfileActivity));
             // passing the serialized User object as an intent extra with json string format
@@ -55,6 +65,24 @@ namespace CookTime.Activities {
             StartActivity(profileIntent);
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
             Finish();
+        }
+
+        private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
+        {
+            string id = _recipes[eventArgs.Position].Split(';')[0];
+            string author = _recipes[eventArgs.Position].Split(';')[2];
+            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+            var url = "resources/getRecipe?id=" + id;
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var request = webClient.DownloadString(url);
+            Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
+            recipeIntent.PutExtra("Recipe", request);
+            recipeIntent.PutExtra("Author", author);
+            StartActivity(recipeIntent);
+            OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+
+            
         }
     }
 }

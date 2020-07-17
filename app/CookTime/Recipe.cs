@@ -5,27 +5,27 @@ namespace CookTime {
     /// The class for Recipe creations on the client side of the application.
     /// Used to store attributes for a recipe received in a serialized file throught REST requests.
     /// </summary>
-    public class Recipe {
-        public string name;
+    public class Recipe
+    {
         public string authorEmail;
-        public string dishTime;
-        public int portions;
-        public int duration; //measured in minutes
-        public string dishType;
+        public List<string> comments;
         public int difficulty;
         public List<string> dishTags;
-        public string picture;
-        public List<string> ingredients;
-        public List<string> instructions;
-        public float price;
+        public string dishTime;
+        public string dishType;
+        public int duration;
         public int id;
-        public long realPostedTime;
-        public string showTime;
+        public List<string> ingredientsList;
+        public List<string> instructions;
+        public string name;
+        public List<string> photos;
+        public int portions;
+        public long postTime;
+        public string postTimeString;
+        public float price;
+        public List<string> ratedBy;
         public float score;
         public int scoreTimes;
-        public List<string> comments;
-        public List<string> ratedBy;
-
         /// <summary>
         /// public constructor for Recipe class
         /// </summary>
@@ -48,28 +48,30 @@ namespace CookTime {
         /// <param name="scoreTimes"></param>
         /// <param name="comments">list of comments left under the recipe profile</param>
         /// <param name="ratedBy">reference to the users that have rated the recipe</param>
-        public Recipe(string name, string authorEmail, string dishTime, int portions, int duration, string dishType, int difficulty, List<string> dishTags,
-            string picture, List<string> ingredients, List<string> instructions, float price, int id, long realPostedTime, string showTime, 
-            float score, int scoreTimes, List<string> comments, List<string> ratedBy) {
-            this.name = name; 
+        public Recipe(string authorEmail, int difficulty, string dishTime, string dishType, int duration,
+            int id, string name, int portions, long postTime, string postTimeString, 
+            float price, float score, int scoreTimes)
+        {
             this.authorEmail = authorEmail;
-            this.dishTime = dishTime;
-            this.portions = portions;
-            this.duration = duration;
-            this.dishType = dishType;
+            //this.comments = comments;
             this.difficulty = difficulty;
-            this.dishTags = dishTags;
-            this.picture = picture;
-            this.ingredients = ingredients;
-            this.instructions = instructions;
-            this.price = price;
+            //this.dishTags = dishTags;
+            this.dishTime = dishTime;
+            this.dishType = dishType;
+            this.duration = duration;
             this.id = id;
-            this.realPostedTime = realPostedTime;
-            this.showTime = showTime;
+            //this.ingredientsList = ingredientsList;
+            //this.instructions = instructions;
+            this.name = name;
+            //this.photos = photos;
+            this.portions = portions;
+            this.postTime = postTime;
+            this.postTimeString = postTimeString;
+            this.price = price;
+            //this.ratedBy = ratedBy;
             this.score = score;
             this.scoreTimes = scoreTimes;
-            this.comments = comments;
-            this.ratedBy = ratedBy;
+
         }
     }
 }
