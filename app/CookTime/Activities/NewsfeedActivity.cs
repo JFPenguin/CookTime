@@ -67,20 +67,20 @@ namespace CookTime.Activities {
 
         private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
         {
-            string id = _recipes[eventArgs.Position].Split(';')[0];
-            string author = _recipes[eventArgs.Position].Split(';')[2];
+            var recipeId = _recipes[eventArgs.Position].Split(';')[0];
+            var authorName = _recipes[eventArgs.Position].Split(';')[2];
+            
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
-            var url = "resources/getRecipe?id=" + id;
+            var url = "resources/getRecipe?id=" + recipeId;
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var request = webClient.DownloadString(url);
+            
             Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
             recipeIntent.PutExtra("Recipe", request);
-            recipeIntent.PutExtra("Author", author);
+            recipeIntent.PutExtra("AuthorName", authorName);
             StartActivity(recipeIntent);
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-
-            
         }
     }
 }
