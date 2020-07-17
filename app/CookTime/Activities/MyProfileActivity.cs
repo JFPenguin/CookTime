@@ -3,9 +3,10 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
-namespace CookTime {
+namespace CookTime.Activities {
     /// <summary>
     /// This class represents the My Profile view.
     /// It inherits from the base class for Android activities
@@ -19,10 +20,10 @@ namespace CookTime {
         private Button _btnFollowing;
         private Button _btnSettings;
         private Toast _toast;
-        
+
         /// <summary>
         /// This method is called when the activity is starting.
-        /// It contains the logic for the buttons shown in the first view.
+        /// It contains the logic for the buttons shown in this activity.
         /// </summary>
         /// <param name="savedInstanceState"> a Bundle that contains the data the activity most recently
         /// supplied if the activity is being re-initialized after previously being shut down. </param>
@@ -34,11 +35,11 @@ namespace CookTime {
             var json = Intent.GetStringExtra("User");
             _loggedUser = JsonConvert.DeserializeObject<User>(json);
             
-            _nameView = FindViewById<TextView>(Resource.Id.nameView);
-            _ageView = FindViewById<TextView>(Resource.Id.ageView);
+            _nameView = FindViewById<TextView>(Resource.Id.myNameView);
+            _ageView = FindViewById<TextView>(Resource.Id.myAgeView);
 
-            _btnFollowers = FindViewById<Button>(Resource.Id.btnFollowers);
-            _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
+            _btnFollowers = FindViewById<Button>(Resource.Id.btnMyFollowers);
+            _btnFollowing = FindViewById<Button>(Resource.Id.btnMyFollowing);
             _btnSettings = FindViewById<Button>(Resource.Id.btnSettings);
 
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
@@ -62,6 +63,9 @@ namespace CookTime {
             {
                 Intent intent = new Intent(this, typeof(FollowActivity));
                 intent.PutExtra("Title", "Followers");
+                intent.PutExtra("LoggedId", _loggedUser.email);
+                intent.PutStringArrayListExtra("FollowList", _loggedUser.followerEmails);
+                
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
@@ -70,6 +74,9 @@ namespace CookTime {
             {
                 Intent intent = new Intent(this, typeof(FollowActivity));
                 intent.PutExtra("Title", "Following");
+                intent.PutExtra("LoggedId", _loggedUser.email);
+                intent.PutStringArrayListExtra("FollowList", _loggedUser.followingEmails);
+                
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };

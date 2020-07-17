@@ -1,8 +1,10 @@
 package com.btp.serverData.clientObjects;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * This is the class of the recipe obj, it holds the recipe information
@@ -22,10 +24,11 @@ public class Recipe implements Comparable<Recipe> {
     private float price;
     private int id;
     private long postTime;
+    private String postTimeString;
     private float score;
     private int scoreTimes;
-
-
+    private ArrayList<String> comments = new ArrayList<>();
+    private ArrayList<String> ratedBy = new ArrayList<>();
 
     public void addPhotos(String name) {
         this.photos.add(name);
@@ -253,6 +256,9 @@ public class Recipe implements Comparable<Recipe> {
      */
     public void setPostTime(long postTime) {
         this.postTime = postTime;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        Date date = new Date(postTime);
+        this.postTimeString = sdf.format(date);
     }
 
     /**
@@ -261,6 +267,10 @@ public class Recipe implements Comparable<Recipe> {
      */
     public float getScore() {
         return score;
+    }
+
+    public String getPostTimeString() {
+        return postTimeString;
     }
 
     /**
@@ -284,6 +294,22 @@ public class Recipe implements Comparable<Recipe> {
      */
     public int getScoreTimes() {
         return scoreTimes;
+    }
+
+    public ArrayList<String> getRatedBy() {
+        return ratedBy;
+    }
+
+    public void addRating(String email){
+        this.ratedBy.add(email);
+    }
+
+    public ArrayList<String> getComments() {
+        return comments;
+    }
+
+    public void addComment(String comment){
+        this.comments.add(comment);
     }
 
     /**

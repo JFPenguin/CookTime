@@ -1,5 +1,12 @@
 package com.btp.serverData.clientObjects;
 
+import com.btp.serverData.repos.UserRepo;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+
 import java.util.ArrayList;
 
 /**
@@ -17,6 +24,12 @@ public class User implements Comparable<User> {
     private ArrayList<Integer> recipeList = new ArrayList<>();
     private ArrayList<String> businessList = new ArrayList<>();
     private ArrayList<String> userPhotos = new ArrayList<>();
+    private ArrayList<Integer> newsFeed = new ArrayList<>();
+    private ArrayList<String> ratedBy = new ArrayList<>();
+    private float chefScore = 0;
+    private int chefScoreTimes = 0;
+    private int age;
+
     private ArrayList<String> notifications = new ArrayList<>();
     public ArrayList<String> getUserPhotos() {
         return userPhotos;
@@ -25,10 +38,6 @@ public class User implements Comparable<User> {
     public void addPhoto(String photo) {
         this.userPhotos.add(photo);
     }
-
-    private float chefScore = 0;
-    private int chefScoreTimes = 0;
-    private int age;
 
     /**
      * Getter of the id attribute
@@ -130,8 +139,16 @@ public class User implements Comparable<User> {
         this.followerEmails.add(email);
     }
 
+    public void unFollower(String email) {
+        this.followerEmails.remove(email);
+    }
+
     public void addFollowing(String email){
         this.followingEmails.add(email);
+    }
+
+    public void unFollowing(String email){
+        this.followingEmails.remove(email);
     }
 
     public ArrayList<String> getFollowerEmails(){
@@ -162,6 +179,14 @@ public class User implements Comparable<User> {
         return this.chefScore;
     }
 
+    public ArrayList<String> getRatedBy() {
+        return ratedBy;
+    }
+
+    public void addRated(String email){
+        ratedBy.add(email);
+    }
+
     public void addChefScore(float score){
         float tmp = this.chefScore * this.chefScoreTimes;
         this.chefScoreTimes++;
@@ -175,6 +200,14 @@ public class User implements Comparable<User> {
     
     public int getChefScoreTimes() {
         return this.chefScoreTimes;
+    }
+
+    public ArrayList<String> getBusinessList() {
+        return businessList;
+    }
+
+    public ArrayList<Integer> getNewsFeed() {
+        return newsFeed;
     }
 
     /**

@@ -55,14 +55,17 @@
         <Reference Include="Mono.Android" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Activities\FollowActivity.cs" />
+        <Compile Include="Activities\MainActivity.cs" />
+        <Compile Include="Activities\MyProfileActivity.cs" />
+        <Compile Include="Activities\NewsfeedActivity.cs" />
+        <Compile Include="Activities\PrivProfileActivity.cs" />
+        <Compile Include="Activities\RecipeActivity.cs" />
+        <Compile Include="DialogFragments\DialogSettings.cs" />
+        <Compile Include="DialogFragments\DialogSignIn.cs" />
+        <Compile Include="DialogFragments\DialogSignUp.cs" />
         <Compile Include="FollowAdapter.cs" />
-        <Compile Include="DialogSettings.cs" />
-        <Compile Include="DialogSignIn.cs" />
-        <Compile Include="DialogSignUp.cs" />
-        <Compile Include="FollowActivity.cs" />
-        <Compile Include="MainActivity.cs" />
-        <Compile Include="NewsfeedActivity.cs" />
-        <Compile Include="MyProfileActivity.cs" />
+        <Compile Include="Recipe.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="User.cs" />
@@ -76,6 +79,7 @@
         <AndroidResource Include="Resources\anim\SlideRight.xml" />
         <AndroidResource Include="Resources\anim\SlideUp.xml" />
         <AndroidResource Include="Resources\drawable\ButtonStyle.xml" />
+        <AndroidResource Include="Resources\drawable\ListRowStyle.xml" />
         <AndroidResource Include="Resources\layout\DialogSettings.axml" />
         <AndroidResource Include="Resources\layout\DialogSignIn.axml" />
         <AndroidResource Include="Resources\layout\DialogSignUp.axml" />
@@ -86,6 +90,11 @@
         </AndroidResource>
         <AndroidResource Include="Resources\layout\Newsfeed.axml" />
         <AndroidResource Include="Resources\layout\MyProfile.axml" />
+        <AndroidResource Include="Resources\layout\PrivateProfile.axml" />
+        <AndroidResource Include="Resources\layout\Recipe.axml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
         <AndroidResource Include="Resources\values\colors.xml" />
         <AndroidResource Include="Resources\values\ic_launcher_background.xml" />
         <AndroidResource Include="Resources\values\strings.xml" />

@@ -32,11 +32,6 @@ public class DataWriter<T>{
             FileWriter file = new FileWriter(absolutePath);
             file.write(dataString);
             file.flush();
-            System.out.println("added user to user data base...");
-            if(Initializer.isGUIOnline()){
-                Initializer.getServerGUI().printLn("added user to user data base...");
-            }
-
         } catch (IOException e) {
             e.printStackTrace();
         }

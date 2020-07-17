@@ -5,10 +5,10 @@ using Android.Widget;
 
 namespace CookTime {
     public class FollowAdapter : BaseAdapter<string> {
-        private List<string> _followItems;
+        private IList<string> _followItems;
         private Context _context;
 
-        public FollowAdapter(Context context, List<string> items)
+        public FollowAdapter(Context context, IList<string> items)
         {
             _context = context;
             _followItems = items;
@@ -30,7 +30,8 @@ namespace CookTime {
             }
 
             TextView followTxt = row.FindViewById<TextView>(Resource.Id.rowText);
-            followTxt.Text = _followItems[position];
+            
+            followTxt.Text = _followItems[position].Split(";")[1];
 
             return row;
         }

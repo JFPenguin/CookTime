@@ -4,9 +4,10 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
-namespace CookTime {
+namespace CookTime.Activities {
     /// <summary>
     /// This class represents the first view seen when the app is opened.
     /// It inherits from the base class for Android activities
@@ -109,7 +110,7 @@ namespace CookTime {
             }
             else {
                 toastText = "Signed in!";
-
+                
                 _toast = Toast.MakeText(this, toastText, ToastLength.Short);
                 _toast.Show();
                 

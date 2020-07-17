@@ -1,5 +1,8 @@
 package com.btp;
 
+import com.btp.dataStructures.lists.SinglyList;
+import com.btp.dataStructures.nodes.SinglyNode;
+import com.btp.dataStructures.sorters.Sorter;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.BusinessRepo;
@@ -108,6 +111,7 @@ public class Resources {
         return value;
     }
 
+
     @GET
     @Path("auth")
     @Produces(MediaType.APPLICATION_JSON)
@@ -128,6 +132,141 @@ public class Resources {
     }
 
     @GET
+    @Path("myMenu")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<String> myMenu(@QueryParam("email") String email, @QueryParam("filter") String filter){
+        ArrayList<String> myMenuList = new ArrayList<>();
+        User user = UserRepo.getUser(email);
+        SinglyList<Recipe> sortList = new SinglyList<>();
+
+        for (int i:user.getRecipeList()) {
+            Recipe recipe = RecipeRepo.getRecipe(i);
+            sortList.add(recipe);
+        }
+
+        switch (filter){
+            case "date":
+                Sorter.bubbleSort(sortList);
+                break;
+            case "score":
+                Sorter.quickSort(sortList);
+                break;
+            case "difficulty":
+                Sorter.radixSort(sortList);
+                break;
+        }
+        SinglyNode tmp = sortList.getHead();
+        while (tmp!=null){
+            Recipe recipe = (Recipe) tmp.getData();
+            myMenuList.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+UserRepo.getUser(recipe.getAuthorEmail()).fullName()+";"+recipe.getAuthorEmail());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+        return myMenuList;
+    }
+
+    @GET
+    @Path("newsfeed")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<String> newsfeed(@QueryParam("email") String email){
+        ArrayList<String> newsfeed = new ArrayList<>();
+        User user = UserRepo.getUser(email);
+        SinglyList<Recipe> sortList = new SinglyList<>();
+
+        for (int i:user.getNewsFeed()) {
+            Recipe recipe = RecipeRepo.getRecipe(i);
+            sortList.add(recipe);
+        }
+        Sorter.bubbleSort(sortList);
+
+        SinglyNode tmp = sortList.getHead();
+        while (tmp!=null){
+            Recipe recipe = (Recipe) tmp.getData();
+            newsfeed.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+UserRepo.getUser(recipe.getAuthorEmail()).fullName()+";"+recipe.getAuthorEmail());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+        return newsfeed;
+    }
+
+    @GET
+    @Path("isFollowing")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isFollowing(@QueryParam("ownEmail") String ownEmail, @QueryParam("followingEmail") String followingEmail){
+        User ownUser = UserRepo.getUser(ownEmail);
+        User followingUser = UserRepo.getUser(followingEmail);
+
+        String response = "0";
+
+        for (String email : ownUser.getFollowingEmails()) {
+            if (email.equals(followingEmail+";"+followingUser.fullName())) {
+                response = "1";
+                break;
+            }
+        }
+        return response;
+    }
+
+    @GET
+    @Path("isChefRated")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isChefRated(@QueryParam("ownEmail") String ownEmail, @QueryParam("chefEmail") String chefEmail){
+        return checkChefRating(ownEmail, chefEmail);
+    }
+
+    @GET
+    @Path("rateChef")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String rateChef(@QueryParam("ownEmail") String ownEmail, @QueryParam("chefEmail") String chefEmail, @QueryParam("rating") int score){
+        String response = checkChefRating(ownEmail, chefEmail);
+        if (response.equals("0")){
+            User chef = UserRepo.getUser(chefEmail);
+            chef.addRated(ownEmail);
+            chef.addChefScore(score);
+        }
+        UserRepo.updateTree();
+        return response;
+    }
+
+    private String checkChefRating(String ownEmail, String chefEmail) {
+        User chef = UserRepo.getUser(chefEmail);
+        String response = "0";
+        if (ownEmail.equals(chefEmail) || chef.isChef()){
+            response = "1";
+        }
+        else {
+            for(String userEmail:chef.getRatedBy()){
+                if (userEmail.equals(ownEmail)){
+                    response = "1";
+                    break;
+                }
+            }
+        }
+        return response;
+    }
+
+    @GET
+    @Path("isRated")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isRated(@QueryParam("id") int id, @QueryParam("email") String email){
+        return checkRating(id, email);
+    }
+
+    @GET
+    @Path("rateRecipe")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String rateRecipe(@QueryParam("id") int id, @QueryParam("email") String email, @QueryParam("rating") int score){
+        String response = checkRating(id, email);
+        if (response.equals("0")){
+            Recipe recipe = RecipeRepo.getRecipe(id);
+            recipe.addRating(email);
+            recipe.addScore(score);
+        }
+        RecipeRepo.updateTree();
+        return response;
+    }
+
+    @GET
     @Path("followUser")
     @Produces(MediaType.APPLICATION_JSON)
     public String followUser(@QueryParam("ownEmail") String ownEmail, @QueryParam("followingEmail") String followingEmail) {
@@ -138,13 +277,15 @@ public class Resources {
         boolean alreadyFollows = false;
 
         for (String email : ownUser.getFollowingEmails()) {
-            if (email.equals(followingEmail)) {
+            if (email.equals(followingEmail+";"+followingUser.fullName())) {
                 alreadyFollows = true;
                 break;
             }
         }
 
         if (alreadyFollows) {
+            ownUser.unFollowing(followingEmail+";"+followingUser.fullName());
+            followingUser.unFollower(ownEmail+";"+ownUser.fullName());
             response = "0";
         }else{
             ownUser.addFollowing(followingEmail+";"+followingUser.fullName());
@@ -176,18 +317,6 @@ public class Resources {
         System.out.println(response);
         UserRepo.updateTree();
         return response;
-    }
-
-    @GET
-    @Path("rateUser")
-    public void rateChef(@QueryParam("email") String email, @QueryParam("rating") float rating) {
-        System.out.println("Rating user...");
-        User user = UserRepo.getUser(email);
-
-        if (user.isChef()) {
-            user.addChefScore(rating);
-            System.out.println("Chef rated");
-        }
     }
 
     @GET
@@ -281,13 +410,6 @@ public class Resources {
         return id + "-" + fileDetail.getName();
     }
 
-
-//    @PUT
-//    @Path("rateRecipe")
-//    public void rateRecipe(@QueryParam("id") int id,@QueryParam("rating") float rating){
-//        RecipeRepo.getRecipe(id).addScore(rating);
-//    }
-
 //    @PUT
 //    @Path("updateUserData")
 //    public void updateUserData(String email, String dataType, String data){
@@ -356,5 +478,22 @@ public class Resources {
             }
         }
         return prioList;
+    }
+
+    private String checkRating(int id, String email){
+        Recipe recipe = RecipeRepo.getRecipe(id);
+        String response = "0";
+        if (email.equals(recipe.getAuthorEmail())){
+            response = "1";
+        }
+        else {
+            for(String userEmail:recipe.getRatedBy()){
+                if (userEmail.equals(email)){
+                    response = "1";
+                    break;
+                }
+            }
+        }
+        return response;
     }
 }
