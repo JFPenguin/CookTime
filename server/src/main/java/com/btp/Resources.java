@@ -134,6 +134,48 @@ public class Resources {
     }
 
     @GET
+    @Path("shareRecipe")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String shareRecipe(@QueryParam("id") int id, @QueryParam("email") String email){
+        User user = UserRepo.getUser(email);
+        SinglyList<Recipe> recipeList = new SinglyList<>();
+
+        for (int data:user.getRecipeList()) {
+            if (data == id){
+                return "0";
+            }
+        }
+
+        for (int j:user.getRecipeList()){
+            Recipe recipeTmp = RecipeRepo.getRecipe(j);
+            recipeList.add(recipeTmp);
+        }
+
+        SinglyNode tmp = recipeList.getHead();
+        user.getRecipeList().clear();
+        while (tmp!=null){
+            Recipe recipeTmp = (Recipe) tmp.getData();
+            user.addRecipe(recipeTmp.getId());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+        UserRepo.updateTree();
+
+        return "1";
+    }
+
+    @GET
+    @Path("commentRecipe")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String commentRecipe(@QueryParam("id") int id, @QueryParam("comment") String comment){
+        Recipe recipe = RecipeRepo.getRecipe(id);
+        recipe.addComment(comment);
+
+        RecipeRepo.updateTree();
+
+        return "1";
+    }
+
+    @GET
     @Path("isEmailNew")
     @Produces(MediaType.APPLICATION_JSON)
     public String isEmailNew(@QueryParam("email") String email) {
