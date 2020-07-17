@@ -25,6 +25,7 @@ namespace CookTime {
         public int scoreTimes;
         public List<string> comments;
         public List<string> ratedBy;
+
         /// <summary>
         /// public constructor for Recipe class
         /// </summary>
@@ -49,8 +50,7 @@ namespace CookTime {
         /// <param name="ratedBy">reference to the users that have rated the recipe</param>
         public Recipe(string name, string authorEmail, string dishTime, int portions, int duration, string dishType, int difficulty, List<string> dishTags,
             string picture, List<string> ingredients, List<string> instructions, float price, int id, long realPostedTime, string showTime, 
-            float score, int scoreTimes, List<string> comments, List<string> ratedBy)
-        {
+            float score, int scoreTimes, List<string> comments, List<string> ratedBy) {
             this.name = name; 
             this.authorEmail = authorEmail;
             this.dishTime = dishTime;
@@ -70,7 +70,6 @@ namespace CookTime {
             this.scoreTimes = scoreTimes;
             this.comments = comments;
             this.ratedBy = ratedBy;
-            
         }
     }
 }

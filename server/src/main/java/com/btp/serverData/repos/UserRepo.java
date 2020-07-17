@@ -49,4 +49,7 @@ public class UserRepo {
         userTree = objectMapper.readValue(file, userTree.getClass());
     }
 
+    public static void notifyAll(String notification) {
+        userTree.messageAll(notification);
+    }
 }

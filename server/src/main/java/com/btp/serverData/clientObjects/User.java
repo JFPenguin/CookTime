@@ -30,6 +30,7 @@ public class User implements Comparable<User> {
     private int chefScoreTimes = 0;
     private int age;
 
+    private ArrayList<String> notifications = new ArrayList<>();
     public ArrayList<String> getUserPhotos() {
         return userPhotos;
     }
@@ -221,6 +222,18 @@ public class User implements Comparable<User> {
 
     public String fullName() {
         return getFirstName()+" "+getLastName();
+    }
+
+    public void sendMessage(String message) {
+        notifications.add(message);
+    }
+
+    public ArrayList<String> getNotifications(){
+        return this.notifications;
+    }
+
+    public void deleteMessage(int index){
+        notifications.remove(index);
     }
 }
 
