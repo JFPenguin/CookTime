@@ -25,6 +25,7 @@ public class User implements Comparable<User> {
     private ArrayList<String> businessList = new ArrayList<>();
     private ArrayList<String> userPhotos = new ArrayList<>();
     private ArrayList<Integer> newsFeed = new ArrayList<>();
+    private ArrayList<String> ratedBy = new ArrayList<>();
     private float chefScore = 0;
     private int chefScoreTimes = 0;
     private int age;
@@ -175,6 +176,14 @@ public class User implements Comparable<User> {
 
     public float getChefScore() {
         return this.chefScore;
+    }
+
+    public ArrayList<String> getRatedBy() {
+        return ratedBy;
+    }
+
+    public void addRated(String email){
+        ratedBy.add(email);
     }
 
     public void addChefScore(float score){

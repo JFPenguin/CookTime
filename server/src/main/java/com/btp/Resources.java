@@ -208,6 +208,65 @@ public class Resources {
     }
 
     @GET
+    @Path("isChefRated")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isChefRated(@QueryParam("ownEmail") String ownEmail, @QueryParam("chefEmail") String chefEmail){
+        return checkChefRating(ownEmail, chefEmail);
+    }
+
+    @GET
+    @Path("rateChef")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String rateChef(@QueryParam("ownEmail") String ownEmail, @QueryParam("chefEmail") String chefEmail, @QueryParam("rating") int score){
+        String response = checkChefRating(ownEmail, chefEmail);
+        if (response.equals("0")){
+            User chef = UserRepo.getUser(chefEmail);
+            chef.addRated(ownEmail);
+            chef.addChefScore(score);
+        }
+        UserRepo.updateTree();
+        return response;
+    }
+
+    private String checkChefRating(String ownEmail, String chefEmail) {
+        User chef = UserRepo.getUser(chefEmail);
+        String response = "0";
+        if (ownEmail.equals(chefEmail) || chef.isChef()){
+            response = "1";
+        }
+        else {
+            for(String userEmail:chef.getRatedBy()){
+                if (userEmail.equals(ownEmail)){
+                    response = "1";
+                    break;
+                }
+            }
+        }
+        return response;
+    }
+
+    @GET
+    @Path("isRated")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isRated(@QueryParam("id") int id, @QueryParam("email") String email){
+        return checkRating(id, email);
+    }
+
+    @GET
+    @Path("rateRecipe")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String rateRecipe(@QueryParam("id") int id, @QueryParam("email") String email, @QueryParam("rating") int score){
+        String response = checkRating(id, email);
+        if (response.equals("0")){
+            Recipe recipe = RecipeRepo.getRecipe(id);
+            recipe.addRating(email);
+            recipe.addScore(score);
+        }
+        RecipeRepo.updateTree();
+        return response;
+    }
+
+    @GET
     @Path("followUser")
     @Produces(MediaType.APPLICATION_JSON)
     public String followUser(@QueryParam("ownEmail") String ownEmail, @QueryParam("followingEmail") String followingEmail) {
@@ -258,18 +317,6 @@ public class Resources {
         System.out.println(response);
         UserRepo.updateTree();
         return response;
-    }
-
-    @GET
-    @Path("rateUser")
-    public void rateChef(@QueryParam("email") String email, @QueryParam("rating") float rating) {
-        System.out.println("Rating user...");
-        User user = UserRepo.getUser(email);
-
-        if (user.isChef()) {
-            user.addChefScore(rating);
-            System.out.println("Chef rated");
-        }
     }
 
     @GET
@@ -363,13 +410,6 @@ public class Resources {
         return id + "-" + fileDetail.getName();
     }
 
-
-//    @PUT
-//    @Path("rateRecipe")
-//    public void rateRecipe(@QueryParam("id") int id,@QueryParam("rating") float rating){
-//        RecipeRepo.getRecipe(id).addScore(rating);
-//    }
-
 //    @PUT
 //    @Path("updateUserData")
 //    public void updateUserData(String email, String dataType, String data){
@@ -438,5 +478,22 @@ public class Resources {
             }
         }
         return prioList;
+    }
+
+    private String checkRating(int id, String email){
+        Recipe recipe = RecipeRepo.getRecipe(id);
+        String response = "0";
+        if (email.equals(recipe.getAuthorEmail())){
+            response = "1";
+        }
+        else {
+            for(String userEmail:recipe.getRatedBy()){
+                if (userEmail.equals(email)){
+                    response = "1";
+                    break;
+                }
+            }
+        }
+        return response;
     }
 }
