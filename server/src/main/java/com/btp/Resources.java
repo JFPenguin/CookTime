@@ -98,6 +98,41 @@ public class Resources {
         UserRepo.addUser(user);
     }
 
+    @POST
+    @Path("createRecipe")
+    public void createRecipe(Recipe recipe){
+        int i = random.nextInt(999) + 1;
+        while (RecipeRepo.checkId(i)){
+            i = random.nextInt(999) +1;
+        }
+        recipe.setId(i);
+        recipe.setPostTime(System.currentTimeMillis());
+        RecipeRepo.addRecipe(recipe);
+        User user = UserRepo.getUser(recipe.getAuthorEmail());
+        user.addRecipe(i);
+
+        SinglyList<Recipe> recipeList = new SinglyList<>();
+        for (int j:user.getRecipeList()){
+            Recipe recipeTmp = RecipeRepo.getRecipe(j);
+            recipeList.add(recipeTmp);
+        }
+
+        SinglyNode tmp = recipeList.getHead();
+        user.getRecipeList().clear();
+        while (tmp!=null){
+            Recipe recipeTmp = (Recipe) tmp.getData();
+            user.addRecipe(recipeTmp.getId());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+
+        for(String data:user.getFollowerEmails()){
+            String[] email = data.split(";");
+            User follower = UserRepo.getUser(email[0]);
+            follower.addNewsFeed(i);
+        }
+        UserRepo.updateTree();
+    }
+
     @GET
     @Path("isEmailNew")
     @Produces(MediaType.APPLICATION_JSON)
