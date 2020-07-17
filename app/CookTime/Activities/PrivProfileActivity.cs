@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 namespace CookTime.Activities {
     /// <summary>
     /// This class represents the Private Profile view.
+    /// It is used to see profiles from other users.
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
@@ -56,7 +57,33 @@ namespace CookTime.Activities {
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var response = webClient.DownloadString(url);
 
-            _btnFollow.Text = response == "0" ? "Follow" : "Unfollow";
+            _btnFollow.Text = response == "0" ? "FOLLOW" : "UNFOLLOW";
+            
+            _btnFollow.Click += (sender, args) =>
+            {
+                using var webClient2 = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                var followUrl = "resources/followUser?ownEmail=" + _loggedId + "&followingEmail=" + _user.email;
+                webClient2.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var answer = webClient2.DownloadString(followUrl);
+
+                followUrl = "resources/getUser?id=" + _loggedId;
+                webClient2.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var userJson = webClient2.DownloadString(followUrl);
+                
+                _btnFollow.Text = answer == "0" ? "FOLLOW" : "UNFOLLOW";
+
+                var toastText = answer == "0" ? "unfollowed" : "followed";
+                
+                Toast toast = Toast.MakeText(this, "User " + toastText + ". Redirecting to MyProfile...", ToastLength.Short);
+                toast.Show();
+                
+                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                intent.PutExtra("User", userJson);
+                intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+
+            };
             
             _btnFollowers.Click += (sender, args) =>
             {
