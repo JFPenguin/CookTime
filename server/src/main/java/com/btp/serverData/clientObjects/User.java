@@ -17,7 +17,7 @@ public class User implements Comparable<User> {
     private ArrayList<Integer> recipeList = new ArrayList<>();
     private ArrayList<String> businessList = new ArrayList<>();
     private ArrayList<String> userPhotos = new ArrayList<>();
-
+    private ArrayList<String> notifications = new ArrayList<>();
     public ArrayList<String> getUserPhotos() {
         return userPhotos;
     }
@@ -189,6 +189,18 @@ public class User implements Comparable<User> {
 
     public String fullName() {
         return getFirstName()+" "+getLastName();
+    }
+
+    public void sendMessage(String message) {
+        notifications.add(message);
+    }
+
+    public ArrayList<String> getNotifications(){
+        return this.notifications;
+    }
+
+    public void deleteMessage(int index){
+        notifications.remove(index);
     }
 }
 
