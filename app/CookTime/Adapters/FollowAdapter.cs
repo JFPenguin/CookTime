@@ -3,7 +3,7 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 
-namespace CookTime {
+namespace CookTime.Adapters {
     /// <summary>
     /// This class is a custom adapter for the ListView containing a user's followers/following.
     /// This adapter manages all of the iteration through its items in the backend.

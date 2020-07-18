@@ -61,11 +61,13 @@
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />
+        <Compile Include="Adapters\FollowAdapter.cs" />
+        <Compile Include="Adapters\IngredientAdapter.cs" />
+        <Compile Include="Adapters\CompAdapter.cs" />
+        <Compile Include="Adapters\RecipeAdapter.cs" />
         <Compile Include="DialogFragments\DialogSettings.cs" />
         <Compile Include="DialogFragments\DialogSignIn.cs" />
         <Compile Include="DialogFragments\DialogSignUp.cs" />
-        <Compile Include="FollowAdapter.cs" />
-        <Compile Include="RecipeAdapter.cs" />
         <Compile Include="Recipe.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
