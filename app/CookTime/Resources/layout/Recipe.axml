@@ -1,27 +1,29 @@
-<LinearLayout
+<LinearLayout 
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#597A88"
-        android:weightSum="100">
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                      android:orientation="vertical">
+        android:background="#597A88">
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout 
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
                     android:weightSum="100">
-                <Button
+                <Button 
                         android:id="@+id/shareButton"
                         android:text="SHARE"
                         android:layout_margin="5dp"
                         android:textSize="15sp"
                         android:textColor="#405863"
                         android:textStyle="bold"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ButtonStyle"
@@ -33,7 +35,7 @@
                         android:textSize="15sp"
                         android:textColor="#405863"
                         android:textStyle="bold"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ButtonStyle"
@@ -45,29 +47,28 @@
                         android:textSize="15sp"
                         android:textColor="#405863"
                         android:textStyle="bold"
-                        android:layout_width="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_width="0dp"
                         android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ButtonStyle"
                         android:layout_weight="33"/>
             </LinearLayout>
-            
             <TextView
                     android:text="Recipe layout"
                     android:id="@+id/recipeNameText"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="25"
+                    android:layout_height="wrap_content"
                     android:textColor="#A1E2C8"
                     android:background="#3E4465"
                     android:gravity="center"
                     android:textStyle="bold"
-                    android:textSize="25sp"/>
+                    android:textSize="20sp"/>
             <TextView
                     android:text="Author:"
                     android:id="@+id/authorText"
                     android:textColor="#3E4465"
-                    android:background="#BEA8A7"
+                    android:background="#B0A0A0"
                     style="@style/recipeTexts1"/>
             <TextView
                     android:text="Date posted:"
@@ -85,65 +86,82 @@
                     android:text="Dish type:"
                     android:id="@+id/dishTypeText"
                     android:textColor="#3E4465"
-                    android:background="#B0A0A0"
+                    android:background="#BEA8A7"
                     style="@style/recipeTexts1"/>
             <TextView
                     android:text="Portions:"
                     android:id="@+id/portionsText"
                     android:textColor="#3E4465"
-                    android:background="#BEA8A7"
+                    android:background="#B0A0A0"
                     style="@style/recipeTexts1"/>
             <TextView
                     android:text="Duration:"
                     android:id="@+id/durationText"
                     android:textColor="#3E4465"
-                    android:background="#B0A0A0"
+                    android:background="#BEA8A7"
                     style="@style/recipeTexts1"/>
             <TextView
                     android:text="Difficulty:"
                     android:id="@+id/difficultyText"
                     android:textColor="#3E4465"
-                    android:background="#BEA8A7"
+                    android:background="#B0A0A0"
                     style="@style/recipeTexts1"/>
             <TextView
                     android:text="Dish tags:"
-                    android:id="@+id/dishTagstext"
-                    android:textColor="#3E4465"
-                    android:background="#B0A0A0"
-                    style="@style/recipeTexts1"/>
-            <TextView
-                    android:text="Ingredients:"
-                    android:id="@+id/ingredientsText"
+                    android:id="@+id/dishTagsText"
                     android:textColor="#3E4465"
                     android:background="#BEA8A7"
                     style="@style/recipeTexts1"/>
+            <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/dishTagsListView"/>
             <TextView
-                    android:text="Instructions:"
-                    android:id="@+id/instructionText"
+                    android:text="Ingredients:"
                     android:textColor="#3E4465"
                     android:background="#B0A0A0"
                     style="@style/recipeTexts1"/>
+            <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" 
+                    android:id="@+id/ingredientListView"/>
+            <TextView
+                    android:text="Instructions:"
+                    android:textColor="#3E4465"
+                    android:background="#B0A0A0"
+                    style="@style/recipeTexts1"/>
+            <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/instructionsListView"/>
             <TextView
                     android:text="Price:"
                     android:id="@+id/priceText"
                     android:textColor="#3E4465"
-                    android:background="#BEA8A7"
+                    android:background="#B0A0A0"
                     style="@style/recipeTexts1"/>
             <TextView
                     android:text="Number of ratings:"
                     android:id="@+id/sTimesText"
                     android:textColor="#3E4465"
-                    android:background="#B0A0A0"
+                    android:background="#BEA8A7"
                     style="@style/recipeTexts1"/>
             <TextView
                     android:text="Score:"
                     android:id="@+id/scoreText"
                     android:textColor="#3E4465"
+                    android:background="#B0A0A0"
+                    style="@style/recipeTexts1"/>
+            <TextView
+                    android:text="Comments:"
+                    android:id="@+id/commentsText"
+                    android:textColor="#3E4465"
                     android:background="#BEA8A7"
                     style="@style/recipeTexts1"/>
-            <ImageView
-                    android:id="@+id/recipeImage"
+            <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="match_parent"
+                    android:id="@+id/commentsListView"/>
         </LinearLayout>
+    </ScrollView>
 </LinearLayout>
