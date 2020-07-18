@@ -18,3 +18,4 @@ Also, when cloning the repository to a local directory, you might encounter buil
 
 ### External Documentation
 This project is documented in the wiki page for this same repository, which you can access [here](https://github.com/JFPenguin/CookTime/wiki).
+#### Please note: the external documentation content is in spanish.
