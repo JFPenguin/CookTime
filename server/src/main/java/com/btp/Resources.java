@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -182,9 +183,9 @@ public class Resources {
     @GET
     @Path("commentRecipe")
     @Produces(MediaType.APPLICATION_JSON)
-    public String commentRecipe(@QueryParam("id") int id, @QueryParam("comment") String comment){
+    public String commentRecipe(@QueryParam("id") int id, @QueryParam("comment") String comment, @QueryParam("email") String email){
         Recipe recipe = RecipeRepo.getRecipe(id);
-        recipe.addComment(comment);
+        recipe.addComment(comment+";"+UserRepo.getUser(email).fullName());
 
         User user = UserRepo.getUser(recipe.getAuthorEmail());
 
@@ -193,6 +194,38 @@ public class Resources {
 
         return "1";
     }
+
+    @GET
+    @Path("deleteRecipe")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String deleteRecipe(@QueryParam("email") String email, @QueryParam("id") int id){
+        boolean response;
+        Recipe recipe = RecipeRepo.getRecipe(id);
+
+        User user = UserRepo.getUser(email);
+
+        if (recipe == null){
+            response = false;
+        }
+        else if (!recipe.getAuthorEmail().equals(email)) {
+            response = user.getRecipeList().remove(Integer.valueOf(id));
+
+        } else {
+            UserRepo.deleteRecipe(id);
+
+            RecipeRepo.deleteRecipe(id);
+            response = true;
+        }
+
+        RecipeRepo.updateTree();
+        UserRepo.updateTree();
+        if (response){
+            return "1";
+        } else {
+            return "0";
+        }
+    }
+
 
     @GET
     @Path("isEmailNew")

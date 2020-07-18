@@ -274,6 +274,19 @@ public class UserBST {
         messageUser(this.root,message);
     }
 
+    public void deleteRecipe(int id){
+        deleteRecipe(id, this.root);
+    }
+
+    private void deleteRecipe(int id, UserTreeNode root){
+        if (root != null){
+            root.getElement().getNewsFeed().remove(Integer.valueOf(id));
+            root.getElement().getRecipeList().remove(Integer.valueOf(id));
+            deleteRecipe(id, root.getLeft());
+            deleteRecipe(id, root.getRight());
+        }
+    }
+
     /**
      * Prints the tree using each user's name attribute in preorder
      * Calls itself recursively

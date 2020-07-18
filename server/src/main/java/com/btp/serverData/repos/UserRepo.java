@@ -26,6 +26,10 @@ public class UserRepo {
 
     }
 
+    public static void deleteRecipe(int id){
+        userTree.deleteRecipe(id);
+    }
+
     public static void updateTree(){
         dataWriter.writeData(userTree, path);
     }

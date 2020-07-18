@@ -31,7 +31,10 @@ public class RecipeRepo {
             Initializer.getServerGUI().printLn("Recipe added");
         }
         dataWriter.writeData(recipeTree, path);
+    }
 
+    public static void deleteRecipe(int id){
+        recipeTree.delete(id);
     }
 
     /**
