@@ -11,7 +11,7 @@ Client-related code will be implemented in C#, due to the fact that it is based 
 ### Setup Instructions  
   
 #### Java portion of the project
-For the project to work, you need to install Tomcat 9.0.37 on your PC. The download link is [here](https://tomcat.apache.org/download-90.cgi#9.0.36)  Preferably, choose the _32-bit/64-bit Windows Service Installer_  option.   
+For the project to work, you need to install Tomcat 9.0.37 on your PC. The download link is [here](https://tomcat.apache.org/download-90.cgi#9.0.36). Preferably, choose the _32-bit/64-bit Windows Service Installer_  option.   
 
 In order to load the data base, you need to add the following VM argument:
 
