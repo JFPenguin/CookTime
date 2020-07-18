@@ -3,6 +3,7 @@ package com.btp;
 import com.btp.dataStructures.lists.SinglyList;
 import com.btp.dataStructures.nodes.SinglyNode;
 import com.btp.dataStructures.sorters.Sorter;
+import com.btp.dataStructures.trees.UserBST;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.BusinessRepo;
@@ -97,6 +98,7 @@ public class Resources {
 //            }
 //        }
         user.setPassword(hashPassword(user.getPassword()));
+        user.sendMessage("Welcome to CookTime!");
         UserRepo.addUser(user);
     }
 
@@ -352,6 +354,7 @@ public class Resources {
             User chef = UserRepo.getUser(chefEmail);
             chef.addRated(ownEmail);
             chef.addChefScore(score);
+            chef.sendMessage("new rating by "+ UserRepo.getUser(ownEmail).fullName());
         }
         UserRepo.updateTree();
         return response;
@@ -390,6 +393,7 @@ public class Resources {
             Recipe recipe = RecipeRepo.getRecipe(id);
             recipe.addRating(email);
             recipe.addScore(score);
+            UserRepo.getUser(recipe.getAuthorEmail()).sendMessage("your recipe: "+recipe.getName()+" has been rated!");
         }
         RecipeRepo.updateTree();
         return response;
@@ -419,6 +423,7 @@ public class Resources {
         }else{
             ownUser.addFollowing(followingEmail+";"+followingUser.fullName());
             followingUser.addFollower(ownEmail+";"+ownUser.fullName());
+            followingUser.sendMessage(ownUser.fullName()+" is now following you");
             response = "1";
         }
 
