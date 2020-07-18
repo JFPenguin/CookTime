@@ -25,5 +25,5 @@ In order for the app to function properly, you need to set your IPv4 Adress insi
 Go to the _Activities_ directory/namespace and choose the `MainActivity.cs` class. Search for the `Ipv4` string variable and change it to your own IPv4.
 
 ### External Documentation
-This project is documented in the wiki page for this same repository, which you can access [here](https://github.com/JFPenguin/CookTime/wiki).
+This project is documented in the wiki page for this same repository, which you can access [here](https://github.com/JFPenguin/CookTime/wiki/P%C3%A1gina-de-inicio).
 #### Please note: the external documentation content is in spanish.
