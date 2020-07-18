@@ -17,4 +17,4 @@ make sure to change `"path/to/project/folder"` to your project directory
 Also, when cloning the repository to a local directory, you might encounter build errors on the server folder when running in any Java IDE. This is caused by missing java libraries that IDEs such as IntelliJ IDEA can automatically install. Simply check the imports reported as missing, download the needed `.jar` files, and rebuild the project.
 
 ### External Documentation
-This project is documented in the wiki page for this same repository, which you can access [here](github.com/JFPenguin/CookTime/wiki).
+This project is documented in the wiki page for this same repository, which you can access [here](https://github.com/JFPenguin/CookTime/wiki).
