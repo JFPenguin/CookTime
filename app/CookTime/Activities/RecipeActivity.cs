@@ -4,6 +4,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using CookTime.Adapters;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
@@ -28,11 +29,15 @@ namespace CookTime.Activities {
         private TextView portionsText;
         private TextView durationText;
         private TextView difficultyText;
+        private TextView dishTagsText;
         private TextView priceText;
         private TextView scoreText;
         private TextView scoreTimes;
+        private TextView commentsText;
         private ListView ingredientListView;
-        private ImageView recipeImage;
+        private ListView instructionsListView;
+        private ListView dishTagsListView;
+        private ListView commentsListView;
 
         /// <summary>
         /// This method is called when the activity is starting.
@@ -45,15 +50,12 @@ namespace CookTime.Activities {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Recipe);
             
+            //TODO set the recipe image
+
             var recipe = Intent.GetStringExtra("Recipe");
             _recipe = JsonConvert.DeserializeObject<Recipe>(recipe);
             authorName = Intent.GetStringExtra("AuthorName");
             _loggedId = Intent.GetStringExtra("LoggedId");
-            
-            // using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            // var url = "resources/getPicture?id=" + _recipe.photos[0];
-            // webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            // var photo = webClient.DownloadString(url);
 
             // setting all the fields to axml file identities
             shareButton = FindViewById<Button>(Resource.Id.shareButton);
@@ -68,11 +70,15 @@ namespace CookTime.Activities {
             portionsText = FindViewById<TextView>(Resource.Id.portionsText);
             durationText = FindViewById<TextView>(Resource.Id.durationText);
             difficultyText = FindViewById<TextView>(Resource.Id.difficultyText);
+            dishTagsText = FindViewById<TextView>(Resource.Id.dishTagsText);
             priceText = FindViewById<TextView>(Resource.Id.priceText);
             scoreText = FindViewById<TextView>(Resource.Id.scoreText);
             scoreTimes = FindViewById<TextView>(Resource.Id.sTimesText);
+            commentsText = FindViewById<TextView>(Resource.Id.commentsText);
             ingredientListView = FindViewById<ListView>(Resource.Id.ingredientListView);
-            recipeImage = FindViewById<ImageView>(Resource.Id.recipeImage);
+            instructionsListView = FindViewById<ListView>(Resource.Id.instructionsListView);
+            dishTagsListView = FindViewById<ListView>(Resource.Id.dishTagsListView);
+            commentsListView = FindViewById<ListView>(Resource.Id.commentsListView);
 
             // Setting all the text values to the recipe attribute
             recipeNameText.Text = _recipe.name;
@@ -83,15 +89,24 @@ namespace CookTime.Activities {
             portionsText.Text = "Portions: " + _recipe.portions;
             durationText.Text = "Duration: " + _recipe.duration + " minutes";
             difficultyText.Text = "Difficulty: " + _recipe.difficulty;
+            dishTagsText.Text = _recipe.dishTags.Count == 0 ? "Dish tags: none" : "Dish tags:";
             priceText.Text = "Price: $" + _recipe.price;
             scoreText.Text = "Score: " + _recipe.score;
             scoreTimes.Text = "Number of Ratings: " + _recipe.scoreTimes;
+            commentsText.Text = _recipe.comments.Count == 0 ? "Comments: none" : "Comments:";
             
-            CompAdapter adapter = new CompAdapter(this, _recipe.ingredientsList);
-            ingredientListView.Adapter = adapter;
+            IngredientAdapter adapter1 = new IngredientAdapter(this, _recipe.ingredientsList);
+            ingredientListView.Adapter = adapter1;
             
-            //TODO set the image in the ImageView
+            CompAdapter adapter2 = new CompAdapter(this, _recipe.instructions);
+            instructionsListView.Adapter = adapter2;
             
+            CompAdapter adapter3 = new CompAdapter(this, _recipe.dishTags);
+            dishTagsListView.Adapter = adapter3;
+            
+            CompAdapter adapter4 = new CompAdapter(this, _recipe.comments);
+            commentsListView.Adapter = adapter4;
+
             authorButton.Click += (sender, args) => 
             {
                 if (_recipe.authorEmail == _loggedId) {

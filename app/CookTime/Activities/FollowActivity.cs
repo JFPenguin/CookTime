@@ -5,6 +5,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using CookTime.Adapters;
 
 namespace CookTime.Activities {
     /// <summary>
