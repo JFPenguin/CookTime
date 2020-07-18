@@ -61,6 +61,7 @@
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />
+        <Compile Include="Activities\SearchActivity.cs" />
         <Compile Include="DialogFragments\DialogSettings.cs" />
         <Compile Include="DialogFragments\DialogSignIn.cs" />
         <Compile Include="DialogFragments\DialogSignUp.cs" />
@@ -93,6 +94,10 @@
         <AndroidResource Include="Resources\layout\MyProfile.axml" />
         <AndroidResource Include="Resources\layout\PrivateProfile.axml" />
         <AndroidResource Include="Resources\layout\Recipe.axml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\layout\Search.axml">
           <SubType>Designer</SubType>
           <Generator>MSBuild:UpdateGeneratedFiles</Generator>
         </AndroidResource>

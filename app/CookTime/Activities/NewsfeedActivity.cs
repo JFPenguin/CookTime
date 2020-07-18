@@ -7,6 +7,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using Newtonsoft.Json;
+using CookTime.Adapters;
 
 namespace CookTime.Activities {
     /// <summary>
@@ -39,7 +40,8 @@ namespace CookTime.Activities {
             _profileButton.Click += ProfileClick;
 
             _searchButton = FindViewById<Button>(Resource.Id.searchButton);
-            _searchButton.Click += searchClick;
+            _searchButton.Click += SwapClick;
+            
             _newsfeedList = FindViewById<ListView>(Resource.Id.recipeList);
 
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
@@ -87,14 +89,18 @@ namespace CookTime.Activities {
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
         }
 
-        private void searchClick(object sender, EventArgs eventArgs)
+        private void SearchClick(object sender, EventArgs e)
         {
-            var send = JsonConvert.SerializeObject(_loggedUser);
-            Intent searchIntent = new Intent(this, typeof(SearchActivity));
-            searchIntent.PutExtra("User", send);
-            StartActivity(searchIntent);
+            Intent srchIntent = new Intent(this, typeof(SearchActivity));
+            StartActivity(srchIntent);
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
-            Finish();
+        }
+
+        private void SwapClick(object sender, EventArgs e)
+        {
+            Intent intent = new Intent(this, typeof(SearchActivity));
+            StartActivity(intent);
+            OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
         }
     }
 }

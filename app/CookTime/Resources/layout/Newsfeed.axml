@@ -13,10 +13,12 @@
             android:weightSum="8">
         <Button
                 android:text="My Profile"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="20sp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:id="@+id/profileButton"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="0dp"
                 android:layout_weight="4"
                 android:layout_gravity="center"
@@ -36,16 +38,20 @@
                 android:textStyle="bold"
                 android:textSize="25sp"/>
     </LinearLayout>
-    <SearchView
-            android:id="@+id/searchBar"
-            android:background="#3E4465"
-            android:layout_width="match_parent" 
-            android:layout_weight="10"
-            android:layout_height="wrap_content"/>
-
+    <Button
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:text="Search"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:background="@drawable/ButtonStyle"
+            android:layout_weight="5"
+            android:layout_gravity="center" 
+            android:layout_margin="5dp"
+            android:layout_height="0dp"/>
     <ListView
             android:id="@+id/recipeList"
             android:layout_width="match_parent"
-            android:layout_weight="86"
+            android:layout_weight="95"
             android:layout_height="wrap_content"/>
 </LinearLayout>
