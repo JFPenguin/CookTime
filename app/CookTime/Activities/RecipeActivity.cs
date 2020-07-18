@@ -1,16 +1,21 @@
-﻿using Android.App;
+﻿using System.Net;
+using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
+    /// <summary>
+    /// This class represents a Recipe Profile
+    /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
-    public class RecipeActivity : AppCompatActivity
-    {
+    public class RecipeActivity : AppCompatActivity {
         private Recipe _recipe;
+        private string _loggedId;
         private string authorName;
-        
+
         private Button shareButton;
         private Button rateButton;
         private Button authorButton;
@@ -23,14 +28,18 @@ namespace CookTime.Activities {
         private TextView portionsText;
         private TextView durationText;
         private TextView difficultyText;
-        private TextView dishTagsText;
-        private TextView ingredientsText;
-        private TextView instructionText;
         private TextView priceText;
         private TextView scoreText;
         private TextView scoreTimes;
+        private ListView ingredientListView;
         private ImageView recipeImage;
 
+        /// <summary>
+        /// This method is called when the activity is starting.
+        /// All of the recipe info is shown here.
+        /// </summary>
+        /// <param name="savedInstanceState"> a Bundle that contains the data the activity most recently
+        /// supplied if the activity is being re-initialized after previously being shut down. </param>
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -39,6 +48,7 @@ namespace CookTime.Activities {
             var recipe = Intent.GetStringExtra("Recipe");
             _recipe = JsonConvert.DeserializeObject<Recipe>(recipe);
             authorName = Intent.GetStringExtra("AuthorName");
+            _loggedId = Intent.GetStringExtra("LoggedId");
             
             // using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             // var url = "resources/getPicture?id=" + _recipe.photos[0];
@@ -58,15 +68,13 @@ namespace CookTime.Activities {
             portionsText = FindViewById<TextView>(Resource.Id.portionsText);
             durationText = FindViewById<TextView>(Resource.Id.durationText);
             difficultyText = FindViewById<TextView>(Resource.Id.difficultyText);
-            dishTagsText = FindViewById<TextView>(Resource.Id.dishTagstext);
-            ingredientsText = FindViewById<TextView>(Resource.Id.ingredientsText);
-            instructionText = FindViewById<TextView>(Resource.Id.instructionText);
             priceText = FindViewById<TextView>(Resource.Id.priceText);
             scoreText = FindViewById<TextView>(Resource.Id.scoreText);
             scoreTimes = FindViewById<TextView>(Resource.Id.sTimesText);
+            ingredientListView = FindViewById<ListView>(Resource.Id.ingredientListView);
             recipeImage = FindViewById<ImageView>(Resource.Id.recipeImage);
 
-            //setting all the text values to the recipe attribute
+            // Setting all the text values to the recipe attribute
             recipeNameText.Text = _recipe.name;
             authorText.Text = "Author: " + authorName;
             dateText.Text = "Date posted: " + _recipe.postTimeString;
@@ -75,13 +83,43 @@ namespace CookTime.Activities {
             portionsText.Text = "Portions: " + _recipe.portions;
             durationText.Text = "Duration: " + _recipe.duration + " minutes";
             difficultyText.Text = "Difficulty: " + _recipe.difficulty;
-            dishTagsText.Text = "Tags: " + _recipe.dishTags[0];
-            ingredientsText.Text = "Ingredients: " + _recipe.ingredientsList[0];
-            instructionText.Text = "Instructions: " + _recipe.instructions[0];
             priceText.Text = "Price: $" + _recipe.price;
             scoreText.Text = "Score: " + _recipe.score;
             scoreTimes.Text = "Number of Ratings: " + _recipe.scoreTimes;
+            
+            CompAdapter adapter = new CompAdapter(this, _recipe.ingredientsList);
+            ingredientListView.Adapter = adapter;
+            
             //TODO set the image in the ImageView
+            
+            authorButton.Click += (sender, args) => 
+            {
+                if (_recipe.authorEmail == _loggedId) {
+                    using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+                    var url = "resources/getUser?id=" + _recipe.authorEmail;
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var send = webClient.DownloadString(url);
+                
+                    Intent intent = new Intent(this, typeof(MyProfileActivity));
+                    intent.PutExtra("User", send); 
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                }
+                else {
+                    using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+                    var url = "resources/getUser?id=" + _recipe.authorEmail;
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var send = webClient.DownloadString(url);
+                
+                    Intent intent = new Intent(this, typeof(PrivProfileActivity));
+                    intent.PutExtra("User", send);
+                    intent.PutExtra("LoggedId", _loggedId);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight); 
+                }
+            };
         }
     }
 }

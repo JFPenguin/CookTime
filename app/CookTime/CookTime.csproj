@@ -61,6 +61,7 @@
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />
+        <Compile Include="CompAdapter.cs" />
         <Compile Include="DialogFragments\DialogSettings.cs" />
         <Compile Include="DialogFragments\DialogSignIn.cs" />
         <Compile Include="DialogFragments\DialogSignUp.cs" />
