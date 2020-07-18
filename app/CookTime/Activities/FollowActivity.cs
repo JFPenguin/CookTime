@@ -5,6 +5,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using CookTime.Adapters;
 
 namespace CookTime.Activities {
     /// <summary>
@@ -46,6 +47,11 @@ namespace CookTime.Activities {
             _followListView.ItemClick += FollowClick;
         }
 
+        /// <summary>
+        /// This method manages a click over a follower/following name. It opens the profile of that user.
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
         private void FollowClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             string id = followList[e.Position].Split(";")[0];

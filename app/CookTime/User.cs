@@ -13,8 +13,7 @@ namespace CookTime {
         public List<string> followingEmails;
         public string lastName;
         public string password;
-        public List<string> recipeList;
-        
+
         /// <summary>
         /// Constructor for the User class
         /// </summary>

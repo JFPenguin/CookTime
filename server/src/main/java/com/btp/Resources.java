@@ -9,6 +9,7 @@ import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.BusinessRepo;
 import com.btp.serverData.repos.UserRepo;
 import com.btp.serverData.repos.RecipeRepo;
+import com.btp.utils.Notifier;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -98,6 +99,101 @@ public class Resources {
         user.setPassword(hashPassword(user.getPassword()));
         user.sendMessage("Welcome to CookTime!");
         UserRepo.addUser(user);
+    }
+
+    @POST
+    @Path("createRecipe")
+    public void createRecipe(Recipe recipe){
+        System.out.println("Starting");
+        int i = random.nextInt(999) + 1;
+        while (RecipeRepo.checkId(i)){
+            System.out.println(i);
+            i = random.nextInt(999) +1;
+        }
+        recipe.setId(i);
+        recipe.setPostTime(System.currentTimeMillis());
+        RecipeRepo.addRecipe(recipe);
+        User user = UserRepo.getUser(recipe.getAuthorEmail());
+        user.addRecipe(i);
+        user.addNewsFeed(i);
+        SinglyList<Recipe> recipeList = new SinglyList<>();
+        for (int j:user.getRecipeList()){
+            Recipe recipeTmp = RecipeRepo.getRecipe(j);
+            recipeList.add(recipeTmp);
+        }
+
+        Sorter.insertionSort(recipeList);
+
+        System.out.println(user.getRecipeList().toString());
+        recipeList.print();
+        SinglyNode tmp = recipeList.getHead();
+        user.getRecipeList().clear();
+        System.out.println(user.getRecipeList().toString());
+        while (tmp!=null){
+            System.out.println("While 1");
+            Recipe recipeTmp = (Recipe) tmp.getData();
+            user.addRecipe(recipeTmp.getId());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+
+        for(String data:user.getFollowerEmails()){
+            String[] email = data.split(";");
+            System.out.println(data + ";" + email + ";" + email[0]);
+            User follower = UserRepo.getUser(email[0]);
+            follower.addNewsFeed(i);
+        }
+        UserRepo.updateTree();
+    }
+
+    @GET
+    @Path("shareRecipe")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String shareRecipe(@QueryParam("id") int id, @QueryParam("email") String email){
+        User user = UserRepo.getUser(email);
+        SinglyList<Recipe> recipeList = new SinglyList<>();
+
+        if (!RecipeRepo.checkId(id)){
+            return "0";
+        }
+
+        for (int data:user.getRecipeList()) {
+            if (data == id){
+                return "0";
+            }
+        }
+
+        user.addRecipe(id);
+
+        for (int j:user.getRecipeList()){
+            Recipe recipeTmp = RecipeRepo.getRecipe(j);
+            recipeList.add(recipeTmp);
+        }
+
+        SinglyNode tmp = recipeList.getHead();
+        user.getRecipeList().clear();
+        while (tmp!=null){
+            Recipe recipeTmp = (Recipe) tmp.getData();
+            user.addRecipe(recipeTmp.getId());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+        UserRepo.updateTree();
+
+        return "1";
+    }
+
+    @GET
+    @Path("commentRecipe")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String commentRecipe(@QueryParam("id") int id, @QueryParam("comment") String comment){
+        Recipe recipe = RecipeRepo.getRecipe(id);
+        recipe.addComment(comment);
+
+        User user = UserRepo.getUser(recipe.getAuthorEmail());
+
+        Notifier.notify(recipe.getAuthorEmail(), "Your recipe: " + recipe.getName() + "has a new commented");
+        RecipeRepo.updateTree();
+
+        return "1";
     }
 
     @GET

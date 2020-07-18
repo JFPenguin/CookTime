@@ -210,6 +210,10 @@ public class User implements Comparable<User> {
         return newsFeed;
     }
 
+    public void addNewsFeed(int id){
+        newsFeed.add(id);
+    }
+
     /**
      * Compares this User to the User in the parameter using their id attribute
      * @param user the User to be compared

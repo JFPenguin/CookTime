@@ -18,20 +18,20 @@ public class Recipe implements Comparable<Recipe> {
     private DishType dishType;
     private int difficulty;
     private ArrayList<DishTag> dishTags;
-    private final ArrayList<String> photos = new ArrayList<>();
+    private String photos;
     private ArrayList<String> ingredientsList;
     private ArrayList<String> instructions;
     private float price;
     private int id;
     private long postTime;
     private String postTimeString;
-    private float score;
-    private int scoreTimes;
+    private float score = 0.0f;
+    private int scoreTimes = 0;
     private ArrayList<String> comments = new ArrayList<>();
     private ArrayList<String> ratedBy = new ArrayList<>();
 
     public void addPhotos(String name) {
-        this.photos.add(name);
+        this.photos = name;
     }
 
     /**
@@ -229,7 +229,7 @@ public class Recipe implements Comparable<Recipe> {
         this.price = price;
     }
 
-    public ArrayList<String> getPhotos() {
+    public String getPhotos() {
         return photos;
     }
 

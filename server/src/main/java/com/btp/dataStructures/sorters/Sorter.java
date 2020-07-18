@@ -100,12 +100,12 @@ public class Sorter {
      * @param recipeList an Integer list
      */
     private static void insertionSortRecipe(SinglyList<Recipe> recipeList){
-        String tmp;
+        long tmp;
         for (int i = 1; i < recipeList.getLength(); i++){
-            tmp = recipeList.get(i).getData().getName();
+            tmp = recipeList.get(i).getData().getPostTime();
             int j = i - 1;
 
-            while(j >= 0 && recipeList.get(j).getData().getName().compareToIgnoreCase(tmp) > 0){
+            while(j >= 0 && recipeList.get(j).getData().getPostTime() > tmp){
                 recipeList.swap(recipeList.get(j), recipeList.get(j+1));
                 j--;
             }
