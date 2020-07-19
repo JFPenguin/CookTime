@@ -526,6 +526,24 @@ public class Resources {
 //
 //    }
 
+    @GET
+    @Path("chefRequest")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String chefRequest(@QueryParam("id") String id){
+        if(!UserRepo.getUser(id).isChef()) {
+            if (!UserRepo.isActiveRequest(id)) {
+                UserRepo.addChefRequest(id);
+                UserRepo.getUser(id).sendMessage("We have received your request to become a chef!, please wait from 5 to 7 business days for your request to be processed, thank you!");
+                return "2";
+            }
+            else{
+                UserRepo.getUser(id).sendMessage("You already have an active request!, please wait until you receive a response");
+                return "0";
+            }
+        }
+        return "1";
+    }
+
     private static String saveToDisk(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String id, String location) {
         try {
             OutputStream out = new FileOutputStream(new File(location + id + "-" + fileDetail.getName()));
@@ -543,62 +561,6 @@ public class Resources {
         }
         return id + "-" + fileDetail.getName();
     }
-
-//    @PUT
-//    @Path("updateUserData")
-//    public void updateUserData(String email, String dataType, String data){
-//        User user = UserRepo.getUser(email);
-//        switch (dataType){
-//            case "firstName":
-//                user.setFirstName(data);
-//                break;
-//            case "lastName":
-//                user.setLastName(data);
-//                break;
-//            case "email":
-//                user.setEmail(data);
-//                break;
-//            case "password":
-//                user.setPassword(data);
-//                break;
-//            case "age":
-//                user.setAge(Integer.parseInt(data));
-//                break;
-//            default:
-//                System.out.println("incorrect update request type: "+dataType);
-//                if(Initializer.isGUIOnline()){
-//                    Initializer.serverGUI.printLn("incorrect update request type    : "+dataType);
-//                }
-//        }
-//    }
-
-//    @Path("createRecipe")
-//    @POST
-//    public void createRecipe(Recipe recipe){
-//        int i = random.nextInt(999) + 1;
-//        System.out.println("generating id...");
-//        System.out.println("userID: "+i);
-//        if(Initializer.isGUIOnline()){
-//            Initializer.getServerGUI().printLn("generating id...");
-//            Initializer.getServerGUI().printLn("userID: "+i);
-//        }
-//        while (RecipeRepo.checkByID(i)){
-//            i = random.nextInt(999) + 1;
-//            System.out.println("id in use, generating new id...");
-//            if(Initializer.isGUIOnline()){
-//                Initializer.getServerGUI().printLn("id in use, generating new id...");
-//            }
-//        }
-//        String authorEmail = recipe.getAuthorEmail();
-//        User author = UserRepo.getUser(authorEmail);
-//        RecipeRepo.addRecipe(recipe);
-//    }
-
-//    @Path("getIngredient")
-//    @GET
-//    public Ingredient getIngredient(String ingredient, float qty, MeasurementUnit measurementUnit) {
-//        return new Ingredient(ingredient, qty, measurementUnit);
-//    }
 
     private ArrayList<String> prioChef(ArrayList<String> list){
         ArrayList<String> prioList= new ArrayList<>();

@@ -1,12 +1,11 @@
 package com.btp.utils;
 
-import com.btp.Initializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 
 /**
  * This class is takes a Generic value of any kind, an can take that class and write it to a file of .json .txt extension

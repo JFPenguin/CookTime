@@ -5,15 +5,17 @@ import com.btp.dataStructures.trees.UserBST;
 import com.btp.utils.DataWriter;
 import com.btp.serverData.clientObjects.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class UserRepo {
     private static UserBST userTree = new UserBST();
+    private static ArrayList<String> chefRequests = new ArrayList<>();
     private static final DataWriter<UserBST> dataWriter = new DataWriter<>();
-    private static final String path =System.getProperty("project.folder")+"/dataBase/userDataBase.json";
+    private static final DataWriter<ArrayList<String>> dataWriter2 = new DataWriter<>();
+    private static final String pathUserDataBase =System.getProperty("project.folder")+"/dataBase/userDataBase.json";
+    private static final String pathChefRequestDataBase =System.getProperty("project.folder")+"/dataBase/chefRequestsDataBase.json";
 
 
     public static void addUser(User user) {
@@ -22,8 +24,7 @@ public class UserRepo {
         if(Initializer.isGUIOnline()){
             Initializer.getServerGUI().printLn("user added");
         }
-        dataWriter.writeData(userTree, path);
-
+        dataWriter.writeData(userTree, pathUserDataBase);
     }
 
     public static void deleteRecipe(int id){
@@ -31,7 +32,7 @@ public class UserRepo {
     }
 
     public static void updateTree(){
-        dataWriter.writeData(userTree, path);
+        dataWriter.writeData(userTree, pathUserDataBase);
     }
 
     public static User getUser(String email){
@@ -49,11 +50,29 @@ public class UserRepo {
     public static void loadTree() throws IOException {
         System.out.println("loading user data base...");
         ObjectMapper objectMapper = new ObjectMapper();
-        FileReader file = new FileReader(path);
+        FileReader file = new FileReader(pathUserDataBase);
         userTree = objectMapper.readValue(file, userTree.getClass());
+//        System.out.println("loading chef requests...");
+//        FileReader file2 = new FileReader(pathChefRequestDataBase);
+//        chefRequests = objectMapper.readValue(file2, chefRequests.getClass());
     }
 
     public static void notifyAll(String notification) {
         userTree.messageAll(notification);
     }
+
+    public static void addChefRequest(String id) {
+        chefRequests.add(id);
+        dataWriter2.writeData(chefRequests, pathChefRequestDataBase);
+    }
+
+    public static void removeChefRequest(String id){
+        chefRequests.remove(id);
+        dataWriter2.writeData(chefRequests, pathChefRequestDataBase);
+    }
+
+    public static boolean isActiveRequest(String id) {
+        return chefRequests.contains(id);
+    }
+
 }
