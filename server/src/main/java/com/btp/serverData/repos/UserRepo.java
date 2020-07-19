@@ -52,9 +52,9 @@ public class UserRepo {
         ObjectMapper objectMapper = new ObjectMapper();
         FileReader file = new FileReader(pathUserDataBase);
         userTree = objectMapper.readValue(file, userTree.getClass());
-//        System.out.println("loading chef requests...");
-//        FileReader file2 = new FileReader(pathChefRequestDataBase);
-//        chefRequests = objectMapper.readValue(file2, chefRequests.getClass());
+        System.out.println("loading chef requests...");
+        FileReader file2 = new FileReader(pathChefRequestDataBase);
+        chefRequests = objectMapper.readValue(file2, chefRequests.getClass());
     }
 
     public static void notifyAll(String notification) {
@@ -75,4 +75,7 @@ public class UserRepo {
         return chefRequests.contains(id);
     }
 
+    public static ArrayList<String> getChefRequests() {
+        return chefRequests;
+    }
 }
