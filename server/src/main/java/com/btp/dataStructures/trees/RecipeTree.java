@@ -336,6 +336,11 @@ public class RecipeTree{
         return this.recipeList;
     }
 
+//    public ArrayList<String> rating(){
+//        this.recipeList.clear();
+//        return rating(this.root);
+//    }
+
     public ArrayList<String> searchByName(String data) {
         this.recipeList.clear();
         return searchByName(data.toLowerCase(), this.root);

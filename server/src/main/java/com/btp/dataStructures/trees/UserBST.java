@@ -267,19 +267,20 @@ public class UserBST {
             boolean followed = false;
             for (String data:ownUser.getFollowingEmails()){
                 String[] dataList = data.split(";");
-                if (dataList[0].equals(email)){
+                if (dataList[0].equals(recommendedEmail)){
                     followed = true;
+                    System.out.println(dataList[0]);
                     break;
                 }
             }
-            if (!followed){
+            if (!followed && !email.equals(recommendedEmail)){
                 String x;
                 if (getElementByEmail(email).isChef()){
                     x = "chef";
                 } else {
                     x = "user";
                 }
-                this.userList.add(getElementByEmail(email).getEmail()+";"+getElementByEmail(email).fullName()+";"+x);
+                this.userList.add(root.getElement().getEmail()+";"+root.getElement().fullName()+";"+x);
             }
             recommend(email, root.getLeft());
             recommend(email, root.getRight());
