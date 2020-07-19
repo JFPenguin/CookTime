@@ -66,6 +66,10 @@ public class UserRepo {
         dataWriter2.writeData(chefRequests, pathChefRequestDataBase);
     }
 
+    public static ArrayList<String> recommend(String data){
+        return userTree.recommend(data);
+    }
+
     public static void removeChefRequest(String id){
         chefRequests.remove(id);
         dataWriter2.writeData(chefRequests, pathChefRequestDataBase);

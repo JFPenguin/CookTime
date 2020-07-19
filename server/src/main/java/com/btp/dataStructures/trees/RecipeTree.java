@@ -1,10 +1,18 @@
 package com.btp.dataStructures.trees;
 
 import com.btp.dataStructures.nodes.RecipeNode;
+import com.btp.serverData.clientObjects.DishTag;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
+import com.btp.serverData.repos.BusinessRepo;
+import com.btp.serverData.repos.RecipeRepo;
 import com.btp.serverData.repos.UserRepo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
 
 import java.util.ArrayList;
 
@@ -298,7 +306,38 @@ public class RecipeTree{
         }
     }
 
+    public ArrayList<String> recommend(String email){
+        this.recipeList.clear();
+        return recommend(email, this.root);
+    }
+
+    private ArrayList<String> recommend(String email, RecipeNode root){
+        if (root != null) {
+            User ownUser = UserRepo.getUser(email);
+            boolean onMenuList = false;
+            for (int data:ownUser.getRecipeList()){
+                if (data == root.getElement().getId()){
+                    onMenuList = true;
+                    break;
+                }
+            }
+            if (!onMenuList){
+                String x;
+                if (UserRepo.getUser(root.getElement().getAuthorEmail()).isChef()){
+                    x = "chef";
+                } else {
+                    x = "user";
+                }
+                this.recipeList.add(root.getElement().getId()+";"+root.getElement().getName()+";recipe;"+x);
+            }
+            recommend(email, root.getLeft());
+            recommend(email, root.getRight());
+        }
+        return this.recipeList;
+    }
+
     public ArrayList<String> searchByName(String data) {
+        this.recipeList.clear();
         return searchByName(data.toLowerCase(), this.root);
     }
 
@@ -307,7 +346,40 @@ public class RecipeTree{
             Recipe recipe = root.getElement();
             User recipeAuthor = UserRepo.getUser(recipe.getAuthorEmail());
             if (recipe.getName().toLowerCase().contains(data)){
-                this.recipeList.add(recipeAuthor.isChef()+";"+recipe.getName()+";"+recipe.getId()+recipeAuthor.fullName());
+                String x;
+                if (recipeAuthor.isChef()){
+                    x = "chef";
+                } else {
+                    x = "user";
+                }
+                this.recipeList.add(recipe.getId()+";"+recipe.getName()+";recipe;"+x);
+            }
+            searchByName(data, root.getLeft());
+            searchByName(data, root.getRight());
+        }
+        return this.recipeList;
+    }
+
+    public ArrayList<String> searchByTag(String data){
+        this.recipeList.clear();
+        return searchByTag(data, this.root);
+    }
+
+    private ArrayList<String> searchByTag(String data, RecipeNode root){
+        if (root != null && this.recipeList.size() < 15) {
+            Recipe recipe = root.getElement();
+            User recipeAuthor = UserRepo.getUser(recipe.getAuthorEmail());
+            for (DishTag tag : recipe.getDishTags()) {
+                if (tag.toString().equalsIgnoreCase(data)){
+                    String x;
+                    if (recipeAuthor.isChef()){
+                        x = "chef";
+                    } else {
+                        x = "user";
+                    }
+                    this.recipeList.add(recipe.getId()+";"+recipe.getName()+";recipe;"+x);
+                    break;
+                }
             }
             searchByName(data, root.getLeft());
             searchByName(data, root.getRight());

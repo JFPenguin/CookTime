@@ -380,6 +380,7 @@ public class BusinessTree {
     }
 
     public ArrayList<String> search(String data) {
+        this.businessList.clear();
         return searchByName(data.toLowerCase(), this.root);
     }
 
@@ -387,11 +388,35 @@ public class BusinessTree {
         if (root != null && this.businessList.size() < 5) {
             Business business = root.getElement();
             if (business.getName().toLowerCase().contains(data)){
-                this.businessList.add(business.getName()+";"+business.getId());
+                this.businessList.add(business.getId()+";"+business.getName()+";business");
             }
             searchByName(data, root.getLeft());
             searchByName(data, root.getRight());
         }
         return this.businessList;
+    }
+
+    public ArrayList<String> recommend(String data){
+        this.businessList.clear();
+        return recommend(data, this.root);
+    }
+
+    private ArrayList<String> recommend(String data, BusinessNode root){
+        if (root != null){
+            Business business = root.getElement();
+            boolean rated = false;
+            for (String email: business.getRaters()){
+                if(data.equals(email)){
+                    rated = true;
+                    break;
+                }
+            }
+            if (!rated){
+                this.businessList.add(business.getId()+";"+business.getName()+";business");
+            }
+            recommend(data, root.getLeft());
+            recommend(data, root.getRight());
+        }
+        return businessList;
     }
 }

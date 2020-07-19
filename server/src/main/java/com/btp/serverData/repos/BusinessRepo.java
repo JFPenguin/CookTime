@@ -29,4 +29,8 @@ public class BusinessRepo {
     public static ArrayList<String> search(String data){
         return businessTree.search(data);
     }
+
+    public static ArrayList<String> recommend(String data){
+        return businessTree.recommend(data);
+    }
 }
