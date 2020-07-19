@@ -89,17 +89,14 @@ namespace CookTime.Activities {
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
         }
 
-        private void SearchClick(object sender, EventArgs e)
-        {
-            Intent srchIntent = new Intent(this, typeof(SearchActivity));
-            StartActivity(srchIntent);
-            OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
-        }
-
         private void SwapClick(object sender, EventArgs e)
         {
             Intent intent = new Intent(this, typeof(SearchActivity));
+
+            var usJson = JsonConvert.SerializeObject(_loggedUser);
+            intent.PutExtra("User", usJson);
             StartActivity(intent);
+            
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
         }
     }
