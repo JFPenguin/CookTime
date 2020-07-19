@@ -80,21 +80,21 @@ namespace CookTime.DialogFragments
             Dialog.Window.Attributes.WindowAnimations = Resource.Style.fragment_anim;
         }
 
-            /// <summary>
-            /// Property for the _recipeId attribute
-            /// </summary>
-            public int RecipeId
-            {
-                set => _recipeId = value;
-            }
+        /// <summary>
+        /// Property for the _recipeId attribute
+        /// </summary>
+        public int RecipeId
+        {
+            set => _recipeId = value;
+        }
         
-            /// <summary>
-            /// Property for the _loggedId attribute
-            /// </summary>
-            public string LoggedId
-            {
-                set => _loggedId = value;
-            }
+        /// <summary>
+        /// Property for the _loggedId attribute
+        /// </summary>
+        public string LoggedId
+        {
+            set => _loggedId = value;
+        }
     }
         
         /// <summary>
