@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using Android.App;
 using Android.Content;
@@ -43,6 +42,7 @@ namespace CookTime.Activities
             
             RecomAdapter recomAdapter = new RecomAdapter(this, _recommendations);
             _resultView.Adapter = recomAdapter;
+            _resultView.ItemClick += RecomClick;
         }
 
         private void RecomClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -53,25 +53,36 @@ namespace CookTime.Activities
             
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            if (profileType.Equals("user"))
-            {
-                var profUrl = "resources/getUser?id=" + profileId;
-                if (_loggedUser.email.Equals(profileId))
-                {
-                    //TODO load my profile
+            
+            if (profileType.Equals("user")) {
+                // logic for when the recommended result is a user object
+                var userUrl = "resources/getUser?id=" + profileId;
+                var userRequest = webClient.DownloadString(userUrl);
+                
+                Intent userIntent;
+                
+                if (_loggedUser.email.Equals(profileId)) {
+                    // loads the same user's profile, since they clicked on themselves
+                    userIntent = new Intent(this, typeof(MyProfileActivity));
+                    userIntent.PutExtra("User", JsonConvert.SerializeObject(_loggedUser));
                 }
-                else
-                {
-                    //TODO load private profile
+                else {
+                    // loads another user's profile, for the user is not the same logged instance.
+                    //TODO check if another user profile is or not a chef.
+                    userIntent = new Intent(this, typeof(PrivProfileActivity));
+                    userIntent.PutExtra("User", userRequest);
                 }
+                StartActivity(userIntent);
             }
-            else if (profileType.Equals("recipe"))
-            {
+            else if (profileType.Equals("recipe")) {
+                // logic for when the recommended result is a recipe instance
                 var recipUrl = "resources/getRecipe?id=" + profileId;
-                //TODO load recipe profile
+                var recipRequest = webClient.DownloadString(recipUrl);
+                Intent recipIntent = new Intent(this, typeof(RecipeActivity));
+                recipIntent.PutExtra("Recipe", recipRequest);
+
             }
-            else
-            {
+            else {
                 //gets business information
                 //TODO make Business classes to load information from server.
             }
