@@ -14,7 +14,7 @@
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:weightSum="100">
                 <Button 
                         android:id="@+id/shareButton"
@@ -23,11 +23,25 @@
                         android:textSize="15sp"
                         android:textColor="#405863"
                         android:textStyle="bold"
+                        android:layout_gravity="center"
                         android:layout_width="0dp"
                         android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ButtonStyle"
-                        android:layout_weight="33"/>
+                        android:layout_weight="25"/>
+                <Button
+                        android:id="@+id/commentButton"
+                        android:text="COMMENT"
+                        android:layout_margin="5dp"
+                        android:textSize="15sp"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:layout_width="0dp"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ButtonStyle"
+                        android:layout_weight="25"/>
                 <Button
                         android:id="@+id/rateButton"
                         android:text="RATE"
@@ -35,11 +49,12 @@
                         android:textSize="15sp"
                         android:textColor="#405863"
                         android:textStyle="bold"
+                        android:layout_gravity="center"
                         android:layout_width="0dp"
                         android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ButtonStyle"
-                        android:layout_weight="33"/>
+                        android:layout_weight="25"/>
                 <Button
                         android:id="@+id/authorButton"
                         android:text="AUTHOR PROFILE"
@@ -52,7 +67,7 @@
                         android:textAlignment="center"
                         android:layout_height="wrap_content"
                         android:background="@drawable/ButtonStyle"
-                        android:layout_weight="33"/>
+                        android:layout_weight="25"/>
             </LinearLayout>
             <TextView
                     android:text="Recipe layout"

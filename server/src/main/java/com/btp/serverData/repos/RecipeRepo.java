@@ -65,6 +65,22 @@ public class RecipeRepo {
         return recipeTree.recommend(data);
     }
 
+    public static ArrayList<String> rating(){
+        return recipeTree.rating();
+    }
+
+    public static ArrayList<String> searchByType(String data){
+        return recipeTree.searchByType(data);
+    }
+
+    public static ArrayList<String> searchByTime(String data){
+        return recipeTree.searchByTime(data);
+    }
+
+    public static ArrayList<String> searchByTag(String data){
+        return recipeTree.searchByTag(data);
+    }
+
     public static void updateTree() {
         dataWriter.writeData(recipeTree, path);
     }

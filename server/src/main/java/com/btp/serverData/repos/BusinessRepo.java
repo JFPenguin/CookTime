@@ -33,4 +33,8 @@ public class BusinessRepo {
     public static ArrayList<String> recommend(String data){
         return businessTree.recommend(data);
     }
+
+    public static ArrayList<String> rating(){
+        return businessTree.rating();
+    }
 }

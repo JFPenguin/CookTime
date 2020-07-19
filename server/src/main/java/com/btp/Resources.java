@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
+    
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -521,16 +522,26 @@ public class Resources {
         return returnList;
     }
 
-   @GET
-   @Path("ratings")
-   @Produces(MediaType.APPLICATION_JSON)
-   public ArrayList<String> ratings(){
+    @GET
+    @Path("ratings")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<String> ratings(){
         ArrayList<String> ratingList = new ArrayList<>();
+        ArrayList<String> recipeList = RecipeRepo.rating();
+        ArrayList<String> businessList = BusinessRepo.rating();
 
+        for (String data:recipeList){
+            String[] dataL = data.split(";");
+            ratingList.add(dataL[0]+";"+dataL[1]+";"+dataL[2]);
+        }
 
+        for (String data:businessList){
+            String[] dataL = data.split(";");
+            ratingList.add(dataL[0]+";"+dataL[1]+";"+dataL[2]);
+        }
 
         return ratingList;
-   }
+    }
 
     @GET
     @Path("searchByFilter")
@@ -540,10 +551,31 @@ public class Resources {
 
         switch (filter){
             case "tag":
-
+                recipeList = RecipeRepo.searchByTag(search);
+                break;
             case "time":
-
+                recipeList = RecipeRepo.searchByTime(search);
+                break;
             case "type":
+                recipeList = RecipeRepo.searchByType(search);
+                break;
+        }
+
+        return recipePrio(recipeList);
+    }
+
+    private ArrayList<String> recipePrio(ArrayList<String> recipeList){
+        ArrayList<String> profilesList = new ArrayList<>();
+
+        int i = 0;
+
+        for (String data: recipeList){
+            String[] stringList = data.split(";");
+            if (stringList[3].equals("chef") && i < 3){
+                profilesList.add(i, stringList[0]+";"+stringList[1]+";"+stringList[2]);
+            } else {
+                profilesList.add(stringList[0]+";"+stringList[1]+";"+stringList[2]);
+            }
         }
 
         return recipeList;

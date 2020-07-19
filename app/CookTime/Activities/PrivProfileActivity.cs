@@ -1,9 +1,11 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
+using CookTime.Adapters;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
@@ -21,6 +23,8 @@ namespace CookTime.Activities {
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnFollow;
+        private ListView _menuListView;
+        private IList<string> _menuList;
 
         /// <summary>
         /// This method is called when the activity is starting.
@@ -45,6 +49,8 @@ namespace CookTime.Activities {
             _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
             _btnFollow = FindViewById<Button>(Resource.Id.btnFollow);
 
+            _menuListView = FindViewById<ListView>(Resource.Id.menuListView);
+
             _nameView.Text = "Name: " + _user.firstName + " " + _user.lastName;
             _ageView.Text = "Age: " + _user.age;
 
@@ -57,6 +63,14 @@ namespace CookTime.Activities {
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var response = webClient.DownloadString(url);
 
+            url = "resources/myMenu?email=" + _user.email + "&filter=date";
+            var send = webClient.DownloadString(url);
+            
+            _menuList = JsonConvert.DeserializeObject<IList<string>>(send);
+            RecipeAdapter adapter = new RecipeAdapter(this, _menuList);
+            _menuListView.Adapter = adapter;
+            _menuListView.ItemClick += ListClick;
+            
             _btnFollow.Text = response == "0" ? "FOLLOW" : "UNFOLLOW";
             
             _btnFollow.Click += (sender, args) =>
@@ -106,6 +120,28 @@ namespace CookTime.Activities {
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
+        }
+        
+        /// <summary>
+        /// This method handles the clicking on a list view item event
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="eventArgs"> Contains the event data </param>
+        private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
+        {
+            var recipeId = _menuList[eventArgs.Position].Split(';')[0];
+            
+            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+            var url = "resources/getRecipe?id=" + recipeId;
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var request = webClient.DownloadString(url);
+            
+            Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
+            recipeIntent.PutExtra("Recipe", request);
+            recipeIntent.PutExtra("LoggedId", _loggedId);
+            StartActivity(recipeIntent);
+            OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
         }
     }
 }

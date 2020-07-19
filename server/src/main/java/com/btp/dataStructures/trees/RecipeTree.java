@@ -14,6 +14,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 
 /**
@@ -336,10 +337,84 @@ public class RecipeTree{
         return this.recipeList;
     }
 
-//    public ArrayList<String> rating(){
-//        this.recipeList.clear();
-//        return rating(this.root);
-//    }
+    public ArrayList<String> rating(){
+        this.recipeList.clear();
+        return rating(this.root);
+    }
+
+    private ArrayList<String> rating(RecipeNode root){
+        if (root != null){
+            Recipe recipe = root.getElement();
+            if (recipe.getScoreTimes() != 0){
+                recipeList.add(recipe.getId()+";"+recipe.getName()+";recipe;"+recipe.getScore());
+                for (String recipeData:recipeList){
+                    String[] recipeString = recipeData.split(";");
+                    if (Float.valueOf(recipeString[3]) < recipe.getScore()){
+                        int i = recipeList.indexOf(recipeData);
+                        String tmp = recipeList.get(i);
+                        int j = recipeList.indexOf(recipe.getId()+";"+recipe.getName()+";recipe;"+recipe.getScore());
+                        recipeList.set(i, recipe.getId()+";"+recipe.getName()+";recipe;"+recipe.getScore());
+                        recipeList.set(j, tmp);
+                    }
+                }
+                if (recipeList.size() > 5){
+                    recipeList.remove(5);
+                }
+            }
+            rating(root.getLeft());
+            rating(root.getRight());
+        }
+        return recipeList;
+    }
+
+    public ArrayList<String> searchByType(String data) {
+        this.recipeList.clear();
+        String send = data.split(" ")[0];
+        return searchByType(send, this.root);
+    }
+
+    private ArrayList<String> searchByType(String data, RecipeNode root){
+        if (root != null && this.recipeList.size() < 15) {
+            Recipe recipe = root.getElement();
+            User recipeAuthor = UserRepo.getUser(recipe.getAuthorEmail());
+                if (recipe.getDishType().toString().toLowerCase().contains(data)){
+                    String x;
+                    if (recipeAuthor.isChef()){
+                        x = "chef";
+                    } else {
+                        x = "user";
+                    }
+                    this.recipeList.add(recipe.getId()+";"+recipe.getName()+";recipe;"+x);
+            }
+            searchByType(data, root.getLeft());
+            searchByType(data, root.getRight());
+        }
+        return this.recipeList;
+    }
+
+    public ArrayList<String> searchByTime(String data){
+        this.recipeList.clear();
+        return searchByTime(data.toLowerCase(), this.root);
+    }
+
+    private ArrayList<String> searchByTime(String data, RecipeNode root){
+        if (root != null && this.recipeList.size() < 15) {
+            Recipe recipe = root.getElement();
+            User recipeAuthor = UserRepo.getUser(recipe.getAuthorEmail());
+            if (recipe.getDishTime().toString().equalsIgnoreCase(data)){
+                String x;
+                if (recipeAuthor.isChef()){
+                    x = "chef";
+                } else {
+                    x = "user";
+                }
+                this.recipeList.add(recipe.getId()+";"+recipe.getName()+";recipe;"+x);
+            }
+            searchByTime(data, root.getLeft());
+            searchByTime(data, root.getRight());
+        }
+        return this.recipeList;
+    }
 
     public ArrayList<String> searchByName(String data) {
         this.recipeList.clear();
@@ -375,7 +450,9 @@ public class RecipeTree{
             Recipe recipe = root.getElement();
             User recipeAuthor = UserRepo.getUser(recipe.getAuthorEmail());
             for (DishTag tag : recipe.getDishTags()) {
-                if (tag.toString().equalsIgnoreCase(data)){
+                System.out.println(tag + data);
+                if (tag.toString().equalsIgnoreCase(data.toUpperCase())){
+                    System.out.println("here");
                     String x;
                     if (recipeAuthor.isChef()){
                         x = "chef";
@@ -386,8 +463,8 @@ public class RecipeTree{
                     break;
                 }
             }
-            searchByName(data, root.getLeft());
-            searchByName(data, root.getRight());
+            searchByTag(data, root.getLeft());
+            searchByTag(data, root.getRight());
         }
         return this.recipeList;
     }

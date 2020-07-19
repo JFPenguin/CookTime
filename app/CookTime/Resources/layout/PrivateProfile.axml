@@ -3,11 +3,8 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#597A88"
+        android:background="#3E4465"
         android:weightSum="100">
-    <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:orientation="vertical">
@@ -109,6 +106,9 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="25sp"/>
+            <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/menuListView"/>
         </LinearLayout>
-    </ScrollView>
 </LinearLayout>

@@ -6,7 +6,9 @@ namespace CookTime {
     /// Used to store attributes for a recipe received in a serialized file throught REST requests.
     /// </summary>
     public class Recipe {
+        public int id;
         public string authorEmail;
+        public string authorName;
         public List<string> comments;
         public int difficulty;
         public List<string> dishTags;
