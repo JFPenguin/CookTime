@@ -3,19 +3,17 @@ package com.btp;
 import com.btp.dataStructures.lists.SinglyList;
 import com.btp.dataStructures.nodes.SinglyNode;
 import com.btp.dataStructures.sorters.Sorter;
-import com.btp.dataStructures.trees.UserBST;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.BusinessRepo;
-import com.btp.serverData.repos.UserRepo;
 import com.btp.serverData.repos.RecipeRepo;
+import com.btp.serverData.repos.UserRepo;
 import com.btp.utils.Notifier;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -340,6 +338,18 @@ public class Resources {
     }
 
     @GET
+    @Path("isChef")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isChef(@QueryParam("email") String email){
+        User user = UserRepo.getUser(email);
+        if (user.isChef()){
+            return "1";
+        } else {
+            return "0";
+        }
+    }
+
+    @GET
     @Path("isChefRated")
     @Produces(MediaType.APPLICATION_JSON)
     public String isChefRated(@QueryParam("ownEmail") String ownEmail, @QueryParam("chefEmail") String chefEmail){
@@ -468,12 +478,30 @@ public class Resources {
 
         ArrayList<String> returnList = new ArrayList<>();
 
-        for (int i = 0; i < 15; i++) {
+        int i = 0;
+        int maxSize = profilesList.size();
+
+        if (maxSize > 15){
+            maxSize = 15;
+        }
+
+        while (i < maxSize){
             returnList.add(profilesList.get(i));
+            i++;
         }
         return returnList;
     }
 
+   @GET
+   @Path("ratings")
+   @Produces(MediaType.APPLICATION_JSON)
+   public ArrayList<String> ratings(){
+        ArrayList<String> ratingList = new ArrayList<>();
+
+
+
+        return ratingList;
+   }
 
     @GET
     @Path("searchByFilter")

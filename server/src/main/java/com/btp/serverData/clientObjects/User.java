@@ -1,5 +1,6 @@
 package com.btp.serverData.clientObjects;
 
+import com.btp.serverData.repos.RecipeRepo;
 import com.btp.serverData.repos.UserRepo;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -238,6 +239,16 @@ public class User implements Comparable<User> {
 
     public void deleteMessage(int index){
         notifications.remove(index);
+    }
+
+    public ArrayList<Integer> userCreatedRecipes(){
+        ArrayList<Integer> userRecipes = new ArrayList<>();
+        for (Integer integer : recipeList) {
+            if (RecipeRepo.getRecipe(integer).getAuthorEmail().equals(this.email)) {
+                userRecipes.add(integer);
+            }
+        }
+        return userRecipes;
     }
 }
 
