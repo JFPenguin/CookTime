@@ -19,6 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import static com.btp.utils.security.HashPassword.hashPassword;
@@ -454,39 +455,85 @@ public class Resources {
     }
 
     @GET
-    @Path("search")
+    @Path("recommend")
     @Produces(MediaType.APPLICATION_JSON)
-    public ArrayList<ArrayList> search(@QueryParam("search") String search, @QueryParam("filter") String filter) {
-        System.out.println("Searching recipes");
-        ArrayList<ArrayList> profilesList = new ArrayList<>();
-        ArrayList<String> userList = new ArrayList<>();
-        ArrayList<String> recipeList = new ArrayList<>();
-        ArrayList<String> businessList = new ArrayList<>();
+    public ArrayList<String> recommended(@QueryParam("email") String email){
+        ArrayList<String> userList = UserRepo.recommend(email);
+        ArrayList<String> recipeList = RecipeRepo.recommend(email);
+        ArrayList<String> businessList = BusinessRepo.recommend(email);
 
-        System.out.println(search);
+        ArrayList<String> profilesList = createSearchList(userList, recipeList, businessList);
 
-        switch (filter) {
-            case "filter1":
-                System.out.println("Filter 1");
-                break;
-            case "filter2":
-                System.out.println("Filter 2");
-                break;
-            case "filter3":
-                System.out.println("Filter 3");
-                break;
-            default:
-                System.out.println("Default Filter");
-                userList = UserRepo.searchUsers(search);
-                recipeList = RecipeRepo.searchByName(search);
-                businessList = BusinessRepo.search(search);
+        Collections.shuffle(profilesList);
+
+        ArrayList<String> returnList = new ArrayList<>();
+
+        for (int i = 0; i < 15; i++) {
+            returnList.add(profilesList.get(i));
         }
-        System.out.println(profilesList);
-        userList = prioChef(userList);
-        recipeList = prioChef(recipeList);
-        profilesList.add(userList);
-        profilesList.add(recipeList);
-        profilesList.add(businessList);
+        return returnList;
+    }
+
+
+    @GET
+    @Path("searchByFilter")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<String> filteredSearch(@QueryParam("search") String search, @QueryParam("filter") String filter){
+        ArrayList<String> recipeList = new ArrayList<>();
+
+        switch (filter){
+            case "tag":
+
+            case "time":
+
+            case "type":
+        }
+
+        return recipeList;
+    }
+
+    @GET
+    @Path("searchByName")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<String> search(@QueryParam("search") String search) {
+        ArrayList<String> userList = UserRepo.searchUsers(search);
+        ArrayList<String> recipeList = RecipeRepo.searchByName(search);
+        ArrayList<String> businessList = BusinessRepo.search(search);
+
+        ArrayList<String> profilesList = createSearchList(userList, recipeList, businessList);
+
+        return profilesList;
+    }
+
+    private ArrayList<String> createSearchList(ArrayList<String> userList, ArrayList<String> recipeList,
+                                               ArrayList<String> businessList){
+        ArrayList<String> profilesList = new ArrayList<>();
+
+        int i = 0;
+
+        for (String data: userList){
+            String[] stringList = data.split(";");
+            if (stringList[2].equals("chef") && i < 3){
+                profilesList.add(i, data);
+                i++;
+            } else {
+                profilesList.add(data);
+            }
+        }
+
+        for (String data: recipeList){
+            String[] stringList = data.split(";");
+            if (stringList[3].equals("chef") && i < 3){
+                profilesList.add(i, stringList[0]+";"+stringList[1]+";"+stringList[2]);
+            } else {
+                profilesList.add(stringList[0]+";"+stringList[1]+";"+stringList[2]);
+            }
+        }
+
+        for (String data: businessList){
+            profilesList.add(data);
+        }
+
         return profilesList;
     }
 
@@ -526,6 +573,24 @@ public class Resources {
 //
 //    }
 
+    @GET
+    @Path("chefRequest")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String chefRequest(@QueryParam("id") String id){
+        if(!UserRepo.getUser(id).isChef()) {
+            if (!UserRepo.isActiveRequest(id)) {
+                UserRepo.addChefRequest(id);
+                UserRepo.getUser(id).sendMessage("We have received your request to become a chef!, please wait from 5 to 7 business days for your request to be processed, thank you!");
+                return "2";
+            }
+            else{
+                UserRepo.getUser(id).sendMessage("You already have an active request!, please wait until you receive a response");
+                return "0";
+            }
+        }
+        return "1";
+    }
+
     private static String saveToDisk(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String id, String location) {
         try {
             OutputStream out = new FileOutputStream(new File(location + id + "-" + fileDetail.getName()));
@@ -542,76 +607,6 @@ public class Resources {
             e.printStackTrace();
         }
         return id + "-" + fileDetail.getName();
-    }
-
-//    @PUT
-//    @Path("updateUserData")
-//    public void updateUserData(String email, String dataType, String data){
-//        User user = UserRepo.getUser(email);
-//        switch (dataType){
-//            case "firstName":
-//                user.setFirstName(data);
-//                break;
-//            case "lastName":
-//                user.setLastName(data);
-//                break;
-//            case "email":
-//                user.setEmail(data);
-//                break;
-//            case "password":
-//                user.setPassword(data);
-//                break;
-//            case "age":
-//                user.setAge(Integer.parseInt(data));
-//                break;
-//            default:
-//                System.out.println("incorrect update request type: "+dataType);
-//                if(Initializer.isGUIOnline()){
-//                    Initializer.serverGUI.printLn("incorrect update request type    : "+dataType);
-//                }
-//        }
-//    }
-
-//    @Path("createRecipe")
-//    @POST
-//    public void createRecipe(Recipe recipe){
-//        int i = random.nextInt(999) + 1;
-//        System.out.println("generating id...");
-//        System.out.println("userID: "+i);
-//        if(Initializer.isGUIOnline()){
-//            Initializer.getServerGUI().printLn("generating id...");
-//            Initializer.getServerGUI().printLn("userID: "+i);
-//        }
-//        while (RecipeRepo.checkByID(i)){
-//            i = random.nextInt(999) + 1;
-//            System.out.println("id in use, generating new id...");
-//            if(Initializer.isGUIOnline()){
-//                Initializer.getServerGUI().printLn("id in use, generating new id...");
-//            }
-//        }
-//        String authorEmail = recipe.getAuthorEmail();
-//        User author = UserRepo.getUser(authorEmail);
-//        RecipeRepo.addRecipe(recipe);
-//    }
-
-//    @Path("getIngredient")
-//    @GET
-//    public Ingredient getIngredient(String ingredient, float qty, MeasurementUnit measurementUnit) {
-//        return new Ingredient(ingredient, qty, measurementUnit);
-//    }
-
-    private ArrayList<String> prioChef(ArrayList<String> list){
-        ArrayList<String> prioList= new ArrayList<>();
-        int i = 0;
-        for (String prioString:list) {
-            if (prioString.split(";")[0].equals("true") && i < 3){
-                prioList.add(i, prioString);
-                i++;
-            } else{
-                prioList.add(prioString);
-            }
-        }
-        return prioList;
     }
 
     private String checkRating(int id, String email){
