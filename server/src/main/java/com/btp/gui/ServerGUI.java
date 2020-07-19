@@ -1,13 +1,15 @@
 package com.btp.gui;
 
+import com.btp.serverData.clientObjects.DishTime;
+import com.btp.serverData.clientObjects.DishType;
+import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
+import com.btp.serverData.repos.RecipeRepo;
 import com.btp.serverData.repos.UserRepo;
 import com.btp.utils.Notifier;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ServerGUI extends JFrame{
@@ -19,16 +21,30 @@ public class ServerGUI extends JFrame{
     private JTable chefRequestTable;
     private JButton acceptButton;
     private JButton refuseButton;
-    private JTable table1;
+    private JTable userData;
     private JTextArea userSearchBoxTextArea;
-    private JTable table2;
+    private JTable userRecipes;
     private JTextArea messageTextArea;
     private JButton sendButton;
     private JButton searchButton;
-    private JCheckBox notifyAllCheckBox;
     private JButton refreshButton;
+    private JRadioButton allUsersRadioButton;
+    private JRadioButton thisUserRadioButton;
+    private ButtonGroup radioButtonGroup = new ButtonGroup();
     private User tmpUser;
-    DefaultTableModel chefRequestModel = new DefaultTableModel(){
+    private final DefaultTableModel chefRequestModel = new DefaultTableModel(){
+        @Override
+        public boolean isCellEditable(int row, int column){
+            return false;
+        }
+    };
+    private final DefaultTableModel userDataModel = new DefaultTableModel(){
+        @Override
+        public boolean isCellEditable(int row, int column){
+            return false;
+        }
+    };
+    private final DefaultTableModel userRecipesModel = new DefaultTableModel(){
         @Override
         public boolean isCellEditable(int row, int column){
             return false;
@@ -44,9 +60,26 @@ public class ServerGUI extends JFrame{
         add(mainPanel);
         serverConsoleMonitor.setEditable(false);
         chefRequestTable.setModel(chefRequestModel);
-        chefRequestModel.addColumn("userName");
-        chefRequestModel.addColumn("email");
-        chefRequestModel.addColumn("recipes");
+        chefRequestModel.addColumn("Name");
+        chefRequestModel.addColumn("Email");
+        chefRequestModel.addColumn("Recipes");
+        userData.setModel(userDataModel);
+        userDataModel.addColumn("Name");
+        userDataModel.addColumn("Age");
+        userDataModel.addColumn("Recipes");
+        userDataModel.addColumn("Chef Status");
+        userDataModel.addColumn("Followers");
+        userDataModel.addColumn("Following");
+        userRecipes.setModel(userRecipesModel);
+        userRecipesModel.addColumn("Name");
+        userRecipesModel.addColumn("Number id");
+        userRecipesModel.addColumn("Type");
+        userRecipesModel.addColumn("Time");
+        userRecipesModel.addColumn("Rating");
+        userRecipesModel.addColumn("# comments");
+        radioButtonGroup.add(allUsersRadioButton);
+        radioButtonGroup.add(thisUserRadioButton);
+
         loadActiveChefRequests();
         searchButton.addActionListener(e -> searchUser());
         sendButton.addActionListener(e -> sendNotification());
@@ -63,25 +96,33 @@ public class ServerGUI extends JFrame{
 
     public void searchUser(){
         if(userSearchBoxTextArea.getText().isEmpty()){
-            searchUser();
-            printLn("ingrese un valor de busqueda valido");
+            printLn("enter an user's email");
             tmpUser=null;
+            userDataModel.setRowCount(0);
+            userRecipesModel.setRowCount(0);
         }
         else{
             if(UserRepo.getUser(userSearchBoxTextArea.getText())==null) {
                 printLn("user ;" + userSearchBoxTextArea.getText() + " not found.");
+                userDataModel.setRowCount(0);
+                userRecipesModel.setRowCount(0);
                 tmpUser = null;
             }
             else{
                 tmpUser = UserRepo.getUser(userSearchBoxTextArea.getText());
-                printLn("user:"+tmpUser.getEmail()+" loaded");
                 populateFields(tmpUser);
             }
         }
     }
 
     private void populateFields(User user) {
+        userSearchBoxTextArea.setText("");
         printLn("loading user data...");
+        loadUserDetails(user);
+        loadUserRecipes(user);
+        printLn("user:"+user.getEmail()+" loaded");
+        thisUserRadioButton.setSelected(true);
+
     }
 
     private void loadActiveChefRequests(){
@@ -95,8 +136,33 @@ public class ServerGUI extends JFrame{
         }
     }
 
+    private void loadUserDetails(User user){
+        userDataModel.setRowCount(0);
+        String name = user.fullName();
+        int age = user.getAge();
+        int recipes = user.userCreatedRecipes().size();
+        boolean chefStatus = user.isChef();
+        int followers = user.getFollowerEmails().size();
+        int following = user.getFollowingEmails().size();
+        userDataModel.addRow(new Object[]{name, age, recipes,chefStatus,followers,following});
+    }
+
+    private void loadUserRecipes(User user){
+        userRecipesModel.setRowCount(0);
+        ArrayList<Integer> userRecipes = user.getRecipeList();
+        for (int userRecipe : userRecipes) {
+            String name = RecipeRepo.getRecipe(userRecipe).getName();
+            int id = RecipeRepo.getRecipe(userRecipe).getId();
+            DishType type = RecipeRepo.getRecipe(userRecipe).getDishType();
+            DishTime time = RecipeRepo.getRecipe(userRecipe).getDishTime();
+            float rating = RecipeRepo.getRecipe(userRecipe).getScore();
+            int comments = RecipeRepo.getRecipe(userRecipe).getComments().size();
+            userRecipesModel.addRow(new Object[]{name, id, type,time,rating,comments});
+        }
+    }
+
     private void sendNotification(){
-        if(notifyAllCheckBox.isSelected()){
+        if(allUsersRadioButton.isSelected()){
             Notifier.notifyAll(messageTextArea.getText());
             printLn("sent message to all users");
             printLn("message:\n"+messageTextArea.getText());
@@ -129,7 +195,6 @@ public class ServerGUI extends JFrame{
         loadActiveChefRequests();
         printLn(UserRepo.getUser(userID).fullName()+"'s chef request rejected");
         Notifier.notify(userID,"We have decided at this time not to approve your chef request, please wait 2 weeks, before sending another request");
-
     }
 
 
