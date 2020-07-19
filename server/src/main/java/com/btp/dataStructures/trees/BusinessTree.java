@@ -419,4 +419,34 @@ public class BusinessTree {
         }
         return businessList;
     }
+
+    public ArrayList<String> rating(){
+        this.businessList.clear();
+        return rating(this.root);
+    }
+
+    private ArrayList<String> rating(BusinessNode root){
+        if (root != null){
+            Business business = root.getElement();
+            if (business.getRaters().size() != 0){
+                businessList.add(business.getId()+";"+business.getName()+";recipe;"+business.getRating());
+                for (String businessData:businessList){
+                    String[] recipeString = businessData.split(";");
+                    if (Float.valueOf(recipeString[3]) < business.getRating()){
+                        int i = businessList.indexOf(businessData);
+                        String tmp = businessList.get(i);
+                        int j = businessList.indexOf(business.getId()+";"+business.getName()+";recipe;"+business.getRating());
+                        businessList.set(i, business.getId()+";"+business.getName()+";recipe;"+business.getRating());
+                        businessList.set(j, tmp);
+                    }
+                }
+                if (businessList.size() > 5){
+                    businessList.remove(5);
+                }
+            }
+            rating(root.getLeft());
+            rating(root.getRight());
+        }
+        return businessList;
+    }
 }
