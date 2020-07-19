@@ -55,42 +55,35 @@ namespace CookTime.Activities
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             
             if (profileType.Equals("user")) {
-                Console.WriteLine("mateched a user comparison");
                 // logic for when the recommended result is a user object
                 var userUrl = "resources/getUser?id=" + profileId;
                 var userRequest = webClient.DownloadString(userUrl);
                 
                 if (_loggedUser.email.Equals(profileId)) {
-                    Console.WriteLine("it did enter here");
                     // loads the same user's profile, since they clicked on themselves
                     Intent userIntent = new Intent(this, typeof(MyProfileActivity));
+                    
                     userIntent.PutExtra("User", userRequest);
                     StartActivity(userIntent);
 
                 }
                 else {
-                    Console.WriteLine("oh no now it entered here");
                     // loads another user's profile, for the user is not the same logged instance.
                     //TODO check if another user profile is or not a chef.
                     Intent userIntent = new Intent(this, typeof(PrivProfileActivity));
-                    Console.WriteLine(userRequest);
+                    
                     userIntent.PutExtra("User", userRequest);
                     userIntent.PutExtra("LoggedId", _loggedUser.email);
                     StartActivity(userIntent);
                 }
             }
             else if (profileType.Equals("recipe")) {
-                Console.WriteLine("type was recipe");
                 // logic for when the recommended result is a recipe instance
                 var recipUrl = "resources/getRecipe?id=" + profileId;
                 var recipRequest = webClient.DownloadString(recipUrl);
                 Intent recipIntent = new Intent(this, typeof(RecipeActivity));
                 recipIntent.PutExtra("Recipe", recipRequest);
-                recipIntent.PutExtra("AuthorName", "cerote");
                 recipIntent.PutExtra("LoggedId", _loggedUser.email);
-                Console.WriteLine("jueputa");
-                Console.WriteLine(recipRequest);
-                Console.WriteLine(_loggedUser.email);
                 StartActivity(recipIntent);
             }
             else {

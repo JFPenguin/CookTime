@@ -83,7 +83,6 @@ namespace CookTime.Activities {
             
             Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
             recipeIntent.PutExtra("Recipe", request);
-            recipeIntent.PutExtra("AuthorName", authorName);
             recipeIntent.PutExtra("LoggedId", _loggedUser.email);
             StartActivity(recipeIntent);
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
