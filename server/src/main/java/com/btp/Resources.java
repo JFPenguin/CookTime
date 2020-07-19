@@ -340,6 +340,18 @@ public class Resources {
     }
 
     @GET
+    @Path("isChef")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isChef(@QueryParam("email") String email){
+        User user = UserRepo.getUser(email);
+        if (user.isChef()){
+            return "1";
+        } else {
+            return "0";
+        }
+    }
+
+    @GET
     @Path("isChefRated")
     @Produces(MediaType.APPLICATION_JSON)
     public String isChefRated(@QueryParam("ownEmail") String ownEmail, @QueryParam("chefEmail") String chefEmail){
@@ -468,12 +480,30 @@ public class Resources {
 
         ArrayList<String> returnList = new ArrayList<>();
 
-        for (int i = 0; i < 15; i++) {
+        int i = 0;
+        int maxSize = profilesList.size();
+
+        if (maxSize > 15){
+            maxSize = 15;
+        }
+
+        while (i < maxSize){
             returnList.add(profilesList.get(i));
+            i++;
         }
         return returnList;
     }
 
+   @GET
+   @Path("ratings")
+   @Produces(MediaType.APPLICATION_JSON)
+   public ArrayList<String> ratings(){
+        ArrayList<String> ratingList = new ArrayList<>();
+
+
+
+        return ratingList;
+   }
 
     @GET
     @Path("searchByFilter")
