@@ -14,12 +14,21 @@
                 android:id="@+id/newsfeedBtn"
                 android:layout_width="100dp"
                 android:layout_height="0dp"
-                android:layout_weight="4"
+                android:layout_weight="5"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textColor="#405863"
                 android:textStyle="bold"
                 android:background="@drawable/ButtonStyle"/>
+    <TextView 
+              android:layout_width="match_parent" 
+              android:layout_height="0dp"
+              android:text="Recommendations"
+              android:textColor="#A1E2C8"
+              android:background="#3E4465"
+              android:textSize="20sp"
+              android:layout_weight="5"
+              android:textAppearance="?android:attr/textAppearanceMedium"/>
     
     <SearchView
             android:id="@+id/searchBar"
@@ -29,11 +38,11 @@
             android:layout_gravity="right"
             android:gravity="right"
             android:layout_height="0dp"
-            android:layout_weight="10" 
+            android:layout_weight="8" 
             android:orientation="vertical"/>
     <ListView
             android:id="@+id/recomList"
             android:layout_width="match_parent"
-            android:layout_weight="86"
+            android:layout_weight="82"
             android:layout_height="wrap_content"/>
 </LinearLayout>
