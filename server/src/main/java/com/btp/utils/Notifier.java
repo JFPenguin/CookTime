@@ -26,7 +26,7 @@ public class Notifier {
      */
     public static void notifyMult(ArrayList<String> idList, String notification){
         for (String s : idList) {
-            UserRepo.getUser(s).sendMessage(notification);
+            UserRepo.getUser(s.split(";")[0]).sendMessage(notification);
             UserRepo.updateTree();
         }
     }

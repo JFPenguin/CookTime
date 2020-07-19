@@ -2,7 +2,6 @@ package com.btp.gui;
 
 import com.btp.serverData.clientObjects.DishTime;
 import com.btp.serverData.clientObjects.DishType;
-import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.RecipeRepo;
 import com.btp.serverData.repos.UserRepo;

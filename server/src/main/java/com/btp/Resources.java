@@ -142,6 +142,11 @@ public class Resources {
             User follower = UserRepo.getUser(email[0]);
             follower.addNewsFeed(i);
         }
+
+        Notifier.notifyMult(user.getFollowerEmails(),user.fullName()+" has uploaded a new recipe!");
+        if (Initializer.isGUIOnline()) {
+            Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
+        }
         UserRepo.updateTree();
     }
 
