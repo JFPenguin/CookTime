@@ -1,5 +1,7 @@
 package com.btp.serverData.clientObjects;
 
+import com.btp.serverData.repos.UserRepo;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,6 +15,7 @@ public class Recipe implements Comparable<Recipe> {
     private String name;
     private String authorEmail;
     private DishTime dishTime;
+    private String authorName;
     private int portions;
     private int duration; //in minutes
     private DishType dishType;
@@ -76,6 +79,7 @@ public class Recipe implements Comparable<Recipe> {
 
     public void setAuthorEmail(String authorEmail) {
         this.authorEmail = authorEmail;
+        this.authorName = UserRepo.getUser(authorEmail).fullName();
     }
 
     /**
@@ -310,6 +314,10 @@ public class Recipe implements Comparable<Recipe> {
 
     public void addComment(String comment){
         this.comments.add(comment);
+    }
+
+    public String getAuthorName() {
+        return authorName;
     }
 
     /**
