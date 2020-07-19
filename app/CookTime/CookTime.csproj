@@ -61,6 +61,7 @@
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />
+        <Compile Include="Activities\SearchActivity.cs" />
         <Compile Include="Adapters\FollowAdapter.cs" />
         <Compile Include="Adapters\IngredientAdapter.cs" />
         <Compile Include="Adapters\CompAdapter.cs" />
@@ -95,6 +96,10 @@
         <AndroidResource Include="Resources\layout\MyProfile.axml" />
         <AndroidResource Include="Resources\layout\PrivateProfile.axml" />
         <AndroidResource Include="Resources\layout\Recipe.axml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\layout\SearchView.axml">
           <SubType>Designer</SubType>
           <Generator>MSBuild:UpdateGeneratedFiles</Generator>
         </AndroidResource>
