@@ -73,7 +73,6 @@ namespace CookTime.Activities {
         private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
         {
             var recipeId = _recipes[eventArgs.Position].Split(';')[0];
-            var authorName = _recipes[eventArgs.Position].Split(';')[2];
             
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
