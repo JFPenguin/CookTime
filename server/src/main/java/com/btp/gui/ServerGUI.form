@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="2" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="410" y="95" width="1178" height="533"/>
+      <xy x="410" y="95" width="1221" height="533"/>
     </constraints>
     <properties>
       <background color="-14606047"/>
@@ -117,18 +117,6 @@
               <grid row="15" column="16" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
             </constraints>
           </vspacer>
-          <component id="925fe" class="javax.swing.JTextArea" binding="userSearchBoxTextArea" default-binding="true">
-            <constraints>
-              <grid row="2" column="1" row-span="1" col-span="11" vsize-policy="0" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <preferred-size width="20" height="20"/>
-              </grid>
-            </constraints>
-            <properties>
-              <background color="-16777216"/>
-              <foreground color="-1"/>
-              <text value=""/>
-            </properties>
-          </component>
           <component id="11a0" class="javax.swing.JLabel">
             <constraints>
               <grid row="1" column="1" row-span="1" col-span="7" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -147,7 +135,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="d9a8e" class="javax.swing.JTable" binding="table1" default-binding="true">
+              <component id="d9a8e" class="javax.swing.JTable" binding="userData">
                 <constraints/>
                 <properties>
                   <background color="-16777216"/>
@@ -210,7 +198,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="c4a14" class="javax.swing.JTable" binding="table2" default-binding="true">
+              <component id="c4a14" class="javax.swing.JTable" binding="userRecipes">
                 <constraints/>
                 <properties>
                   <background color="-16777216"/>
@@ -261,12 +249,37 @@
               <text value="Search"/>
             </properties>
           </component>
-          <component id="549e0" class="javax.swing.JCheckBox" binding="notifyAllCheckBox" default-binding="true">
+          <scrollpane id="6aa">
+            <constraints>
+              <grid row="2" column="1" row-span="1" col-span="11" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="925fe" class="javax.swing.JTextArea" binding="userSearchBoxTextArea" default-binding="true">
+                <constraints/>
+                <properties>
+                  <background color="-16777216"/>
+                  <foreground color="-1"/>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
+          <component id="fa6c0" class="javax.swing.JRadioButton" binding="allUsersRadioButton" default-binding="true">
+            <constraints>
+              <grid row="9" column="12" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="All Users"/>
+            </properties>
+          </component>
+          <component id="6e495" class="javax.swing.JRadioButton" binding="thisUserRadioButton" default-binding="true">
             <constraints>
               <grid row="9" column="8" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="NotifyAll"/>
+              <text value="This user"/>
             </properties>
           </component>
         </children>
@@ -331,7 +344,11 @@
                   <foreground color="-527873"/>
                   <intercellSpacing width="10" height="1"/>
                   <preferredScrollableViewportSize width="150" height="100"/>
+                  <showVerticalLines value="false"/>
                 </properties>
+                <clientProperties>
+                  <Table.isFileList class="java.lang.Boolean" value="false"/>
+                </clientProperties>
               </component>
             </children>
           </scrollpane>
@@ -405,6 +422,14 @@
             <properties>
               <foreground color="-7632753"/>
               <text value="Chef Request Table"/>
+            </properties>
+          </component>
+          <component id="71f6b" class="javax.swing.JButton" binding="refreshButton" default-binding="true">
+            <constraints>
+              <grid row="1" column="8" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="Refresh"/>
             </properties>
           </component>
         </children>
