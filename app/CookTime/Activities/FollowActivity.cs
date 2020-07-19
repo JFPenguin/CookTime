@@ -58,7 +58,7 @@ namespace CookTime.Activities {
 
             if (id == _loggedId) {
                 using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-
+                
                 var url = "resources/getUser?id=" + id;
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var send = webClient.DownloadString(url);
@@ -70,6 +70,8 @@ namespace CookTime.Activities {
             }
             else {
                 using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+                //TODO check chef
 
                 var url = "resources/getUser?id=" + id;
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";

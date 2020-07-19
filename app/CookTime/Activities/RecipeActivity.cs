@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using CookTime.Adapters;
+using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
@@ -17,9 +18,11 @@ namespace CookTime.Activities {
         private string _loggedId;
         private string authorName;
 
-        private Button shareButton;
-        private Button rateButton;
+        private Toast _toast;
+        
         private Button authorButton;
+        private Button rateButton;
+        private Button commentButton;
         
         private TextView recipeNameText;
         private TextView authorText;
@@ -58,10 +61,10 @@ namespace CookTime.Activities {
             _loggedId = Intent.GetStringExtra("LoggedId");
 
             // setting all the fields to axml file identities
-            shareButton = FindViewById<Button>(Resource.Id.shareButton);
-            rateButton = FindViewById<Button>(Resource.Id.rateButton);
             authorButton = FindViewById<Button>(Resource.Id.authorButton);
-
+            rateButton = FindViewById<Button>(Resource.Id.rateButton);
+            commentButton = FindViewById<Button>(Resource.Id.commentButton);
+            
             recipeNameText = FindViewById<TextView>(Resource.Id.recipeNameText);
             authorText = FindViewById<TextView>(Resource.Id.authorText);
             dateText = FindViewById<TextView>(Resource.Id.dateText);
@@ -107,6 +110,31 @@ namespace CookTime.Activities {
             CompAdapter adapter4 = new CompAdapter(this, _recipe.comments);
             commentsListView.Adapter = adapter4;
 
+           commentButton.Click += (sender, args) =>
+            {
+                //Brings dialog fragment forward
+                // var transaction = SupportFragmentManager.BeginTransaction();
+                // var dialogRate = new DialogRate();
+                //
+                // dialogRate.Show(transaction, "rate");
+                // dialogRate.LoggedId = _loggedId;
+                // dialogRate.RecipeId = _recipe.id;
+                //    
+                //dialogRate.EventHandlerRate += RateResult;
+            };
+            
+            rateButton.Click += (sender, args) =>
+            {
+                //Brings dialog fragment forward
+                var transaction = SupportFragmentManager.BeginTransaction();
+                var dialogComment = new DialogComment();
+                
+                dialogComment.Show(transaction, "rate");
+               
+                    
+                //dialogRate.EventHandlerRate += RateResult;
+            };
+            
             authorButton.Click += (sender, args) => 
             {
                 if (_recipe.authorEmail == _loggedId) {
@@ -124,6 +152,8 @@ namespace CookTime.Activities {
                 else {
                     using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
+                    //TODO check chef
+
                     var url = "resources/getUser?id=" + _recipe.authorEmail;
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                     var send = webClient.DownloadString(url);
@@ -135,6 +165,41 @@ namespace CookTime.Activities {
                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight); 
                 }
             };
+        }
+        
+        /// <summary>
+        /// This method is in charge of retrieving the result of the Rate Recipe dialog fragment.
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
+        private void RateResult(object sender, SendRateEvent e) {
+            string toastText;
+
+            if (e.Message == "-1") {
+                toastText = "Please choose a rating";
+            }
+
+            else if (e.Message == "1")
+            {
+                toastText = "You cannot rate this recipe. You either are its owner or you already rated it.";
+            }
+            else {
+                toastText = "Recipe rated! Redirecting to the newsfeed...";
+                
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                var url = "resources/getUser?id=" + _loggedId;
+                
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var userJson = webClient.DownloadString(url);
+                
+                Intent intent = new Intent(this, typeof(NewsfeedActivity));
+                intent.PutExtra("User", userJson);
+                intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            }
+            _toast = Toast.MakeText(this, toastText, ToastLength.Long);
+            _toast.Show();
         }
     }
 }
