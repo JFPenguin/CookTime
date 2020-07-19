@@ -16,7 +16,7 @@ namespace CookTime {
         public List<string> ingredientsList;
         public List<string> instructions;
         public string name;
-        public List<string> photos;
+        public string photos;
         public int portions;
         public string postTimeString;
         public float price;
