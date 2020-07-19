@@ -250,5 +250,9 @@ public class User implements Comparable<User> {
         }
         return userRecipes;
     }
+
+    public void clearNotifications() {
+        notifications.clear();
+    }
 }
 

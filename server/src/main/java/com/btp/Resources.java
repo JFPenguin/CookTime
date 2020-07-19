@@ -246,6 +246,30 @@ public class Resources {
         return value;
     }
 
+    @GET
+    @Path("deleteAllNotifications")
+    public String deleteAllNotifications(@QueryParam("id")String id){
+        UserRepo.getUser(id).clearNotifications();
+        if(UserRepo.getUser(id).getNotifications().size()==0){
+            return "1";
+        }
+        else {
+            return "0";
+        }
+    }
+
+    @GET
+    @Path("deleteSingleNotification")
+    public String deleteSingleNotification(@QueryParam("id")String id,String notification){
+        UserRepo.getUser(id).getNotifications().remove(notification);
+        if(!UserRepo.getUser(id).getNotifications().contains(notification)){
+            return "1";
+        }
+        else {
+            return "0";
+        }
+    }
+
 
     @GET
     @Path("auth")
