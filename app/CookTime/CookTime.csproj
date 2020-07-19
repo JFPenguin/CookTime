@@ -66,6 +66,7 @@
         <Compile Include="Adapters\IngredientAdapter.cs" />
         <Compile Include="Adapters\CompAdapter.cs" />
         <Compile Include="Adapters\RecipeAdapter.cs" />
+        <Compile Include="Adapters\RecomAdapter.cs" />
         <Compile Include="DialogFragments\DialogSettings.cs" />
         <Compile Include="DialogFragments\DialogSignIn.cs" />
         <Compile Include="DialogFragments\DialogSignUp.cs" />

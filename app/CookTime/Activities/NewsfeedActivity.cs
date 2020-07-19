@@ -96,7 +96,6 @@ namespace CookTime.Activities {
             var usJson = JsonConvert.SerializeObject(_loggedUser);
             intent.PutExtra("User", usJson);
             StartActivity(intent);
-            
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);
         }
     }
