@@ -61,6 +61,10 @@ public class RecipeRepo {
         return recipeTree.checkById(id);
     }
 
+    public static ArrayList<String> recommend(String data){
+        return recipeTree.recommend(data);
+    }
+
     public static void updateTree() {
         dataWriter.writeData(recipeTree, path);
     }

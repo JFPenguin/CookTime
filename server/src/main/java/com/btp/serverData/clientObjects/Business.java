@@ -11,8 +11,12 @@ import java.util.ArrayList;
 public class Business{
     private int id;
     private String name;
+    private float rating = 0.0f;
+    private ArrayList<String> raters;
+    private ArrayList<Integer> privateList;
+    private ArrayList<Integer> publicList;
     //TODO location
-    private ArrayList<User> employeeList;
+    private ArrayList<String> employeeList;
     //TODO image logo
 
     public int getId() {
@@ -31,11 +35,27 @@ public class Business{
         this.name = name;
     }
 
-    public ArrayList<User> getEmployeeList() {
+    public ArrayList<String> getEmployeeList() {
         return employeeList;
     }
 
-    public void setEmployeeList(ArrayList<User> employeeList) {
+    public void setEmployeeList(ArrayList<String> employeeList) {
         this.employeeList = employeeList;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public ArrayList<String> getRaters() {
+        return raters;
+    }
+
+    public ArrayList<Integer> getPrivateList() {
+        return privateList;
+    }
+
+    public ArrayList<Integer> getPublicList() {
+        return publicList;
     }
 }

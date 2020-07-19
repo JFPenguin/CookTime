@@ -241,10 +241,48 @@ public class UserBST {
             System.out.println(data);
             System.out.println(user.fullName());
             if (user.fullName().toLowerCase().contains(data)){
-                this.userList.add(user.isChef()+";"+user.fullName()+";"+user.getEmail());
+                String x;
+                if (user.isChef()){
+                    x = "chef";
+                } else {
+                    x = "user";
+                }
+                this.userList.add(user.getEmail()+";"+user.fullName()+";"+x);
             }
             searchPreOrder(data, root.getLeft());
             searchPreOrder(data, root.getRight());
+        }
+        return this.userList;
+    }
+
+    public ArrayList<String> recommend(String email){
+        this.userList.clear();
+        return recommend(email, this.root);
+    }
+
+    private ArrayList<String> recommend(String email, UserTreeNode root){
+        if (root != null) {
+            String recommendedEmail = root.getElement().getEmail();
+            User ownUser = getElementByEmail(email);
+            boolean followed = false;
+            for (String data:ownUser.getFollowingEmails()){
+                String[] dataList = data.split(";");
+                if (dataList[0].equals(email)){
+                    followed = true;
+                    break;
+                }
+            }
+            if (!followed){
+                String x;
+                if (getElementByEmail(email).isChef()){
+                    x = "chef";
+                } else {
+                    x = "user";
+                }
+                this.userList.add(getElementByEmail(email).getEmail()+";"+getElementByEmail(email).fullName()+";"+x);
+            }
+            recommend(email, root.getLeft());
+            recommend(email, root.getRight());
         }
         return this.userList;
     }
