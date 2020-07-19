@@ -94,12 +94,12 @@ namespace CookTime.DialogFragments
         /// </summary>
         public string LoggedId
         {
-                    set => _loggedId = value;
+            set => _loggedId = value;
         }
     }
             
     /// <summary>
-    /// This class represents an event. It contains the rating request result.
+    /// This class represents an event. It contains the comment request result.
     /// The properties inside this class will let the main view access the result.
     /// </summary>
     public class SendCommEvent : EventArgs {

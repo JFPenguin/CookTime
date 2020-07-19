@@ -122,6 +122,11 @@ namespace CookTime.Activities {
             };
         }
         
+        /// <summary>
+        /// This method handles the clicking on a list view item event
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="eventArgs"> Contains the event data </param>
         private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
         {
             var recipeId = _menuList[eventArgs.Position].Split(';')[0];

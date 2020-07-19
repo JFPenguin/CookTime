@@ -66,8 +66,8 @@ namespace CookTime.Activities {
             _myMenuList = JsonConvert.DeserializeObject<IList<string>>(send);
             
             RecipeAdapter adapter = new RecipeAdapter(this, _myMenuList);
-
             _myMenuListView.Adapter = adapter;
+            _myMenuListView.ItemClick += ListClick;
             
             _btnNewsfeed.Click += (sender, args) =>
             {
@@ -114,7 +114,19 @@ namespace CookTime.Activities {
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
         }
-        
+
+        private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
+        {
+            var recipeId = _myMenuList[eventArgs.Position].Split(';')[0];
+            
+            //Brings dialog fragment forward
+            var transaction = SupportFragmentManager.BeginTransaction();
+            var dialogChoice = new DialogChoice();
+            dialogChoice.RecipeId = recipeId;
+            dialogChoice.Show(transaction, "choice");
+            dialogChoice.EventHandlerChoice += ChoiceAction;
+        }
+
         /// <summary>
         /// This method is in charge of retrieving the data entered by the user in the Settings dialog fragment.
         /// </summary>
@@ -137,6 +149,30 @@ namespace CookTime.Activities {
 
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();
+        }
+        
+        /// <summary>
+        /// This method is in charge of retrieving the result of the Choice dialog fragment.
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
+        private void ChoiceAction(object sender, ChoiceEvent e) {
+            
+            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            var url = "resources/getRecipe?id=" + e.RecipeId;
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var request = webClient.DownloadString(url);
+            
+            var response = e.Message;
+            if (response == 0) {
+                Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
+                recipeIntent.PutExtra("Recipe", request);
+                recipeIntent.PutExtra("LoggedId", _loggedUser.email);
+                StartActivity(recipeIntent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            }
+            
+            //TODO else (check if 1 to delete recipe)
         }
     }
 }
