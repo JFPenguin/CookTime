@@ -12,13 +12,12 @@
             android:layout_weight="4"
             android:weightSum="8">
         <Button
-                android:text="My Profile"
+                android:text="MyProfile"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="20sp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:id="@+id/profileButton"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="4"
                 android:layout_gravity="center"
@@ -31,8 +30,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="4"
-                android:textColor="#3E4465"
-                android:background="#C09891"
+                android:textColor="#A1E2C8"
+                android:background="#3E4465"
                 android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="25sp"/>
@@ -40,11 +39,12 @@
     <Button
             android:id="@+id/searchButton"
             android:layout_width="wrap_content"
-            android:text="Search"
+            android:text="SEARCH"
             android:textStyle="bold"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:background="@drawable/ButtonStyle"
-            android:layout_weight="5"
+            android:layout_weight="10"
+            android:textColor="#405863"
             android:layout_gravity="center" 
             android:layout_margin="5dp"
             android:layout_height="0dp"/>

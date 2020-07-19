@@ -22,6 +22,7 @@ namespace CookTime.Activities {
         private Button authorButton;
         private Button rateButton;
         private Button commentButton;
+        private Button shareButton;
         
         private TextView recipeNameText;
         private TextView authorText;
@@ -62,6 +63,7 @@ namespace CookTime.Activities {
             authorButton = FindViewById<Button>(Resource.Id.authorButton);
             rateButton = FindViewById<Button>(Resource.Id.rateButton);
             commentButton = FindViewById<Button>(Resource.Id.commentButton);
+            shareButton = FindViewById<Button>(Resource.Id.shareButton);
             
             recipeNameText = FindViewById<TextView>(Resource.Id.recipeNameText);
             authorText = FindViewById<TextView>(Resource.Id.authorText);
@@ -108,6 +110,34 @@ namespace CookTime.Activities {
             CommentAdapter adapter4 = new CommentAdapter(this, _recipe.comments);
             commentsListView.Adapter = adapter4;
 
+            shareButton.Click += (sender, args) =>
+            {
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+                var url = "resources/shareRecipe?id=" + _recipe.id + "&email=" + _loggedId;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var send = webClient.DownloadString(url);
+
+                string toastText;
+                if (send == "0") {
+                    toastText = "You've already shared this recipe.";
+                }
+
+                else {
+                    toastText = "Recipe shared! Redirecting to MyProfile...";
+                    url = "resources/getUser?id=" + _loggedId;
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var userJson = webClient.DownloadString(url);
+                    
+                    Intent intent = new Intent(this, typeof(MyProfileActivity));
+                    intent.PutExtra("User", userJson);
+                    intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);  
+                }
+                Toast toast = Toast.MakeText(this, toastText, ToastLength.Short);
+            };
+            
            commentButton.Click += (sender, args) =>
             {
                 //Brings dialog fragment forward
