@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using Android.App;
 using Android.Content;
@@ -35,18 +36,17 @@ namespace CookTime.Activities
             
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             
-            var url = "resources/recommend?email=" + _loggedUser.email;
-            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            var request = webClient.DownloadString(url);
-            _recommendations = JsonConvert.DeserializeObject<List<string>>(request);
+             var url = "resources/recommend?email=" + _loggedUser.email;
+             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+             var request = webClient.DownloadString(url);
+             _recommendations = JsonConvert.DeserializeObject<List<string>>(request);
             
             RecomAdapter recomAdapter = new RecomAdapter(this, _recommendations);
             _resultView.Adapter = recomAdapter;
             _resultView.ItemClick += RecomClick;
         }
 
-        private void RecomClick(object sender, AdapterView.ItemClickEventArgs e)
-        {
+        private void RecomClick(object sender, AdapterView.ItemClickEventArgs e) {
             var profileId = _recommendations[e.Position].Split(';')[0];
             var profileName = _recommendations[e.Position].Split(';')[1];
             var profileType = _recommendations[e.Position].Split(';')[2];
@@ -55,32 +55,43 @@ namespace CookTime.Activities
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             
             if (profileType.Equals("user")) {
+                Console.WriteLine("mateched a user comparison");
                 // logic for when the recommended result is a user object
                 var userUrl = "resources/getUser?id=" + profileId;
                 var userRequest = webClient.DownloadString(userUrl);
                 
-                Intent userIntent;
-                
                 if (_loggedUser.email.Equals(profileId)) {
+                    Console.WriteLine("it did enter here");
                     // loads the same user's profile, since they clicked on themselves
-                    userIntent = new Intent(this, typeof(MyProfileActivity));
-                    userIntent.PutExtra("User", JsonConvert.SerializeObject(_loggedUser));
+                    Intent userIntent = new Intent(this, typeof(MyProfileActivity));
+                    userIntent.PutExtra("User", userRequest);
+                    StartActivity(userIntent);
+
                 }
                 else {
+                    Console.WriteLine("oh no now it entered here");
                     // loads another user's profile, for the user is not the same logged instance.
                     //TODO check if another user profile is or not a chef.
-                    userIntent = new Intent(this, typeof(PrivProfileActivity));
+                    Intent userIntent = new Intent(this, typeof(PrivProfileActivity));
+                    Console.WriteLine(userRequest);
                     userIntent.PutExtra("User", userRequest);
+                    userIntent.PutExtra("LoggedId", _loggedUser.email);
+                    StartActivity(userIntent);
                 }
-                StartActivity(userIntent);
             }
             else if (profileType.Equals("recipe")) {
+                Console.WriteLine("type was recipe");
                 // logic for when the recommended result is a recipe instance
                 var recipUrl = "resources/getRecipe?id=" + profileId;
                 var recipRequest = webClient.DownloadString(recipUrl);
                 Intent recipIntent = new Intent(this, typeof(RecipeActivity));
                 recipIntent.PutExtra("Recipe", recipRequest);
-
+                recipIntent.PutExtra("AuthorName", "cerote");
+                recipIntent.PutExtra("LoggedId", _loggedUser.email);
+                Console.WriteLine("jueputa");
+                Console.WriteLine(recipRequest);
+                Console.WriteLine(_loggedUser.email);
+                StartActivity(recipIntent);
             }
             else {
                 //gets business information

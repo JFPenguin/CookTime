@@ -61,7 +61,7 @@ namespace CookTime.Adapters {
             TextView profileTxt = row.FindViewById<TextView>(Resource.Id.rowText);
             var profileName = _profileItems[position].Split(';')[1];
             var profileType = _profileItems[position].Split(';')[2];
-            profileTxt.Text = "Name: " + profileName + "   " + profileType;
+            profileTxt.Text = "Name: " + profileName + " profile type: " + profileType;
             return row;
         }
     }
