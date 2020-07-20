@@ -3,6 +3,7 @@
     "element": {
       "name": "CheeseCake",
       "authorEmail": "loqjad3103@gmail.com",
+      "authorName": "Linux Geek",
       "dishTime": "DINNER",
       "portions": 5,
       "duration": 15,
@@ -42,6 +43,7 @@
       "element": {
         "name": "Huevo Picado",
         "authorEmail": "m@gmail.com",
+        "authorName": "El Magias Rivera",
         "dishTime": "BREAKFAST",
         "portions": 1,
         "duration": 5,
@@ -74,6 +76,7 @@
         "element": {
           "name": "Helado de leche merengada",
           "authorEmail": "m@gmail.com",
+          "authorName": "El Magias Rivera",
           "dishTime": "SNACK",
           "portions": 5,
           "duration": 5,
@@ -117,6 +120,7 @@
         "element": {
           "name": "Quequito simple",
           "authorEmail": "s@gmail.com",
+          "authorName": "Jichael Mackson",
           "dishTime": "SNACK",
           "portions": 5,
           "duration": 5,
@@ -162,6 +166,7 @@
       "element": {
         "name": "Gallo Pinto",
         "authorEmail": "loqjad3103@gmail.com",
+        "authorName": "Linux Geek",
         "dishTime": "BREAKFAST",
         "portions": 5,
         "duration": 15,
@@ -194,6 +199,7 @@
         "element": {
           "name": "Ragu de cerdo",
           "authorEmail": "s@gmail.com",
+          "authorName": "Jichael Mackson",
           "dishTime": "LUNCH",
           "portions": 5,
           "duration": 5,
