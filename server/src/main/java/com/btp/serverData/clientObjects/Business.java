@@ -1,7 +1,5 @@
 package com.btp.serverData.clientObjects;
 
-import com.btp.dataStructures.lists.SinglyList;
-
 import java.util.ArrayList;
 
 /**

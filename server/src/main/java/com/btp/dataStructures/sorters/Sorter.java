@@ -3,8 +3,6 @@ package com.btp.dataStructures.sorters;
 import com.btp.dataStructures.lists.SinglyList;
 import com.btp.dataStructures.nodes.Node;
 import com.btp.serverData.clientObjects.Recipe;
-
-import java.time.Duration;
 import java.util.Arrays;
 
 /**
@@ -334,6 +332,11 @@ public class Sorter {
         return sorted;
     }
 
+    /**
+     * This method takes a list and returns a boolean value, true if the list is sorted, false otherwise.
+     * @param list a recipe list
+     * @return boolean true if sorted, false if not
+     */
     private static boolean checkSortedRadix(SinglyList<Recipe> list){
         boolean sorted = false;
         Node<Recipe> tmp;
@@ -383,6 +386,12 @@ public class Sorter {
         }
     }
 
+    /**
+     * This method is the recursive part of the quicksort algorithm
+     * @param list an Recipe list
+     * @param low  first element of the list
+     * @param high last element of the list
+     */
     private static void partitionRecipe(SinglyList<Recipe> list, int low, int high){
         int i = low;
         int j = high;

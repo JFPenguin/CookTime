@@ -1,7 +1,6 @@
 package com.btp.utils;
 
 import com.btp.serverData.repos.UserRepo;
-
 import java.util.ArrayList;
 
 /**
@@ -21,8 +20,8 @@ public class Notifier {
 
     /**
      * This method takes a String Array
-     * @param idList
-     * @param notification
+     * @param idList ArrayList of String id's
+     * @param notification String message to be sent to the users
      */
     public static void notifyMult(ArrayList<String> idList, String notification){
         for (String s : idList) {
@@ -31,6 +30,10 @@ public class Notifier {
         }
     }
 
+    /**
+     * This method notifies all users on the dataBase
+     * @param notification String message to be sent to the users
+     */
     public static void notifyAll(String notification){
         UserRepo.notifyAll(notification);
         UserRepo.updateTree();

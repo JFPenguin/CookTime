@@ -1,10 +1,6 @@
 package com.btp.serverData.clientObjects;
 
-import com.btp.serverData.repos.UserRepo;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -33,7 +29,11 @@ public class Recipe implements Comparable<Recipe> {
     private ArrayList<String> comments = new ArrayList<>();
     private ArrayList<String> ratedBy = new ArrayList<>();
 
-    public void addPhotos(String name) {
+    /**
+     * setter for the recipe's photo
+     * @param name string id of the photo
+     */
+    public void setPhoto(String name) {
         this.photos = name;
     }
 
@@ -75,11 +75,6 @@ public class Recipe implements Comparable<Recipe> {
      */
     public String getAuthorEmail() {
         return authorEmail;
-    }
-
-    public void setAuthorEmail(String authorEmail) {
-        this.authorEmail = authorEmail;
-        this.authorName = UserRepo.getUser(authorEmail).fullName();
     }
 
     /**
@@ -245,15 +240,6 @@ public class Recipe implements Comparable<Recipe> {
         return postTime;
     }
 
-//    /**
-//     * Gets the postTime attribute but in String
-//     * @return String of the postTime attribute using YYYY/MM/dd HH:mm:ss
-//     */
-//    public String postTimeString() {
-//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-//        return dtf.format(this.postTime);
-//    }
-
     /**
      * Setter of the postTime attribute
      * @param postTime LocalDateTime of the postTime to be set
@@ -273,6 +259,10 @@ public class Recipe implements Comparable<Recipe> {
         return score;
     }
 
+    /**
+     * getter for the string of the time the recipe was posted
+     * @return String representing the time the recipe was posted
+     */
     public String getPostTimeString() {
         return postTimeString;
     }
@@ -300,22 +290,42 @@ public class Recipe implements Comparable<Recipe> {
         return scoreTimes;
     }
 
+    /**
+     * Getter for the emails that have rated this recipe
+     * @return ArrayList of emails
+     */
     public ArrayList<String> getRatedBy() {
         return ratedBy;
     }
 
+    /**
+     * This method adds a rating to the recipe's rating
+     * @param email email of the person rating the recipe
+     */
     public void addRating(String email){
         this.ratedBy.add(email);
     }
 
+    /**
+     * Getter for the comments on the recipe
+     * @return ArrayList of comments
+     */
     public ArrayList<String> getComments() {
         return comments;
     }
 
+    /**
+     * this method add a comment to the recipe
+     * @param comment String comment
+     */
     public void addComment(String comment){
         this.comments.add(comment);
     }
 
+    /**
+     * Getter for the name of the author
+     * @return String of the author's name
+     */
     public String getAuthorName() {
         return authorName;
     }

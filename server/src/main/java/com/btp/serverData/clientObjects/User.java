@@ -1,13 +1,6 @@
 package com.btp.serverData.clientObjects;
 
 import com.btp.serverData.repos.RecipeRepo;
-import com.btp.serverData.repos.UserRepo;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.MediaType;
-
 import java.util.ArrayList;
 
 /**
@@ -19,7 +12,6 @@ public class User implements Comparable<User> {
     private String email;
     private String password;
     private boolean isChef = false;
-    private boolean isChefRequest = false;
     private ArrayList<String> followerEmails = new ArrayList<>();
     private ArrayList<String> followingEmails = new ArrayList<>();
     private ArrayList<Integer> recipeList = new ArrayList<>();
@@ -36,6 +28,10 @@ public class User implements Comparable<User> {
         return userPhotos;
     }
 
+    /**
+     * This method is used to add a photo to the user's photo list
+     * @param photo String name of the photo
+     */
     public void addPhoto(String photo) {
         this.userPhotos.add(photo);
     }
@@ -136,58 +132,98 @@ public class User implements Comparable<User> {
         return this.recipeList;
     }
 
+    /**
+     * this method adds a follower to the users follower list
+     * @param email String of the email of the follower
+     */
     public void addFollower(String email){
         this.followerEmails.add(email);
     }
 
+    /**
+     * this method removes a follower from the users follower list
+     * @param email String of the email of the follower to be removed
+     */
     public void unFollower(String email) {
         this.followerEmails.remove(email);
     }
 
+    /**
+     * this method adds an email reference of someone this user is following
+     * @param email String email, of the person to be followed
+     */
     public void addFollowing(String email){
         this.followingEmails.add(email);
     }
 
+    /**
+     * This method removes an email reference of someone this user is following
+     * @param email String email, of the person to stop being followed
+     */
     public void unFollowing(String email){
         this.followingEmails.remove(email);
     }
 
+    /**
+     * This method is used to retrieve the list of followers
+     * @return ArrayList of the followers of this user
+     */
     public ArrayList<String> getFollowerEmails(){
         return this.followerEmails;
     }
 
+    /**
+     * This method is used to retrieve the list of people this user is following
+     * @return ArrayList of the people being followed
+     */
     public ArrayList<String> getFollowingEmails(){
         return this.followingEmails;
     }
 
+    /**
+     * getter for the chef variable
+     * @return boolean value that determines if this user has been marked as a chef
+     */
     public boolean isChef() {
         return this.isChef;
     }
 
+    /**
+     * setter for the chef variable
+     * @param Chef boolean value to be set
+     */
     public void setChef(boolean Chef) {
         this.isChef = Chef;
     }
 
-    public boolean isChefRequest() {
-        return this.isChefRequest;
-    }
-
-    public void setChefRequest(boolean chefRequest) {
-        this.isChefRequest = chefRequest;
-    }
-
+    /**
+     * returns the chef score of this user
+     * @return
+     */
     public float getChefScore() {
         return this.chefScore;
     }
 
+    /**
+     * This method is used to get the list of people that have rated this user
+     * @return ArrayList of people that rated this user
+     */
     public ArrayList<String> getRatedBy() {
         return ratedBy;
     }
 
+    /**
+     * This method adds an email reference of the people that have rated this user
+     * @param email String email of the user that makes the rating
+     */
     public void addRated(String email){
         ratedBy.add(email);
     }
 
+    /**
+     * This method is used to add to the chef's score
+     * @param score the score to be added to the user
+     */
     public void addChefScore(float score){
         float tmp = this.chefScore * this.chefScoreTimes;
         this.chefScoreTimes++;
@@ -198,19 +234,35 @@ public class User implements Comparable<User> {
         }
         this.chefScore = (tmp + score)/chefScoreTimes;
     }
-    
+
+    /**
+     * returns the amount of times this user has been rated
+     * @return
+     */
     public int getChefScoreTimes() {
         return this.chefScoreTimes;
     }
 
+    /**
+     * This method returns the list of businesses associated with this user
+     * @return
+     */
     public ArrayList<String> getBusinessList() {
         return businessList;
     }
 
+    /**
+     * Getter for the News feed of the user
+     * @return ArrayList of recipes in the users news feed
+     */
     public ArrayList<Integer> getNewsFeed() {
         return newsFeed;
     }
 
+    /**
+     * This method is used to add an int id of a recipe to the news feed
+     * @param id int id of the recipe
+     */
     public void addNewsFeed(int id){
         newsFeed.add(id);
     }
@@ -225,22 +277,42 @@ public class User implements Comparable<User> {
         return this.getEmail().compareToIgnoreCase(user.getEmail());
     }
 
+    /**
+     * This method is used to return the full name of the user
+     * @return String that corresponds to the full name
+     */
     public String fullName() {
         return getFirstName()+" "+getLastName();
     }
 
+    /**
+     * This method adds a notification to the users list of notifications
+     * @param message String of the notification to be added
+     */
     public void sendMessage(String message) {
         notifications.add(message);
     }
 
+    /**
+     * This method is used to retrieve the notifications for the seller
+     * @return ArrayList of notifications
+     */
     public ArrayList<String> getNotifications(){
         return this.notifications;
     }
 
-    public void deleteMessage(int index){
-        notifications.remove(index);
+    /**
+     * This method is used to delete a single notification
+     * @param message the message to be deleted
+     */
+    public void deleteMessage(int message){
+        notifications.remove(message);
     }
 
+    /**
+     * This method is used to return a list of the recipes that were created by this user
+     * @return Arraylist of ints corresponding to recipes
+     */
     public ArrayList<Integer> userCreatedRecipes(){
         ArrayList<Integer> userRecipes = new ArrayList<>();
         for (Integer integer : recipeList) {
@@ -251,6 +323,9 @@ public class User implements Comparable<User> {
         return userRecipes;
     }
 
+    /**
+     * This method clears all notifications from the user
+     */
     public void clearNotifications() {
         notifications.clear();
     }
