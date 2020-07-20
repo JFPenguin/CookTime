@@ -136,6 +136,7 @@ namespace CookTime.Activities {
                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);  
                 }
                 Toast toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                toast.Show();
             };
             
            commentButton.Click += (sender, args) =>

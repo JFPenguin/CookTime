@@ -1,0 +1,17 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#BEA8A3"
+        android:weightSum="100">
+    <TextView
+            android:text="Create your recipe"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="#A1E2C8"
+            android:background="#3E4465"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="30sp"/>
+</LinearLayout>
