@@ -157,7 +157,7 @@ namespace CookTime.Activities {
             
             _btnRecipe.Click += (sender, args) =>
             {
-                Intent intent = new Intent(this, typeof(NotifActivity));
+                Intent intent = new Intent(this, typeof(CreateActivity));
                 intent.PutExtra("LoggedId", _loggedUser.email);
 
                 StartActivity(intent);
