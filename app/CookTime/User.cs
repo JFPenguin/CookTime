@@ -13,6 +13,7 @@ namespace CookTime {
         public List<string> followingEmails;
         public string lastName;
         public string password;
+        public List<string> notifications;
 
         /// <summary>
         /// Constructor for the User class
@@ -29,6 +30,5 @@ namespace CookTime {
             this.lastName = lastName;
             this.password = password;
         }
-        
     }
 }
