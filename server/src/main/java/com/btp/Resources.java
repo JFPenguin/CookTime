@@ -106,11 +106,12 @@ public class Resources {
             System.out.println(i);
             i = random.nextInt(999) +1;
         }
-        User user = UserRepo.getUser(recipe.getAuthorEmail());
         recipe.setId(i);
         recipe.setPostTime(System.currentTimeMillis());
-        recipe.setAuthorName(user.fullName());
         RecipeRepo.addRecipe(recipe);
+        System.out.println(recipe.getAuthorEmail());
+        User user = UserRepo.getUser(recipe.getAuthorEmail());
+        recipe.setAuthorName(user.fullName());
         user.addRecipe(i);
         user.addNewsFeed(i);
         SinglyList<Recipe> recipeList = new SinglyList<>();

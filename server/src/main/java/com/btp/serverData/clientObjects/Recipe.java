@@ -77,6 +77,10 @@ public class Recipe implements Comparable<Recipe> {
         return authorEmail;
     }
 
+    public void setAuthorEmail(String authorEmail){
+        this.authorEmail = authorEmail;
+    }
+
     /**
      * Getter of the dishTime attribute
      * @return ENUM the dishTime attribute
