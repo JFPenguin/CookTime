@@ -8,7 +8,7 @@
     <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="search"
+            android:text="Search"
             android:gravity="center"
             android:textColor="#A1E2C8"
             android:background="#3E4465"
@@ -40,7 +40,6 @@
             android:layout_height="0dp"
             android:text="Filter by:"
             android:gravity="center"
-
             android:textColor="#A1E2C8"
             android:background="#3E4465"
             android:textSize="15sp"
@@ -49,50 +48,291 @@
     <LinearLayout 
             android:layout_width="match_parent" 
             android:layout_height="0dp"
-            android:orientation="horizontal"
             android:layout_weight="5"
-            android:weightSum="100">
-        <Button 
-                android:id="@+id/tagButton"
-                android:layout_width="wrap_content"
+            android:weightSum="100"
+            android:orientation="horizontal">
+        <TextView 
+                android:layout_width="wrap_content" 
                 android:layout_height="match_parent"
+                android:textColor="#A1E2C8"
+                android:background="#3E4465"
                 android:text="tags"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="center"
-                android:layout_weight="33"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginVertical="1dp"
-                android:background="@drawable/ButtonStyle"/>
-        <Button
-                android:id="@+id/timeButton"
-                android:layout_width="wrap_content"
+                android:layout_weight="33.33"/>
+        <TextView 
+                android:layout_width="wrap_content" 
                 android:layout_height="match_parent"
+                android:textColor="#A1E2C8"
+                android:background="#3E4465"
                 android:text="time"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="center"
-                android:layout_weight="33"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginVertical="1dp"
-                android:background="@drawable/ButtonStyle"/>
-        <Button
-                android:id="@+id/typeButton"
-                android:layout_width="wrap_content"
+                android:layout_weight="33.33"/>
+        <TextView 
+                android:layout_width="wrap_content" 
                 android:layout_height="match_parent"
+                android:textColor="#A1E2C8"
+                android:background="#3E4465"
                 android:text="type"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:gravity="center"
-                android:layout_weight="33"
-                android:layout_marginHorizontal="5dp"
-                android:layout_marginVertical="1dp"
-                android:background="@drawable/ButtonStyle"/>
+                android:layout_weight="33.35"/>
+    </LinearLayout>
+    <LinearLayout 
+            android:layout_width="match_parent" 
+            android:layout_height="0dp"
+            android:layout_weight="40"
+            android:orientation="horizontal"
+            android:weightSum="9">
+        <LinearLayout 
+                android:layout_width="0dp" 
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:weightSum="60">
+            <Button 
+                    android:id="@+id/veganBtn"
+                    android:layout_width="match_parent" 
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:tag="jueputa"
+                    android:text="Vegan"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/ButtonStyle"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/vegetarianBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Vegetarian"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/ButtonStyle"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/kosherBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Kosher"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/ButtonStyle"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/celiacBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Celiac"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/ButtonStyle"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/ketoBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Keto"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/ButtonStyle"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/carnivoreBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Carnivore"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:weightSum="50">
+            <Button
+                    android:id="@+id/breakfastBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Breakfast"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/brunchBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Brunch"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/lunchBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Lunch"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/snackBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Snack"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/dinnerBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Dinner"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+        </LinearLayout>
+        
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:weightSum="70">
+            <Button
+                    android:id="@+id/appetizerBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Appetizer"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/entreeBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Entree"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/maindishBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Main dish"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/alcoholBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Alcohol beverage"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/coldBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Cold beverage"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/hotBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Hot Beverage"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+            <Button
+                    android:id="@+id/dessertBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:textSize="14sp"
+                    android:text="Dessert"
+                    android:layout_margin="4dp"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:background="@drawable/ButtonStyle"
+                    android:layout_weight="10"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"/>
+        </LinearLayout>
+        
     </LinearLayout>
                   
     <ListView
             android:id="@+id/recomList"
             android:layout_width="match_parent"
-            android:layout_weight="73"
+            android:layout_weight="43"
             android:layout_height="wrap_content"/>
 </LinearLayout>

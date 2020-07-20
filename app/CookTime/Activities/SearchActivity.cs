@@ -5,6 +5,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
+using Android.Views;
 using Android.Widget;
 using CookTime.Adapters;
 using Newtonsoft.Json;
@@ -17,13 +18,35 @@ namespace CookTime.Activities
     {
         private User _loggedUser;
         private List<string> _recommendations;
+        private string request; //later modified to be the resulting recommendation list prior to deserialization.
+        private string _filter;
+        private RecomAdapter _recomAdapter;
         
         // axml objects
-        private Button _tagFilter;
-        private Button _timeFilter;
-        private Button _typeFilter;
         private SearchView _searchBar;
         private ListView _resultView;
+        //filter buttons
+        //tags
+        private Button _vegan;
+        private Button _vegetarian;
+        private Button _kosher;
+        private Button _celiac;
+        private Button _keto;
+        private Button _carnivore;
+        //time
+        private Button _breakfast;
+        private Button _brunch;
+        private Button _lunch;
+        private Button _snack;
+        private Button _dinner;
+        //type
+        private Button _appetizer;
+        private Button _entree;
+        private Button _maindish;
+        private Button _alcohol;
+        private Button _cold;
+        private Button _hot;
+        private Button _dessert;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -34,21 +57,55 @@ namespace CookTime.Activities
             
             _resultView = FindViewById<ListView>(Resource.Id.recomList);
             _searchBar = FindViewById<SearchView>(Resource.Id.searchBar);
-
-            _tagFilter = FindViewById<Button>(Resource.Id.tagButton);
-            _timeFilter = FindViewById<Button>(Resource.Id.timeButton);
-            _typeFilter = FindViewById<Button>(Resource.Id.typeButton);
-            //TODO assign click methods to these button group.
-
+            
+            //finding buttons
+            //tags
+            _vegan = FindViewById<Button>(Resource.Id.veganBtn);
+            _vegan.Click += FilterClick;
+            _vegetarian = FindViewById<Button>(Resource.Id.vegetarianBtn);
+            _vegetarian.Click += FilterClick;
+            _kosher = FindViewById<Button>(Resource.Id.kosherBtn);
+            _kosher.Click += FilterClick;
+            _celiac = FindViewById<Button>(Resource.Id.celiacBtn);
+            _celiac.Click += FilterClick;
+            _keto = FindViewById<Button>(Resource.Id.ketoBtn);
+            _keto.Click += FilterClick;
+            _carnivore = FindViewById<Button>(Resource.Id.carnivoreBtn);
+            _carnivore.Click += FilterClick;
+            //time
+            _breakfast = FindViewById<Button>(Resource.Id.breakfastBtn);
+            _breakfast.Click += FilterClick;
+            _brunch = FindViewById<Button>(Resource.Id.brunchBtn);
+            _brunch.Click += FilterClick;
+            _lunch = FindViewById<Button>(Resource.Id.lunchBtn);
+            _lunch.Click += FilterClick;
+            _snack = FindViewById<Button>(Resource.Id.snackBtn);
+            _snack.Click += FilterClick;
+            _dinner = FindViewById<Button>(Resource.Id.dinnerBtn);
+            _dinner.Click += FilterClick;
+            //type
+            _appetizer = FindViewById<Button>(Resource.Id.appetizerBtn);
+            _appetizer.Click += FilterClick;
+            _entree = FindViewById<Button>(Resource.Id.entreeBtn);
+            _entree.Click += FilterClick;
+            _maindish = FindViewById<Button>(Resource.Id.maindishBtn);
+            _maindish.Click += FilterClick;
+            _alcohol = FindViewById<Button>(Resource.Id.alcoholBtn);
+            _alcohol.Click += FilterClick;
+            _cold = FindViewById<Button>(Resource.Id.coldBtn);
+            _cold.Click += FilterClick;
+            _hot  = FindViewById<Button>(Resource.Id.hotBtn);
+            _hot.Click += FilterClick;
+            
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             
              var url = "resources/recommend?email=" + _loggedUser.email;
              webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-             var request = webClient.DownloadString(url);
+             request = webClient.DownloadString(url);
              _recommendations = JsonConvert.DeserializeObject<List<string>>(request);
             
-            RecomAdapter recomAdapter = new RecomAdapter(this, _recommendations);
-            _resultView.Adapter = recomAdapter;
+            _recomAdapter = new RecomAdapter(this, _recommendations);
+            _resultView.Adapter = _recomAdapter;
             _resultView.ItemClick += RecomClick;
         }
 
@@ -98,21 +155,18 @@ namespace CookTime.Activities
             }
         }
 
-        private void tagClick()
+        private void FilterClick(object sender, EventArgs e)
         {
-            //TODO dialog fragment for filter selection in tag button
-
-        }
-
-        private void timeClick()
-        {
-            //TODO dialog fragment for filter selection in time button
-
-        }
-
-        private void typeClick()
-        {
-            //TODO dialog fragment for filter selection in type button
+            var queryList = request;
+            Button button = (Button) sender;
+            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var url = "resources/filterRecommend?array=" + queryList + "?data=" + button.Text;
+            var response = webClient.DownloadString(url);
+            
+            _recommendations = JsonConvert.DeserializeObject<List<string>>(response);
+            _recomAdapter.ProfileItems = _recommendations;
+            _resultView.Adapter = _recomAdapter;
         }
     }
 }

@@ -74,6 +74,7 @@
         <Compile Include="DialogFragments\DialogSettings.cs" />
         <Compile Include="DialogFragments\DialogSignIn.cs" />
         <Compile Include="DialogFragments\DialogSignUp.cs" />
+        <Compile Include="DialogFragments\DialogTagFilter.cs" />
         <Compile Include="Recipe.cs" />
         <Compile Include="Resources\Resource.Designer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,6 +92,10 @@
         <AndroidResource Include="Resources\drawable\ListRowStyle.xml" />
         <AndroidResource Include="Resources\layout\DialogChoice.axml" />
         <AndroidResource Include="Resources\layout\DialogComment.axml" />
+        <AndroidResource Include="Resources\layout\DialogFilter.axml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
         <AndroidResource Include="Resources\layout\DialogRate.axml" />
         <AndroidResource Include="Resources\layout\DialogSettings.axml" />
         <AndroidResource Include="Resources\layout\DialogSignIn.axml" />
