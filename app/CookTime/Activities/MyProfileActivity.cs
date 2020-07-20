@@ -45,7 +45,7 @@ namespace CookTime.Activities {
             
             _nameView = FindViewById<TextView>(Resource.Id.myNameView);
             _ageView = FindViewById<TextView>(Resource.Id.myAgeView);
-
+            
             _btnFollowers = FindViewById<Button>(Resource.Id.btnMyFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnMyFollowing);
             _btnSettings = FindViewById<Button>(Resource.Id.btnSettings);
@@ -53,19 +53,19 @@ namespace CookTime.Activities {
             _btnNotif = FindViewById<Button>(Resource.Id.btnNotif);
             
             _myMenuListView = FindViewById<ListView>(Resource.Id.myMenuListView);
-
+            
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
-
+            
             _btnFollowers.Text = "FOLLOWERS: " + _loggedUser.followerEmails.Count;
             _btnFollowing.Text = "FOLLOWING: " + _loggedUser.followingEmails.Count;
             
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-
+            
             var url = "resources/myMenu?email=" + _loggedUser.email + "&filter=date";
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var send = webClient.DownloadString(url);
-
+            
             _myMenuList = JsonConvert.DeserializeObject<IList<string>>(send);
             
             RecipeAdapter adapter = new RecipeAdapter(this, _myMenuList);
@@ -90,7 +90,7 @@ namespace CookTime.Activities {
                 var transaction = SupportFragmentManager.BeginTransaction();
                 var dialogSettings = new DialogSettings();
                 dialogSettings.Show(transaction, "settings");
-
+            
                 dialogSettings.Email = _loggedUser.email;
                 dialogSettings.EventHandlerPass += PassResult;
             };
@@ -119,11 +119,12 @@ namespace CookTime.Activities {
             
             _btnNotif.Click += (sender, args) =>
             {
-                // Intent intent = new Intent(this, typeof(FollowActivity));
-                // intent.PutStringArrayListExtra("List", _loggedUser.notifications);
-                //
-                // StartActivity(intent);
-                // OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Intent intent = new Intent(this, typeof(NotifActivity));
+                intent.PutStringArrayListExtra("NotifList", _loggedUser.notifications);
+                intent.PutExtra("LoggedId", _loggedUser.email);
+
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
         }
 
@@ -138,7 +139,7 @@ namespace CookTime.Activities {
             dialogChoice.Show(transaction, "choice");
             dialogChoice.EventHandlerChoice += ChoiceAction;
         }
-
+        
         /// <summary>
         /// This method is in charge of retrieving the data entered by the user in the Settings dialog fragment.
         /// </summary>
@@ -158,7 +159,7 @@ namespace CookTime.Activities {
             else {
                 toastText = "Password changed successfully";
             }
-
+        
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();
         }

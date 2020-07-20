@@ -276,6 +276,7 @@ public class Resources {
     @Path("deleteAllNotifications")
     public String deleteAllNotifications(@QueryParam("id")String id){
         UserRepo.getUser(id).clearNotifications();
+        UserRepo.updateTree();
         if(UserRepo.getUser(id).getNotifications().size()==0){
             return "1";
         }

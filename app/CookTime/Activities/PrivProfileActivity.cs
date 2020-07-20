@@ -132,7 +132,7 @@ namespace CookTime.Activities {
             var recipeId = _menuList[eventArgs.Position].Split(';')[0];
             
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-
+        
             var url = "resources/getRecipe?id=" + recipeId;
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var request = webClient.DownloadString(url);
