@@ -188,12 +188,17 @@ public class ServerGUI extends JFrame{
 
     private void rejectChef() {
         int row = chefRequestTable.getSelectedRow();
-        String userID = (String) chefRequestModel.getValueAt(row,1);
-        UserRepo.getUser(userID).setChef(false);
-        UserRepo.removeChefRequest(userID);
-        loadActiveChefRequests();
-        printLn(UserRepo.getUser(userID).fullName()+"'s chef request rejected");
-        Notifier.notify(userID,"We have decided at this time not to approve your chef request, please wait 2 weeks, before sending another request");
+        if(row==-1){
+            printLn("please select a user");
+        }
+        else {
+            String userID = (String) chefRequestModel.getValueAt(row, 1);
+            UserRepo.getUser(userID).setChef(false);
+            UserRepo.removeChefRequest(userID);
+            loadActiveChefRequests();
+            printLn(UserRepo.getUser(userID).fullName() + "'s chef request rejected");
+            Notifier.notify(userID, "We have decided at this time not to approve your chef request, please wait 2 weeks, before sending another request");
+        }
     }
 
 
