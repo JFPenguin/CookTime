@@ -330,6 +330,10 @@ public class Recipe implements Comparable<Recipe> {
         return this.authorName;
     }
 
+    /**
+     * Setter for the name of the author
+     * @param name String of the author's name
+     */
     public void setAuthorName(String name){
         this.authorName = name;
     }
