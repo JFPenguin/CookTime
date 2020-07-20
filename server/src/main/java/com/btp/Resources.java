@@ -19,7 +19,6 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -50,10 +49,9 @@ public class Resources {
     }
 
     /**
-     * API getter for the user obj
-     *
+     * Sends a user with a specific email
      * @param email String value of the email of the user
-     * @return User obj
+     * @return User
      */
     @Path("getUser")
     @GET
@@ -63,10 +61,9 @@ public class Resources {
     }
 
     /**
-     * API getter for the recipe obj
-     *
+     * Sends a recipe with a specific id
      * @param id int value of the id of the recipe
-     * @return recipe obj
+     * @return Recipe
      */
     @Path("getRecipe")
     @GET
@@ -76,6 +73,12 @@ public class Resources {
     }
 
 
+    /**
+     * Creates an user
+     * @param user user to be created
+     * @param uniqueID boolean to check if the id is unique
+     * @throws NoSuchAlgorithmException
+     */
     @POST
     @Path("createUser")
     public void createUser(User user, @QueryParam("uniqueID") boolean uniqueID) throws NoSuchAlgorithmException {
@@ -104,6 +107,10 @@ public class Resources {
         UserRepo.addUser(user);
     }
 
+    /**
+     * Creates a recipe
+     * @param recipe Recipe to be added
+     */
     @POST
     @Path("createRecipe")
     public void createRecipe(Recipe recipe){
@@ -153,6 +160,12 @@ public class Resources {
         UserRepo.updateTree();
     }
 
+    /**
+     * Shares a recipe to its myMenu
+     * @param id int of the recipe
+     * @param email String of the user sharing the recipe
+     * @return String "1" if the recipe was shared, "0" if not
+     */
     @GET
     @Path("shareRecipe")
     @Produces(MediaType.APPLICATION_JSON)
@@ -189,6 +202,13 @@ public class Resources {
         return "1";
     }
 
+    /**
+     * Comments a recipe
+     * @param id int id of the recipe
+     * @param comment String comment
+     * @param email String email of the user commenting
+     * @return String "1" to notify the client the action was successful
+     */
     @GET
     @Path("commentRecipe")
     @Produces(MediaType.APPLICATION_JSON)
@@ -204,6 +224,12 @@ public class Resources {
         return "1";
     }
 
+    /**
+     * Deletes a recipe from the database or myMenu depending of user ownership
+     * @param email String email of the user asking for deletion
+     * @param id int id of the recipe
+     * @return String "1" if deletion was successful, "0" if not
+     */
     @GET
     @Path("deleteRecipe")
     @Produces(MediaType.APPLICATION_JSON)
@@ -236,6 +262,11 @@ public class Resources {
     }
 
 
+    /**
+     * Checks if an email is in the database
+     * @param email String email to be checked
+     * @return String "1" if its on the database, "0" if not
+     */
     @GET
     @Path("isEmailNew")
     @Produces(MediaType.APPLICATION_JSON)
@@ -249,6 +280,11 @@ public class Resources {
         return value;
     }
 
+    /**
+     * Deletes al notifications of an user
+     * @param id String email of the user
+     * @return String "1" if it was successful, "0" if not
+     */
     @GET
     @Path("deleteAllNotifications")
     public String deleteAllNotifications(@QueryParam("id")String id){
@@ -261,6 +297,12 @@ public class Resources {
         }
     }
 
+    /**
+     * Deletes a notification for a user
+     * @param id String email of the user
+     * @param notification String notification to be deleted
+     * @return String "1" if it was successful, "0" if not
+     */
     @GET
     @Path("deleteSingleNotification")
     public String deleteSingleNotification(@QueryParam("id")String id,String notification){
@@ -274,6 +316,13 @@ public class Resources {
     }
 
 
+    /**
+     * Logins an user to its account
+     * @param email String email of the user entering the account
+     * @param password String password of the user
+     * @return String "1" if login was successful, "0" if was unsuccessful, "2" if the email isn't in the database
+     * @throws NoSuchAlgorithmException
+     */
     @GET
     @Path("auth")
     @Produces(MediaType.APPLICATION_JSON)
@@ -293,6 +342,12 @@ public class Resources {
 
     }
 
+    /**
+     * Shows the myMenu of a specific user and using a filter to sort the list
+     * @param email String email of the user
+     * @param filter String filter to be used as a sort
+     * @return ArrayList<String> with the sorted recipes of the myMenu of that user
+     */
     @GET
     @Path("myMenu")
     @Produces(MediaType.APPLICATION_JSON)
@@ -327,6 +382,11 @@ public class Resources {
         return myMenuList;
     }
 
+    /**
+     * Shows the newsfeed of a specific user
+     * @param email String email of the user
+     * @return ArrayList<String> with the recipes of the newsfeed of that user
+     */
     @GET
     @Path("newsfeed")
     @Produces(MediaType.APPLICATION_JSON)
@@ -351,6 +411,12 @@ public class Resources {
         return newsfeed;
     }
 
+    /**
+     * Checks if an user is following another user
+     * @param ownEmail String email of the user sending the request
+     * @param followingEmail String email of the user that needs to be checked
+     * @return String
+     */
     @GET
     @Path("isFollowing")
     @Produces(MediaType.APPLICATION_JSON)
@@ -369,6 +435,11 @@ public class Resources {
         return response;
     }
 
+    /**
+     * Checks if an user is a chef
+     * @param email String email of the user
+     * @return String "0" if the chef can be rated, "1" if it can't be rated
+     */
     @GET
     @Path("isChef")
     @Produces(MediaType.APPLICATION_JSON)
@@ -381,6 +452,12 @@ public class Resources {
         }
     }
 
+    /**
+     * Checks if a chef was rated by a specific user. Calls a private method
+     * @param ownEmail String email of the user rating the chef
+     * @param chefEmail String email of the chef to be rated
+     * @return String "0" if the chef can be rated, "1" if it can't be rated
+     */
     @GET
     @Path("isChefRated")
     @Produces(MediaType.APPLICATION_JSON)
@@ -388,6 +465,13 @@ public class Resources {
         return checkChefRating(ownEmail, chefEmail);
     }
 
+    /**
+     * Rates a chef
+     * @param ownEmail String email of the user rating the chef
+     * @param chefEmail String email of the chef
+     * @param score int Rating sent by the user
+     * @return "0" if the rating was successful, "1" if not
+     */
     @GET
     @Path("rateChef")
     @Produces(MediaType.APPLICATION_JSON)
@@ -403,6 +487,12 @@ public class Resources {
         return response;
     }
 
+    /**
+     * Checks if a chef was rated by a specific user
+     * @param ownEmail String email of the user rating the chef
+     * @param chefEmail String email of the chef to be rated
+     * @return String "0" if the chef can be rated, "1" if it can't be rated
+     */
     private String checkChefRating(String ownEmail, String chefEmail) {
         User chef = UserRepo.getUser(chefEmail);
         String response = "0";
@@ -420,6 +510,12 @@ public class Resources {
         return response;
     }
 
+    /**
+     * Checks if recipe was already rated by an user
+     * @param id int the id of the recipe
+     * @param email String email of the user rating the recipe
+     * @return String "1" if it was rated previously, "0" if not
+     */
     @GET
     @Path("isRated")
     @Produces(MediaType.APPLICATION_JSON)
@@ -427,6 +523,13 @@ public class Resources {
         return checkRating(id, email);
     }
 
+    /**
+     * Rates a recipe
+     * @param id int the id of the recipe to be rated
+     * @param email String the email of the user sending the rating
+     * @param score int the score assigned by the user
+     * @return String "1" if the user already rated this recipe, "0" if the recipe was scored successfully
+     */
     @GET
     @Path("rateRecipe")
     @Produces(MediaType.APPLICATION_JSON)
@@ -442,6 +545,12 @@ public class Resources {
         return response;
     }
 
+    /**
+     * Makes a user  follow another user
+     * @param ownEmail String email of the user sending the request
+     * @param followingEmail String email of the user who is being followed
+     * @return String "0" if it already follows the user, "1" if the request was successful
+     */
     @GET
     @Path("followUser")
     @Produces(MediaType.APPLICATION_JSON)
@@ -475,6 +584,14 @@ public class Resources {
         return response;
     }
 
+     /**
+     * Changes an user password
+     * @param email String email of the user to change the data
+     * @param newPassword String the new password
+     * @param password String the old password
+     * @return String "1" if the password was changed, "0" if not
+     * @throws NoSuchAlgorithmException
+     */
     @GET
     @Path("editUserPassword")
     @Produces(MediaType.APPLICATION_JSON)
@@ -496,6 +613,12 @@ public class Resources {
         return response;
     }
 
+    /**
+     * Searches a list of recipes using a filter and a text to be matched
+     * @param list String the list in String format of the recipes to be searched
+     * @param data String text to be matched
+     * @return ArrayList<String> with all the recipes that matched
+     */
     @GET
     @Path("filterRecommend")
     @Produces(MediaType.APPLICATION_JSON)
@@ -568,6 +691,12 @@ public class Resources {
         return filterList;
     }
 
+    /**
+     * Searches a list of recipes by its dishTime using a text
+     * @param list ArrayList<String> the list to be searched
+     * @param search ArrayList<String> the text to be matched
+     * @return ArrayList<String> the matching recipes
+     */
     private ArrayList<String> filterTime(ArrayList<String> list, String search){
         ArrayList<String> filteredList = new ArrayList<>();
 
@@ -584,6 +713,12 @@ public class Resources {
         return filteredList;
     }
 
+    /**
+     * Searches a list of recipes by its dishTags using a text
+     * @param list ArrayList<String> the list to be searched
+     * @param search ArrayList<String> the text to be matched
+     * @return ArrayList<String> the matching recipes
+     */
     private ArrayList<String> filterTag(ArrayList<String> list, String search){
         ArrayList<String> filteredList = new ArrayList<>();
 
@@ -602,6 +737,12 @@ public class Resources {
         return filteredList;
     }
 
+    /**
+     * Searches a list of recipes by its dishType using a text
+     * @param list ArrayList<String> the list to be searched
+     * @param search ArrayList<String> the text to be matched
+     * @return ArrayList<String> the matching recipes
+     */
     private ArrayList<String> filterType(ArrayList<String> list, String search){
         ArrayList<String> filteredList = new ArrayList<>();
 
@@ -618,6 +759,11 @@ public class Resources {
         return filteredList;
     }
 
+    /**
+     * Sends a list of recommended profiles to an specific user
+     * @param email String email of the user searching recommendations
+     * @return ArrayList<String> with 15 recommended profiles the user hasn't rated or followed.
+     */
     @GET
     @Path("recommend")
     @Produces(MediaType.APPLICATION_JSON)
@@ -646,6 +792,10 @@ public class Resources {
         return returnList;
     }
 
+    /**
+     * Sends a list with the five highest rated recipes and businesses
+     * @return ArrayList<String> of the highest rated profiles
+     */
     @GET
     @Path("ratings")
     @Produces(MediaType.APPLICATION_JSON)
@@ -667,6 +817,12 @@ public class Resources {
         return ratingList;
     }
 
+    /**
+     * Searches a text using an specific attribute of the recipe class
+     * @param search String text to be searched
+     * @param filter String attribute to be matched (dishTag, dishType, dishTime)
+     * @return ArrayList<String> with all the matching profiles
+     */
     @GET
     @Path("searchByFilter")
     @Produces(MediaType.APPLICATION_JSON)
@@ -688,6 +844,11 @@ public class Resources {
         return recipePrio(recipeList);
     }
 
+    /**
+     * Makes the first 3 results be of a chef type user if possible
+     * @param recipeList ArrayList<String> the list to be sorted
+     * @return ArrayList<String> the sorted list
+     */
     private ArrayList<String> recipePrio(ArrayList<String> recipeList){
         ArrayList<String> profilesList = new ArrayList<>();
 
@@ -705,6 +866,11 @@ public class Resources {
         return recipeList;
     }
 
+    /**
+     * Searches in the database a line of text
+     * @param search String name/text to be searched
+     * @return ArrayList<String> with all the profiles that matched the search
+     */
     @GET
     @Path("searchByName")
     @Produces(MediaType.APPLICATION_JSON)
@@ -718,6 +884,13 @@ public class Resources {
         return profilesList;
     }
 
+    /**
+     * Makes a list of profiles have the first 3 Strings be of a chef type user
+     * @param userList ArrayList<String> the list with user profiles
+     * @param recipeList ArrayList<String> the list with recipe profiles
+     * @param businessList ArrayList<String> the list with business profiles
+     * @return ArrayList<String> the resulting list
+     */
     private ArrayList<String> createSearchList(ArrayList<String> userList, ArrayList<String> recipeList,
                                                ArrayList<String> businessList){
         ArrayList<String> profilesList = new ArrayList<>();
@@ -751,7 +924,9 @@ public class Resources {
     }
 
     /**
-    *
+     * Shows a picture to the client
+     * @param id String the identifier of the user/recipe
+     * @return Response the image object
      */
     @GET
     @Path("getPicture")
@@ -786,6 +961,11 @@ public class Resources {
 //
 //    }
 
+    /**
+     * Sends a request to the server admins to be labeled as chef
+     * @param id String email of the user sending the request
+     * @return String "2" if the request was successful, "0" if the request is pending approval, "1" if the user is a chef
+     */
     @GET
     @Path("chefRequest")
     @Produces(MediaType.APPLICATION_JSON)
@@ -804,6 +984,14 @@ public class Resources {
         return "1";
     }
 
+    /**
+     * Saves a file to an specific path
+     * @param uploadedInputStream InputStream the file to be saved.
+     * @param fileDetail FormDataContentDisposition the type of file to be saved (picture, etc)
+     * @param id String the identifier of the file
+     * @param location String path to the folder
+     * @return
+     */
     private static String saveToDisk(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String id, String location) {
         try {
             OutputStream out = new FileOutputStream(new File(location + id + "-" + fileDetail.getName()));
@@ -822,6 +1010,12 @@ public class Resources {
         return id + "-" + fileDetail.getName();
     }
 
+    /**
+     * Checks if a recipe has been rated by a specific user
+     * @param id int The id of the recipe
+     * @param email String the email of the user
+     * @return String "1" if it was rated, "0" if not.
+     */
     private String checkRating(int id, String email){
         Recipe recipe = RecipeRepo.getRecipe(id);
         String response = "0";

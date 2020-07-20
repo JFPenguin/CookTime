@@ -224,17 +224,28 @@ public class UserBST {
 
     /**
      * Getter for the root attribute
-     * @return the root TreeNode
+     * @return UserTreeNode the root
      */
     public UserTreeNode getRoot() {
         return root;
     }
 
+    /**
+     * Searches the tree using preOrder matching the data with the name of the user. Calls the private method searchPreOrder
+     * @param data String text to be matched
+     * @return ArrayList<String> All the users that match the text
+     */
     public ArrayList<String> searchPreOrder(String data) {
         this.userList.clear();
         return searchPreOrder(data.toLowerCase(), this.root);
     }
 
+    /**
+     * Searches the tree using preOrder matching the data with the name of the user. Calls itself recursively
+     * @param data String text to be matched
+     * @param root UserTreeNode current node being searched
+     * @return ArrayList<String> All the users that match the text
+     */
     private ArrayList<String> searchPreOrder(String data, UserTreeNode root){
         if (root != null && userList.size() < 5) {
             User user = root.getElement();
@@ -255,11 +266,22 @@ public class UserBST {
         return this.userList;
     }
 
+    /**
+     * Searches the tree using preOrder getting all users the person hasn't followed. Calls the private method recommend
+     * @param email String text to be matched
+     * @return ArrayList<String> All the users that match the condition
+     */
     public ArrayList<String> recommend(String email){
         this.userList.clear();
         return recommend(email, this.root);
     }
 
+    /**
+     * Searches the tree using preOrder getting all users the person hasn't followed. Calls itself recursively
+     * @param email String text to be matched
+     * @param root UserTreeNode
+     * @return ArrayList<String> All the users that match the condition
+     */
     private ArrayList<String> recommend(String email, UserTreeNode root){
         if (root != null) {
             String recommendedEmail = root.getElement().getEmail();
@@ -309,14 +331,27 @@ public class UserBST {
         }
     }
 
+    /**
+     * Notifies all the users of a message. Calls the private method messageAll
+     * @param message String message to notify
+     */
     public void messageAll(String message) {
         messageUser(this.root,message);
     }
 
+    /**
+     * Deletes a Recipe from all users. Calls the private method deleteRecipe
+     * @param id int the id of the recipe to be deleted
+     */
     public void deleteRecipe(int id){
         deleteRecipe(id, this.root);
     }
 
+    /**
+     * Deletes a Recipe from all users. Calls itself recursively
+     * @param id int the id of the recipe to be deleted
+     * @param root UserTreeNode current node is searching
+     */
     private void deleteRecipe(int id, UserTreeNode root){
         if (root != null){
             root.getElement().getNewsFeed().remove(Integer.valueOf(id));
