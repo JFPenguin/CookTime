@@ -23,8 +23,13 @@ namespace CookTime.Activities {
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnFollow;
+        private Button _btnDate;
+        private Button _btnScore;
+        private Button _btnDiff;
+        private string sortStr;
         private ListView _menuListView;
         private IList<string> _menuList;
+        private RecipeAdapter _adapter;
 
         /// <summary>
         /// This method is called when the activity is starting.
@@ -48,7 +53,10 @@ namespace CookTime.Activities {
             _btnFollowers = FindViewById<Button>(Resource.Id.btnFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
             _btnFollow = FindViewById<Button>(Resource.Id.btnFollow);
-
+            _btnDate = FindViewById<Button>(Resource.Id.btnPDate);
+            _btnScore = FindViewById<Button>(Resource.Id.btnPScore);
+            _btnDiff = FindViewById<Button>(Resource.Id.btnPDiff);
+            
             _menuListView = FindViewById<ListView>(Resource.Id.menuListView);
 
             _nameView.Text = "Name: " + _user.firstName + " " + _user.lastName;
@@ -67,8 +75,8 @@ namespace CookTime.Activities {
             var send = webClient.DownloadString(url);
             
             _menuList = JsonConvert.DeserializeObject<IList<string>>(send);
-            RecipeAdapter adapter = new RecipeAdapter(this, _menuList);
-            _menuListView.Adapter = adapter;
+            _adapter = new RecipeAdapter(this, _menuList);
+            _menuListView.Adapter = _adapter;
             _menuListView.ItemClick += ListClick;
             
             _btnFollow.Text = response == "0" ? "FOLLOW" : "UNFOLLOW";
@@ -120,6 +128,24 @@ namespace CookTime.Activities {
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
+            
+            _btnDate.Click += (sender, args) =>
+            {
+                sortStr = "date";
+                SortMenu();
+            };
+            
+            _btnScore.Click += (sender, args) =>
+            {
+                sortStr = "score";
+                SortMenu();
+            };
+            
+            _btnDiff.Click += (sender, args) =>
+            {
+                sortStr = "difficulty";
+                SortMenu();
+            };
         }
         
         /// <summary>
@@ -142,6 +168,21 @@ namespace CookTime.Activities {
             recipeIntent.PutExtra("LoggedId", _loggedId);
             StartActivity(recipeIntent);
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+        }
+        
+        /// <summary>
+        /// This method sorts the Menu of the user according to the sortStr attribute
+        /// </summary>
+        private void SortMenu()
+        {
+            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            var url = "resources/myMenu?email=" + _user.email + "&filter=" + sortStr;
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var request = webClient.DownloadString(url);
+
+            _menuList = JsonConvert.DeserializeObject<IList<string>>(request);
+            _adapter.RecipeItems = _menuList;
+            _menuListView.Adapter = _adapter;
         }
     }
 }
