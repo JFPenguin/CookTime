@@ -59,6 +59,7 @@
         <Compile Include="Activities\MainActivity.cs" />
         <Compile Include="Activities\MyProfileActivity.cs" />
         <Compile Include="Activities\NewsfeedActivity.cs" />
+        <Compile Include="Activities\NotifActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />
         <Compile Include="Activities\SearchActivity.cs" />
@@ -108,6 +109,7 @@
         </AndroidResource>
         <AndroidResource Include="Resources\layout\Newsfeed.axml" />
         <AndroidResource Include="Resources\layout\MyProfile.axml" />
+        <AndroidResource Include="Resources\layout\Notif.axml" />
         <AndroidResource Include="Resources\layout\PrivateProfile.axml" />
         <AndroidResource Include="Resources\layout\Recipe.axml">
           <SubType>Designer</SubType>
