@@ -5,27 +5,63 @@
         android:layout_height="fill_parent"
         android:background="#597A88"
         android:weightSum="100">
-    <TextView
-            android:layout_width="match_parent"
+    <LinearLayout 
+            android:layout_width="match_parent" 
             android:layout_height="0dp"
-            android:text="Search"
-            android:gravity="center"
-            android:textColor="#A1E2C8"
-            android:background="#3E4465"
-            android:textSize="20sp"
-            android:layout_weight="5"
-            android:textAppearance="?android:attr/textAppearanceMedium"/>
-    <SearchView
-            android:id="@+id/searchBar"
-            android:layout_width="match_parent"
-            android:queryHint="search in data..."
-            android:textAlignment="textEnd"
-            android:layout_gravity="right"
-            android:gravity="right"
+            android:layout_weight="8"
+            android:weightSum="10"
+            android:orientation="horizontal">
+        <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Search"
+                android:gravity="left"
+                android:textColor="#A1E2C8"
+                android:background="#3E4465"
+                android:textSize="20sp"
+                android:layout_weight="7"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+        <Button 
+                android:id="@+id/refreshBtn"
+                android:layout_width="0dp" 
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@drawable/ButtonStyle"
+                android:text="refresh recommendations"
+                android:textSize="12sp"
+                android:layout_marginVertical="1dp"
+                android:textAlignment="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+    </LinearLayout>
+    <LinearLayout 
+            android:layout_width="match_parent" 
             android:layout_height="0dp"
-            android:layout_weight="8" 
-            android:orientation="vertical"/>
+            android:layout_weight="10"
+            android:weightSum="10"
+            android:orientation="horizontal">
+        <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="9"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:maxWidth="400dp"
+                android:layout_gravity="left"
+                android:textAlignment="gravity" 
+                android:id="@+id/searchInput"
+                android:ellipsize="end" 
+                android:hint="search in database..."
+                android:textColor="#3E4465"/>
+        <ImageButton
+                android:id="@+id/srchButton"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginVertical="1dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/ButtonStyle" android:src="@android:drawable/ic_menu_search"
+                android:tint="#3E4465" style="@android:style/Widget.DeviceDefault.ImageButton"/>
+    </LinearLayout>
     <TextView
+            android:id="@+id/resultType"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="Recommendations"
@@ -33,7 +69,7 @@
             android:textColor="#A1E2C8"
             android:background="#3E4465"
             android:textSize="20sp"
-            android:layout_weight="5"
+            android:layout_weight="7"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
     <TextView
             android:layout_width="match_parent"
@@ -43,7 +79,7 @@
             android:textColor="#A1E2C8"
             android:background="#3E4465"
             android:textSize="15sp"
-            android:layout_weight="4"
+            android:layout_weight="5"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
     <LinearLayout 
             android:layout_width="match_parent" 
@@ -85,7 +121,7 @@
     <LinearLayout 
             android:layout_width="match_parent" 
             android:layout_height="0dp"
-            android:layout_weight="40"
+            android:layout_weight="46"
             android:orientation="horizontal"
             android:weightSum="9">
         <LinearLayout 
@@ -333,6 +369,6 @@
     <ListView
             android:id="@+id/recomList"
             android:layout_width="match_parent"
-            android:layout_weight="43"
+            android:layout_weight="18"
             android:layout_height="wrap_content"/>
 </LinearLayout>

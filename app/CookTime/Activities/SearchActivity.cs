@@ -5,26 +5,28 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
-using Android.Views;
 using Android.Widget;
 using CookTime.Adapters;
 using Newtonsoft.Json;
 
-namespace CookTime.Activities
-{
+namespace CookTime.Activities {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
 
-    public class SearchActivity : AppCompatActivity
-    {
+    public class SearchActivity : AppCompatActivity {
         private User _loggedUser;
         private List<string> _recommendations;
         private string request; //later modified to be the resulting recommendation list prior to deserialization.
         private string _filter;
         private RecomAdapter _recomAdapter;
+        private bool _searched = false;
+        private Toast _refToast;
         
         // axml objects
-        private SearchView _searchBar;
+        private EditText _searchTxt;
+        private TextView _resultType;
         private ListView _resultView;
+        private ImageButton _srchBtn;
+        private Button _refresh;
         //filter buttons
         //tags
         private Button _vegan;
@@ -47,17 +49,19 @@ namespace CookTime.Activities
         private Button _cold;
         private Button _hot;
         private Button _dessert;
-        protected override void OnCreate(Bundle savedInstanceState)
-        {
+        protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.SearchView);
 
             var usJson = Intent.GetStringExtra("User");
             _loggedUser = JsonConvert.DeserializeObject<User>(usJson);
-            
             _resultView = FindViewById<ListView>(Resource.Id.recomList);
-            _searchBar = FindViewById<SearchView>(Resource.Id.searchBar);
-            
+            _srchBtn = FindViewById<ImageButton>(Resource.Id.srchButton);
+            _srchBtn.Click += SearchClick;
+            _searchTxt = FindViewById<EditText>(Resource.Id.searchInput);
+            _refresh = FindViewById<Button>(Resource.Id.refreshBtn);
+            _refresh.Click += RefreshClick;
+            _resultType = FindViewById<TextView>(Resource.Id.resultType);
             //finding buttons
             //tags
             _vegan = FindViewById<Button>(Resource.Id.veganBtn);
@@ -96,14 +100,15 @@ namespace CookTime.Activities
             _cold.Click += FilterClick;
             _hot  = FindViewById<Button>(Resource.Id.hotBtn);
             _hot.Click += FilterClick;
-            
+            _dessert = FindViewById<Button>(Resource.Id.dessertBtn);
+            _dessert.Click += FilterClick;
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            
-             var url = "resources/recommend?email=" + _loggedUser.email;
-             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-             request = webClient.DownloadString(url);
-             _recommendations = JsonConvert.DeserializeObject<List<string>>(request);
-            
+            var url = "resources/recommend?email=" + _loggedUser.email;
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            request = webClient.DownloadString(url);
+
+            _recommendations = JsonConvert.DeserializeObject<List<string>>(request);
+
             _recomAdapter = new RecomAdapter(this, _recommendations);
             _resultView.Adapter = _recomAdapter;
             _resultView.ItemClick += RecomClick;
@@ -128,13 +133,11 @@ namespace CookTime.Activities
                     
                     userIntent.PutExtra("User", userRequest);
                     StartActivity(userIntent);
-
                 }
                 else {
                     // loads another user's profile, for the user is not the same logged instance.
                     //TODO check if another user profile is or not a chef.
                     Intent userIntent = new Intent(this, typeof(PrivProfileActivity));
-                    
                     userIntent.PutExtra("User", userRequest);
                     userIntent.PutExtra("LoggedId", _loggedUser.email);
                     StartActivity(userIntent);
@@ -154,19 +157,52 @@ namespace CookTime.Activities
                 //TODO make Business classes to load information from server.
             }
         }
-
-        private void FilterClick(object sender, EventArgs e)
-        {
+        private void FilterClick(object sender, EventArgs e) {
             var queryList = request;
+            var newQuery = queryList.Replace("[","");
+            newQuery = newQuery.Replace("]", "");
             Button button = (Button) sender;
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            var url = "resources/filterRecommend?array=" + queryList + "?data=" + button.Text;
+            var url = "resources/filterRecommend?array=" + newQuery + "&data=" + button.Text;
             var response = webClient.DownloadString(url);
-            
             _recommendations = JsonConvert.DeserializeObject<List<string>>(response);
             _recomAdapter.ProfileItems = _recommendations;
             _resultView.Adapter = _recomAdapter;
+        }
+        
+        private void SearchClick(object sender, EventArgs e) {
+            Console.WriteLine(_searchTxt.Text);
+            Console.WriteLine("finder");
+            if (_searchTxt.Text == "") {
+                _refToast = Toast.MakeText(this, "please write a search query", ToastLength.Short);
+                _refToast.Show();
+                return;
+            }
+            if (!_searched) {
+                // sets the prompt to notify the user the window is now showing search results instead of recommendations
+                _resultType.Text = "Search Results";
+                _searched = true;
+            }
+            using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var url = "resources/searchByName?search=" + _searchTxt.Text;
+            var response = webClient.DownloadString(url);
+            _recommendations = JsonConvert.DeserializeObject<List<string>>(response);
+            _recomAdapter.ProfileItems = _recommendations;
+            _resultView.Adapter = _recomAdapter;
+            _refToast = Toast.MakeText(this, "showing query results", ToastLength.Short);
+            _refToast.Show();
+        }
+        private void RefreshClick(object sender, EventArgs e)
+        {
+            Intent refresh = new Intent(this, typeof(SearchActivity));
+            _refToast = Toast.MakeText(this, "recommendations refreshed", ToastLength.Short);
+            _refToast.Show();
+            refresh.PutExtra("User", JsonConvert.SerializeObject(_loggedUser));
+            StartActivity(refresh);
+            OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            Finish();
         }
     }
 }
