@@ -41,6 +41,7 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="25sp"/>
+            
             <TextView
                     android:text="Name"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -66,12 +67,13 @@
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:weightSum="100"
                     android:background="#BEA8A7">
                 <Button
                         android:text="Followers: 500"
-                        android:layout_width="100dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="25dp"
@@ -80,12 +82,12 @@
                         android:background="@drawable/ButtonStyle"
                         android:textColor="#405863"
                         android:textStyle="bold"
-                        android:layout_weight="50"
                         android:id="@+id/btnMyFollowers"/>
                 <Button
                         android:text="Following: 500"
-                        android:layout_width="100dp"
+                        android:layout_width="0dp"
                         android:layout_height="30dp"
+                        android:layout_weight="50"
                         android:layout_marginTop="5dp"
                         android:layout_marginRight="25dp"
                         android:layout_marginLeft="25dp"
@@ -93,43 +95,67 @@
                         android:background="@drawable/ButtonStyle"
                         android:textColor="#405863"
                         android:textStyle="bold"
-                        android:layout_weight="50"
                         android:id="@+id/btnMyFollowing"/>
             </LinearLayout>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
+                    android:weightSum="100"
                     android:background="#BEA8A7">
                 <Button
                         android:text="Settings"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:background="@drawable/ButtonStyle"
                         android:textColor="#405863"
                         android:textStyle="bold"
                         android:id="@+id/btnSettings"/>
                 <Button
-                        android:text="Business"
-                        android:layout_width="wrap_content"
+                        android:text="Notifications"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:id="@+id/btnNotif"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="100"
+                    android:background="#BEA8A7">
+                <Button
+                        android:text="Business"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:background="@drawable/ButtonStyle"
                         android:textColor="#405863"
                         android:textStyle="bold"
                         android:id="@+id/btnCreateBsns"/>
                 <Button
                         android:text="Chef"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
                         android:layout_height="30dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:background="@drawable/ButtonStyle"
                         android:textColor="#405863"
                         android:textStyle="bold"

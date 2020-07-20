@@ -1,9 +1,7 @@
 package com.btp.dataStructures.trees;
 
 import com.btp.dataStructures.nodes.BusinessNode;
-import com.btp.dataStructures.nodes.RecipeNode;
 import com.btp.serverData.clientObjects.Business;
-import com.btp.serverData.clientObjects.Recipe;
 
 import java.util.ArrayList;
 
@@ -291,9 +289,15 @@ public class BusinessTree {
      */
     public void remove(int id) {
         BusinessNode temp = getNodeById(id, this.root);
-        remove(id);
+        remove(temp);
     }
 
+    /**
+     * Gets the specific node using an id
+     * @param id int id to be searched
+     * @param node BusinessNode current node is searching
+     * @return BusinessNode node of that id
+     */
     private BusinessNode getNodeById(int id, BusinessNode node){
         if (node == null) {
             return null;
@@ -379,11 +383,22 @@ public class BusinessTree {
         }
     }
 
+    /**
+     * Searches using the name attribute. Calls the private method searchByName
+     * @param data String data to be searched
+     * @return ArrayList<String> All the businesses that match the search
+     */
     public ArrayList<String> search(String data) {
         this.businessList.clear();
         return searchByName(data.toLowerCase(), this.root);
     }
 
+    /**
+     * Searches using the name attribute. Calls itself recursively
+     * @param data String data to be searched
+     * @param root BusinessNode current node is searching
+     * @return ArrayList<String> All the businesses that match the search
+     */
     private ArrayList<String> searchByName(String data, BusinessNode root){
         if (root != null && this.businessList.size() < 5) {
             Business business = root.getElement();
@@ -396,11 +411,22 @@ public class BusinessTree {
         return this.businessList;
     }
 
+    /**
+     * Recommends business to a specific user. Calls the private method recommend
+     * @param data String email of the user
+     * @return ArrayList<String> All the businesses that the user hasn't rated
+     */
     public ArrayList<String> recommend(String data){
         this.businessList.clear();
         return recommend(data, this.root);
     }
 
+    /**
+     * Recommends business to a specific user. Calls itself recursively
+     * @param data String email of the user
+     * @param root BusinessNode current node is searching
+     * @return ArrayList<String> All the businesses that the user hasn't rated
+     */
     private ArrayList<String> recommend(String data, BusinessNode root){
         if (root != null){
             Business business = root.getElement();
@@ -420,11 +446,20 @@ public class BusinessTree {
         return businessList;
     }
 
+    /**
+     * Gets the five highest rated businesses. Calls the private method rating
+     * @return ArrayList<String> of the five highest rated businesses
+     */
     public ArrayList<String> rating(){
         this.businessList.clear();
         return rating(this.root);
     }
 
+    /**
+     * Gets the five highest rated businesses. Calls itself recursively
+     * @param root BusinessNode current node is searching
+     * @return ArrayList<String> of the five highest rated businesses
+     */
     private ArrayList<String> rating(BusinessNode root){
         if (root != null){
             Business business = root.getElement();

@@ -4,17 +4,8 @@ import com.btp.dataStructures.nodes.RecipeNode;
 import com.btp.serverData.clientObjects.DishTag;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
-import com.btp.serverData.repos.BusinessRepo;
-import com.btp.serverData.repos.RecipeRepo;
 import com.btp.serverData.repos.UserRepo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
-import jakarta.ws.rs.core.MediaType;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 
 /**
@@ -28,6 +19,10 @@ public class RecipeTree{
     // List used to make searches
     private final ArrayList<String> recipeList = new ArrayList<>();
 
+    /**
+     * Getter of the root attribute
+     * @return RecipeNode root of the tree
+     */
     public RecipeNode getRoot() {
         return root;
     }
@@ -307,11 +302,22 @@ public class RecipeTree{
         }
     }
 
+    /**
+     * Recommends recipes to an user. Calls the private method recommend
+     * @param email String email of the user to recommend recipes to
+     * @return ArrayList<String> Recipes to be recommended
+     */
     public ArrayList<String> recommend(String email){
         this.recipeList.clear();
         return recommend(email, this.root);
     }
 
+    /**
+     * Adds recipes to the list that the user doesn't have in his myMenu. Calls itself recursively
+     * @param email String email of the user to recommend recipes to
+     * @param root RecipeNode current node being checked
+     * @return ArrayList<String> Recipes that match the criteria
+     */
     private ArrayList<String> recommend(String email, RecipeNode root){
         if (root != null) {
             User ownUser = UserRepo.getUser(email);
@@ -337,11 +343,20 @@ public class RecipeTree{
         return this.recipeList;
     }
 
+    /**
+     * Gets the five highest rated recipes. Calls the private method rating
+     * @return ArrayList<String> of the five highest rated recipes
+     */
     public ArrayList<String> rating(){
         this.recipeList.clear();
         return rating(this.root);
     }
 
+    /**
+     * Gets the five highest rated recipes. Calls itself recursively
+     * @param root RecipeNode current node
+     * @return ArrayList<String> of the five highest rated recipes
+     */
     private ArrayList<String> rating(RecipeNode root){
         if (root != null){
             Recipe recipe = root.getElement();
@@ -367,12 +382,23 @@ public class RecipeTree{
         return recipeList;
     }
 
+    /**
+     * Searches using the dishType attribute. Calls the private method searchByType
+     * @param data String data to be searched
+     * @return ArrayList<String> All the recipes that match the search
+     */
     public ArrayList<String> searchByType(String data) {
         this.recipeList.clear();
         String send = data.split(" ")[0];
         return searchByType(send, this.root);
     }
 
+    /**
+     * Searches using the dishType attribute. Calls itself recursively
+     * @param data String data to be searched
+     * @param root RecipeNode current node is searching
+     * @return ArrayList<String> All the recipes that match the search
+     */
     private ArrayList<String> searchByType(String data, RecipeNode root){
         if (root != null && this.recipeList.size() < 15) {
             Recipe recipe = root.getElement();
@@ -392,11 +418,22 @@ public class RecipeTree{
         return this.recipeList;
     }
 
+    /**
+     * Searches using the dishTime attribute. Calls the private method searchByTime
+     * @param data String data to be searched
+     * @return ArrayList<String> All the recipes that match the search
+     */
     public ArrayList<String> searchByTime(String data){
         this.recipeList.clear();
         return searchByTime(data.toLowerCase(), this.root);
     }
 
+    /**
+     * Searches using the dishTime attribute. Calls itself recursively
+     * @param data String data to be searched
+     * @param root RecipeNode current node is searching
+     * @return ArrayList<String> All the recipes that match the search
+     */
     private ArrayList<String> searchByTime(String data, RecipeNode root){
         if (root != null && this.recipeList.size() < 15) {
             Recipe recipe = root.getElement();
@@ -416,11 +453,22 @@ public class RecipeTree{
         return this.recipeList;
     }
 
+    /**
+     * Searches using the name attribute. Calls the private method searchByName
+     * @param data String data to be searched
+     * @return ArrayList<String> All the recipes that match the search
+     */
     public ArrayList<String> searchByName(String data) {
         this.recipeList.clear();
         return searchByName(data.toLowerCase(), this.root);
     }
 
+    /**
+     * Searches using the name attribute. Calls the private method searchByName
+     * @param data String data to be searched
+     * @param root RecipeNode current node is searching
+     * @return ArrayList<String> All the recipes that match the search
+     */
     private ArrayList<String> searchByName(String data, RecipeNode root){
         if (root != null && this.recipeList.size() < 5) {
             Recipe recipe = root.getElement();
@@ -440,11 +488,22 @@ public class RecipeTree{
         return this.recipeList;
     }
 
+    /**
+     * Searches using the dishTag attribute. Calls the private method searchByTag
+     * @param data String data to be searched
+     * @return ArrayList<String> All the recipes that match the search
+     */
     public ArrayList<String> searchByTag(String data){
         this.recipeList.clear();
         return searchByTag(data, this.root);
     }
 
+    /**
+     * Searches using the name attribute. Calls itself recursively
+     * @param data String data to be searched
+     * @param root RecipeNode current node is searching
+     * @return ArrayList<String> All the recipes that match the search
+     */
     private ArrayList<String> searchByTag(String data, RecipeNode root){
         if (root != null && this.recipeList.size() < 15) {
             Recipe recipe = root.getElement();
@@ -471,7 +530,6 @@ public class RecipeTree{
 
     /**
      * Calls the recursive method remove
-     *
      * @param id the element to be removed
      */
     public void delete(int id){
