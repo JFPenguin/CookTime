@@ -17,12 +17,14 @@ namespace CookTime.Activities {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
     public class MyProfileActivity : AppCompatActivity {
         private User _loggedUser;
+        private string userJson;
         private TextView _nameView;
         private TextView _ageView;
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnSettings;
         private Button _btnNewsfeed;
+        private Button _btnNotif;
         private ListView _myMenuListView;
         private IList<string> _myMenuList;
         private Toast _toast;
@@ -38,8 +40,8 @@ namespace CookTime.Activities {
             
             SetContentView(Resource.Layout.MyProfile);
 
-            var json = Intent.GetStringExtra("User");
-            _loggedUser = JsonConvert.DeserializeObject<User>(json);
+            userJson = Intent.GetStringExtra("User");
+            _loggedUser = JsonConvert.DeserializeObject<User>(userJson);
             
             _nameView = FindViewById<TextView>(Resource.Id.myNameView);
             _ageView = FindViewById<TextView>(Resource.Id.myAgeView);
@@ -48,6 +50,7 @@ namespace CookTime.Activities {
             _btnFollowing = FindViewById<Button>(Resource.Id.btnMyFollowing);
             _btnSettings = FindViewById<Button>(Resource.Id.btnSettings);
             _btnNewsfeed = FindViewById<Button>(Resource.Id.btnNewsfeed);
+            _btnNotif = FindViewById<Button>(Resource.Id.btnNotif);
             
             _myMenuListView = FindViewById<ListView>(Resource.Id.myMenuListView);
 
@@ -112,6 +115,15 @@ namespace CookTime.Activities {
                 
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            };
+            
+            _btnNotif.Click += (sender, args) =>
+            {
+                // Intent intent = new Intent(this, typeof(FollowActivity));
+                // intent.PutStringArrayListExtra("List", _loggedUser.notifications);
+                //
+                // StartActivity(intent);
+                // OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
         }
 
