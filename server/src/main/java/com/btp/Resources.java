@@ -218,7 +218,7 @@ public class Resources {
 
         User user = UserRepo.getUser(recipe.getAuthorEmail());
 
-        Notifier.notify(recipe.getAuthorEmail(), "Your recipe: " + recipe.getName() + "has a new commented");
+        Notifier.notify(recipe.getAuthorEmail(), "Your recipe: " + recipe.getName() + " has a new comment!");
         RecipeRepo.updateTree();
 
         return "1";
