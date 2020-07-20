@@ -66,5 +66,13 @@ namespace CookTime.Adapters {
             
             return row;
         }
+
+        /// <summary>
+        /// Setter property for the _recipeItems attribute
+        /// </summary>
+        public IList<string> RecipeItems
+        {
+            set => _recipeItems = value;
+        }
     }
 }

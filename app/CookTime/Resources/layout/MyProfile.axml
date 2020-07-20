@@ -210,7 +210,7 @@
                 android:textColor="#405863"
                 android:textStyle="bold"
                 android:layout_weight="33"
-                android:id="@+id/btnRecipe" 
+                android:id="@+id/btnDate" 
                 android:gravity="center"/>
         <Button
                 android:text="Score"
@@ -223,7 +223,7 @@
                 android:textColor="#405863"
                 android:textStyle="bold"
                 android:layout_weight="33"
-                android:id="@+id/btnRecipe" 
+                android:id="@+id/btnScore" 
                 android:gravity="center"/>
         <Button
                 android:text="Difficulty"
@@ -236,7 +236,7 @@
                 android:textColor="#405863"
                 android:textStyle="bold"
                 android:layout_weight="33"
-                android:id="@+id/btnRecipe" 
+                android:id="@+id/btnDiff" 
                 android:gravity="center"/>
     </LinearLayout>
     <ListView
