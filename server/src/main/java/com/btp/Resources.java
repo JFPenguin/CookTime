@@ -120,10 +120,11 @@ public class Resources {
             System.out.println(i);
             i = random.nextInt(999) +1;
         }
+        User user = UserRepo.getUser(recipe.getAuthorEmail());
         recipe.setId(i);
         recipe.setPostTime(System.currentTimeMillis());
+        recipe.setAuthorName(user.fullName());
         RecipeRepo.addRecipe(recipe);
-        User user = UserRepo.getUser(recipe.getAuthorEmail());
         user.addRecipe(i);
         user.addNewsFeed(i);
         SinglyList<Recipe> recipeList = new SinglyList<>();
@@ -359,6 +360,10 @@ public class Resources {
         for (int i:user.getRecipeList()) {
             Recipe recipe = RecipeRepo.getRecipe(i);
             sortList.add(recipe);
+        }
+
+        if (sortList.getLength() == 0){
+            return myMenuList;
         }
 
         switch (filter){
@@ -626,15 +631,29 @@ public class Resources {
         String filter = "";
         ArrayList<String> filterList = new ArrayList<>();
 
+        if (list == null){
+            return filterList;
+        }
+
+        if (list.length() == 0){
+            return filterList;
+        }
+
         for (String st:list.split(",")) {
             st = st.substring(1, st.length() - 1);
             System.out.println(st);
             filterList.add(st);
         }
 
-        String last = filterList.get(filterList.size() - 1);
-        last = last.substring(0, last.length() - 1);
-        filterList.set(filterList.size() - 1, last);
+        data = data.split(" ")[0];
+
+        System.out.println(data);
+
+        if (data != null){
+            String last = filterList.get(filterList.size() - 1);
+            last = last.substring(0, last.length() - 1);
+            filterList.set(filterList.size() - 1, last);
+        }
 
         ArrayList<String> tagList = new ArrayList<>();
 
@@ -657,10 +676,10 @@ public class Resources {
 
         typeList.add("APPETIZER");
         typeList.add("ENTREE");
-        typeList.add("MAIN_DISH");
-        typeList.add("ALCHOHOL_BEVERAGE");
-        typeList.add("COLD_BEVERAGE");
-        typeList.add("HOT_BEVERAGE");
+        typeList.add("MAIN");
+        typeList.add("ALCHOHOL");
+        typeList.add("COLD");
+        typeList.add("HOT");
         typeList.add("DESSERT");
 
         if (tagList.contains(data.toUpperCase())){
@@ -670,11 +689,6 @@ public class Resources {
         } else if (typeList.contains(data.toUpperCase())){
             filter = "type";
         }
-
-        System.out.println("Data: " + data);
-        System.out.println("List: " + list);
-        System.out.println("Filter list: " + filterList);
-        System.out.println("Filter: " + filter);
 
         switch (filter){
             case "time":
@@ -878,6 +892,12 @@ public class Resources {
         ArrayList<String> userList = UserRepo.searchUsers(search);
         ArrayList<String> recipeList = RecipeRepo.searchByName(search);
         ArrayList<String> businessList = BusinessRepo.search(search);
+
+        System.out.println(userList);
+
+        System.out.println(recipeList);
+
+        System.out.println(businessList);
 
         ArrayList<String> profilesList = createSearchList(userList, recipeList, businessList);
 

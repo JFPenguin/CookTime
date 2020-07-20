@@ -327,7 +327,11 @@ public class Recipe implements Comparable<Recipe> {
      * @return String of the author's name
      */
     public String getAuthorName() {
-        return authorName;
+        return this.authorName;
+    }
+
+    public void setAuthorName(String name){
+        this.authorName = name;
     }
 
     /**
