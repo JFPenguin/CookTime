@@ -3,6 +3,7 @@ package com.btp;
 import com.btp.dataStructures.lists.SinglyList;
 import com.btp.dataStructures.nodes.SinglyNode;
 import com.btp.dataStructures.sorters.Sorter;
+import com.btp.serverData.clientObjects.DishTag;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
 import com.btp.serverData.repos.BusinessRepo;
@@ -18,6 +19,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
 
@@ -468,7 +470,7 @@ public class Resources {
             response = "1";
         }
 
-        //TODO notify followingUser
+
         UserRepo.updateTree();
         return response;
     }
@@ -492,6 +494,128 @@ public class Resources {
         System.out.println(response);
         UserRepo.updateTree();
         return response;
+    }
+
+    @GET
+    @Path("filterRecommend")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<String> filterRecommend(@QueryParam("array") String list, @QueryParam("data") String data){
+        String filter = "";
+        ArrayList<String> filterList = new ArrayList<>();
+
+        for (String st:list.split(",")) {
+            st = st.substring(1, st.length() - 1);
+            System.out.println(st);
+            filterList.add(st);
+        }
+
+        String last = filterList.get(filterList.size() - 1);
+        last = last.substring(0, last.length() - 1);
+        filterList.set(filterList.size() - 1, last);
+
+        ArrayList<String> tagList = new ArrayList<>();
+
+        tagList.add("VEGETARIAN");
+        tagList.add("VEGAN");
+        tagList.add("KOSHER");
+        tagList.add("CELIAC");
+        tagList.add("KETO");
+        tagList.add("CARNIVORE");
+
+        ArrayList<String> timeList = new ArrayList<>();
+
+        timeList.add("BREAKFAST");
+        timeList.add("BRUNCH");
+        timeList.add("LUNCH");
+        timeList.add("SNACK");
+        timeList.add("DINNER");
+
+        ArrayList<String> typeList = new ArrayList<>();
+
+        typeList.add("APPETIZER");
+        typeList.add("ENTREE");
+        typeList.add("MAIN_DISH");
+        typeList.add("ALCHOHOL_BEVERAGE");
+        typeList.add("COLD_BEVERAGE");
+        typeList.add("HOT_BEVERAGE");
+        typeList.add("DESSERT");
+
+        if (tagList.contains(data.toUpperCase())){
+            filter = "tag";
+        } else if (timeList.contains(data.toUpperCase())){
+            filter = "time";
+        } else if (typeList.contains(data.toUpperCase())){
+            filter = "type";
+        }
+
+        System.out.println("Data: " + data);
+        System.out.println("List: " + list);
+        System.out.println("Filter list: " + filterList);
+        System.out.println("Filter: " + filter);
+
+        switch (filter){
+            case "time":
+                filterList = filterTime(filterList, data);
+                break;
+            case "tag":
+                filterList = filterTag(filterList, data);
+                break;
+            case "type":
+                filterList = filterType(filterList, data);
+                break;
+        }
+
+        return filterList;
+    }
+
+    private ArrayList<String> filterTime(ArrayList<String> list, String search){
+        ArrayList<String> filteredList = new ArrayList<>();
+
+        for (String data:list){
+            String object = data.split(";")[2];
+            if (object.equalsIgnoreCase("recipe")){
+                Recipe recipe = RecipeRepo.getRecipe(Integer.parseInt(data.split(";")[0]));
+                if (recipe.getDishTime().toString().equalsIgnoreCase(search)){
+                    filteredList.add(data);
+                }
+            }
+        }
+
+        return filteredList;
+    }
+
+    private ArrayList<String> filterTag(ArrayList<String> list, String search){
+        ArrayList<String> filteredList = new ArrayList<>();
+
+        for (String data:list){
+            String object = data.split(";")[2];
+            if (object.equalsIgnoreCase("recipe")){
+                Recipe recipe = RecipeRepo.getRecipe(Integer.parseInt(data.split(";")[0]));
+                for (DishTag tag : recipe.getDishTags()){
+                    if (tag.toString().equalsIgnoreCase(search)){
+                        filteredList.add(data);
+                    }
+                }
+            }
+        }
+
+        return filteredList;
+    }
+
+    private ArrayList<String> filterType(ArrayList<String> list, String search){
+        ArrayList<String> filteredList = new ArrayList<>();
+
+        for (String data:list){
+            String object = data.split(";")[2];
+            if (object.equalsIgnoreCase("recipe")){
+                Recipe recipe = RecipeRepo.getRecipe(Integer.parseInt(data.split(";")[0]));
+                if (recipe.getDishType().toString().equalsIgnoreCase(search)){
+                    filteredList.add(data);
+                }
+            }
+        }
+
+        return filteredList;
     }
 
     @GET

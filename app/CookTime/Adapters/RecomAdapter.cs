@@ -35,6 +35,11 @@ namespace CookTime.Adapters {
         /// <param name="position"> The desired index </param>
         public override string this[int position] => _profileItems[position];
 
+        public IList<string> ProfileItems
+        {
+            set => _profileItems = value;
+        }
+
         /// <summary>
         /// This method returns the current position iterated by the adapter
         /// </summary>
