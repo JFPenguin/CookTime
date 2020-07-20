@@ -210,8 +210,26 @@ namespace CookTime.Activities {
                 StartActivity(recipeIntent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             }
-            
-            //TODO else (check if 1 to delete recipe)
+            else
+            {
+                url = "resources/deleteRecipe?email=" + _loggedUser.email + "&id=" + e.RecipeId;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                webClient.DownloadString(url);
+                
+                url = "resources/getUser?id=" + _loggedUser.email;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var json = webClient.DownloadString(url);
+                
+                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                intent.PutExtra("User", json);
+                intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Finish();
+                
+                _toast = Toast.MakeText(this, "Recipe deleted. Refreshing MyProfile...", ToastLength.Short);
+                _toast.Show();
+            }
         }
 
         /// <summary>
