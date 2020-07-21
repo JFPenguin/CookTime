@@ -24,7 +24,7 @@
             android:layout_height="0dp"
             android:inputType="textEmailAddress"
             android:ems="10"
-            android:hint="User email"
+            android:hint="New member email"
             android:id="@+id/newEmail"
             android:layout_weight="33"/>
     <Button
@@ -37,8 +37,8 @@
             android:layout_marginLeft="30dp"
             android:background="@drawable/ButtonStyle"
             android:textColor="#405863"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp" 
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp" 
             android:textSize="15sp"
             android:textStyle="bold"/>
 

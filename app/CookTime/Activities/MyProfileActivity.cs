@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using Android.App;
 using Android.Content;
@@ -213,7 +214,6 @@ namespace CookTime.Activities {
                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
                 }
                 else {
-                    //TODO FIX
                     using var webClient3 = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
                     var url3= "resources/getBusiness?id=" + _loggedUser.business;
                     webClient3.Headers[HttpRequestHeader.ContentType] = "application/json";

@@ -54,7 +54,7 @@ namespace CookTime.Activities
             SetContentView(Resource.Layout.Business);
 
             loggedId = Intent.GetStringExtra("LoggedId");
-            bsnsJson = Intent.GetStringExtra("Business");
+            bsnsJson = Intent.GetStringExtra("Bsns");
             bsns = JsonConvert.DeserializeObject<Business>(bsnsJson);
 
             bsnsNameTV = FindViewById<TextView>(Resource.Id.bsnsName);
@@ -77,35 +77,35 @@ namespace CookTime.Activities
             _btnFollowers.Text = "Followers: " + bsns.followers.Count;
             scoreView.Text = "Score: " + bsns.rating;
             
-            using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            
-            var url = "resources/businessPublic" + bsns.id + "&filter=date";
-            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            var send = webClient.DownloadString(url);
-            
-            _menuList = JsonConvert.DeserializeObject<IList<string>>(send);
-            
-            _adapter = new RecipeAdapter(this, _menuList);
-            _menuListView.Adapter = _adapter;
-            _menuListView.ItemClick += ListClick;
-            
-            _btnMyProfile.Click += (sender, args) =>
-            {
-                using var webClient2 = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            
-                var url2 = "resources/getUser?id=" + loggedId;
-                webClient2.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var request = webClient2.DownloadString(url2);
-                
-                Intent intent = new Intent(this, typeof(NewsfeedActivity));
-                intent.PutExtra("User", request);
-                
-                StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-                Finish();
-            };
-            
-            
+            // using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            //
+            // var url = "resources/businessPublic" + bsns.id + "&filter=date";
+            // webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            // var send = webClient.DownloadString(url);
+            //
+            // _menuList = JsonConvert.DeserializeObject<IList<string>>(send);
+            //
+            // _adapter = new RecipeAdapter(this, _menuList);
+            // _menuListView.Adapter = _adapter;
+            // _menuListView.ItemClick += ListClick;
+            //
+            // _btnMyProfile.Click += (sender, args) =>
+            // {
+            //     using var webClient2 = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            //
+            //     var url2 = "resources/getUser?id=" + loggedId;
+            //     webClient2.Headers[HttpRequestHeader.ContentType] = "application/json";
+            //     var request = webClient2.DownloadString(url2);
+            //     
+            //     Intent intent = new Intent(this, typeof(NewsfeedActivity));
+            //     intent.PutExtra("User", request);
+            //     
+            //     StartActivity(intent);
+            //     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            //     Finish();
+            // };
+            //
+            //
             _btnSettings.Click += (sender, args) =>
             {
                 //Brings dialog fragment forward
@@ -116,76 +116,76 @@ namespace CookTime.Activities
                 dialogAdd.EventHandlerAdd += AddResult;
                 
             };
-            
-            _btnFollowers.Click += (sender, args) => 
-            {
-                // TODO use BusFollowActivity to implement different logic without modifying the existing algorithms for regular users.
-                Intent intent = new Intent(this, typeof(BusFollowActivity));
-                intent.PutExtra("Title", "Followers");
-                intent.PutExtra("LoggedId", loggedId);
-                intent.PutStringArrayListExtra("FollowList", bsns.followers);
-                StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-            };
-            
-            _btnDate.Click += (sender, args) =>
-            {
-                sortStr = "date";
-                SortMenu();
-            };
-            
-            _btnScore.Click += (sender, args) =>
-            {
-                sortStr = "score";
-                SortMenu();
-            };
-            
-            _btnDiff.Click += (sender, args) =>
-            {
-                sortStr = "difficulty";
-                SortMenu();
-            };
-            
-            _btPost.Click += (sender, args) => {
-                //TODO change normal recipe creation to business specific creation
-                Intent intent = new Intent(this, typeof(CreateRActivity));
-                intent.PutExtra("LoggedId", loggedId);
-                StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-            };
-
-            _btnPrivMenu.Click += (sender, args) =>
-            {
-                var toastText = "";
-                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var type = "";
-                
-                _adapter.RecipeItems = _menuList;
-                
-                if (_seeingPublic) {
-                    _btnPrivMenu.Text = "Private Menu";
-                    toastText = "now showing private menu";
-                    type = "businessPrivate";
-                    _seeingPublic = false;
-                }
-                else {
-                    _btnPrivMenu.Text = "Public Menu";
-                    toastText = "now showing public menu";
-                    type = "businessPublic";
-                    _seeingPublic = true;
-                    
-                }
-                var url = "resources/" + type + "?id=" + bsns.id + "&filter=date";
-                var send = webClient.DownloadString(url);
-                
-                _menuList = JsonConvert.DeserializeObject<IList<string>>(send);
-                _adapter.RecipeItems = _menuList;
-                _menuListView.Adapter = _adapter;
-                
-                _toast = Toast.MakeText(this, toastText, ToastLength.Short);
-                _toast.Show();
-            };
+            //
+            // _btnFollowers.Click += (sender, args) => 
+            // {
+            //     // TODO use BusFollowActivity to implement different logic without modifying the existing algorithms for regular users.
+            //     Intent intent = new Intent(this, typeof(BusFollowActivity));
+            //     intent.PutExtra("Title", "Followers");
+            //     intent.PutExtra("LoggedId", loggedId);
+            //     intent.PutStringArrayListExtra("FollowList", bsns.followers);
+            //     StartActivity(intent);
+            //     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            // };
+            //
+            // _btnDate.Click += (sender, args) =>
+            // {
+            //     sortStr = "date";
+            //     SortMenu();
+            // };
+            //
+            // _btnScore.Click += (sender, args) =>
+            // {
+            //     sortStr = "score";
+            //     SortMenu();
+            // };
+            //
+            // _btnDiff.Click += (sender, args) =>
+            // {
+            //     sortStr = "difficulty";
+            //     SortMenu();
+            // };
+            //
+            // _btPost.Click += (sender, args) => {
+            //     //TODO change normal recipe creation to business specific creation
+            //     Intent intent = new Intent(this, typeof(CreateRActivity));
+            //     intent.PutExtra("LoggedId", loggedId);
+            //     StartActivity(intent);
+            //     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            // };
+            //
+            // _btnPrivMenu.Click += (sender, args) =>
+            // {
+            //     var toastText = "";
+            //     using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            //     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            //     var type = "";
+            //     
+            //     _adapter.RecipeItems = _menuList;
+            //     
+            //     if (_seeingPublic) {
+            //         _btnPrivMenu.Text = "Private Menu";
+            //         toastText = "now showing private menu";
+            //         type = "businessPrivate";
+            //         _seeingPublic = false;
+            //     }
+            //     else {
+            //         _btnPrivMenu.Text = "Public Menu";
+            //         toastText = "now showing public menu";
+            //         type = "businessPublic";
+            //         _seeingPublic = true;
+            //         
+            //     }
+            //     var url = "resources/" + type + "?id=" + bsns.id + "&filter=date";
+            //     var send = webClient.DownloadString(url);
+            //     
+            //     _menuList = JsonConvert.DeserializeObject<IList<string>>(send);
+            //     _adapter.RecipeItems = _menuList;
+            //     _menuListView.Adapter = _adapter;
+            //     
+            //     _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+            //     _toast.Show();
+            // };
         }
 
         private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
@@ -206,20 +206,15 @@ namespace CookTime.Activities
         /// <param name="sender"> Reference to the object that raised the event </param>
         /// <param name="e"> Contains the event data </param>
         private void AddResult(object sender,SendAddEvent e) {
-            var toastText = "";
-            if (e.Message == "3")
+            var toastText = e.Message switch
             {
-                toastText = "Email doesn't exist";
-            } 
-            else if (e.Message == "0")
-            {
-                toastText = "User already in a business";
-            } 
-            else if (e.Message == "1")
-            {
-                toastText = "User added";
-            } 
-        
+                "3" => "Email doesn't exist",
+                "0" => "User already in a business",
+                "1" => "User added",
+                "4" => "Please fill in the info",
+                _ => ""
+            };
+
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();
         }

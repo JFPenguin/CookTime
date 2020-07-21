@@ -14,7 +14,6 @@ namespace CookTime.DialogFragments {
         private EditText emailTV;
         private int bsnsId;
         private Button _btnAdd;
-        private string toastText;
         public event EventHandler<SendAddEvent> EventHandlerAdd;
 
         /// <summary>
@@ -29,7 +28,9 @@ namespace CookTime.DialogFragments {
             base.OnCreateView(inflater, container, savedInstanceState);
             var view = inflater.Inflate(Resource.Layout.DialogAdd, container, false);
 
-            _btnAdd = view.FindViewById<Button>(Resource.Id.btnSendChef);
+            Console.WriteLine("ID="+bsnsId);
+            
+            _btnAdd = view.FindViewById<Button>(Resource.Id.btnAdd);
             emailTV = view.FindViewById<EditText>(Resource.Id.newEmail);
 
             _btnAdd.Click += Add;
@@ -55,6 +56,7 @@ namespace CookTime.DialogFragments {
                 var url = "resources/addEmployee?email=" + emailTV.Text + "&id=" + bsnsId;
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 value = webClient.DownloadString(url);
+                Console.WriteLine(value);
                 
                 if (value == "1")
                 {
@@ -105,5 +107,4 @@ namespace CookTime.DialogFragments {
             /// </summary>
             public string Message { get; }
         }
-    
 }

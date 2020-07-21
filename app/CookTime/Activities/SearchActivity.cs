@@ -162,7 +162,7 @@ namespace CookTime.Activities {
                 var busRequest = webClient.DownloadString(busUrl);
                 Intent busIntent = new Intent(this, typeof(MyBusiness));
                 busIntent.PutExtra("LoggedId", _loggedUser.email);
-                busIntent.PutExtra("Business", busRequest);
+                busIntent.PutExtra("Bsns", busRequest);
                 StartActivity(busIntent);
             }
         }
