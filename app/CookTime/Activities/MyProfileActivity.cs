@@ -20,6 +20,8 @@ namespace CookTime.Activities {
         private string userJson;
         private TextView _nameView;
         private TextView _ageView;
+        private TextView _chefView;
+        private TextView _scoreText;
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnSettings;
@@ -51,6 +53,8 @@ namespace CookTime.Activities {
             
             _nameView = FindViewById<TextView>(Resource.Id.myNameView);
             _ageView = FindViewById<TextView>(Resource.Id.myAgeView);
+            _chefView = FindViewById<TextView>(Resource.Id.chefText);
+            _scoreText = FindViewById<TextView>(Resource.Id.scoreText);
             
             _btnFollowers = FindViewById<Button>(Resource.Id.btnMyFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnMyFollowing);
@@ -63,9 +67,18 @@ namespace CookTime.Activities {
             _btnRecipe = FindViewById<Button>(Resource.Id.btnRecipe);
             
             _myMenuListView = FindViewById<ListView>(Resource.Id.myMenuListView);
-            
+
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
+
+            if (_loggedUser.isChef) {
+                _chefView.Text = "Chef: yes";
+                _scoreText.Text = "Score : " + _loggedUser.chefScore;
+            }
+            else {
+                _chefView.Text = "Chef: no";
+                _scoreText.Text = "";
+            }
             
             _btnFollowers.Text = "FOLLOWERS: " + _loggedUser.followerEmails.Count;
             _btnFollowing.Text = "FOLLOWING: " + _loggedUser.followingEmails.Count;

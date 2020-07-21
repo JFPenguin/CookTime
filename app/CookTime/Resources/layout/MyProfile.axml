@@ -66,6 +66,36 @@
                     android:textSize="20sp"/>
             <LinearLayout
                     android:orientation="horizontal"
+                    android:weightSum="100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:text="Chef"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:id="@+id/chefText"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3E4465"
+                        android:background="#BEA8A7"
+                        android:textStyle="bold"
+                        android:paddingLeft="5dp"
+                        android:textSize="20sp"/>
+                <TextView
+                        android:text="Score"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="0dp"
+                        android:layout_weight="50"
+                        android:id="@+id/scoreText"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3E4465"
+                        android:background="#BEA8A7"
+                        android:textStyle="bold"
+                        android:paddingLeft="5dp"
+                        android:textSize="20sp"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:weightSum="100"

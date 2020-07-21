@@ -14,6 +14,8 @@ namespace CookTime {
         public string lastName;
         public string password;
         public List<string> notifications;
+        public bool isChef;
+        public float chefScore;
 
         /// <summary>
         /// Constructor for the User class
