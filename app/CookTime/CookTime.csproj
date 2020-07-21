@@ -94,6 +94,7 @@
         <AndroidResource Include="Resources\drawable\ButtonStyle.xml" />
         <AndroidResource Include="Resources\drawable\cooktime_icon.png" />
         <AndroidResource Include="Resources\drawable\ListRowStyle.xml" />
+        <AndroidResource Include="Resources\layout\Business.axml" />
         <AndroidResource Include="Resources\layout\CreateRecipe.axml" />
         <AndroidResource Include="Resources\layout\DialogChef.axml" />
         <AndroidResource Include="Resources\layout\DialogChoice.axml" />
@@ -115,6 +116,7 @@
         <AndroidResource Include="Resources\layout\MyProfile.axml" />
         <AndroidResource Include="Resources\layout\Notif.axml" />
         <AndroidResource Include="Resources\layout\PrivateProfile.axml" />
+        <AndroidResource Include="Resources\layout\PrivBusiness.axml" />
         <AndroidResource Include="Resources\layout\Recipe.axml">
           <SubType>Designer</SubType>
           <Generator>MSBuild:UpdateGeneratedFiles</Generator>
