@@ -161,6 +161,7 @@ namespace CookTime.Activities {
                 dialogRate.Show(transaction, "rate");
                 dialogRate.LoggedId = _loggedId;
                 dialogRate.RecipeId = _recipe.id;
+                dialogRate.Type = 0;
                     
                 dialogRate.EventHandlerRate += RateResult;
             };

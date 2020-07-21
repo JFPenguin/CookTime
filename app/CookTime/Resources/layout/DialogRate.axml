@@ -9,7 +9,7 @@
         android:minWidth="500dp"
         >
     <TextView
-            android:text="Rate the recipe from 1 to 5"
+            android:text="Choose you rating from 1 to 5"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="0dp"

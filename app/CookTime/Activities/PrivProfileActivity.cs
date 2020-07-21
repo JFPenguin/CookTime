@@ -7,6 +7,7 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using CookTime.Adapters;
+using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
@@ -164,6 +165,20 @@ namespace CookTime.Activities {
                 sortStr = "difficulty";
                 SortMenu();
             };
+            
+            _btnRateChef.Click += (sender, args) =>
+            {
+                //Brings dialog fragment forward
+                var transaction = SupportFragmentManager.BeginTransaction();
+                var dialogRate = new DialogRate();
+                
+                dialogRate.Show(transaction, "rate");
+                dialogRate.LoggedId = _loggedId;
+                dialogRate.ChefId = _user.email;
+                dialogRate.Type = 1;
+                    
+                dialogRate.EventHandlerRate += RateResult;
+            };
         }
         
         /// <summary>
@@ -201,6 +216,43 @@ namespace CookTime.Activities {
             _menuList = JsonConvert.DeserializeObject<IList<string>>(request);
             _adapter.RecipeItems = _menuList;
             _menuListView.Adapter = _adapter;
+        }
+        
+        /// <summary>
+        /// This method is in charge of retrieving the result of the Rate Chef dialog fragment.
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
+        private void RateResult(object sender, SendRateEvent e) {
+            Toast toast;
+            string toastText;
+
+            if (e.Message == "-1") {
+                toastText = "Please choose a rating";
+            }
+
+            else if (e.Message == "1")
+            {
+                toastText = "You already rated this chef.";
+            }
+            else {
+                toastText = "Recipe rated! Refreshing the profile...";
+                
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                var url = "resources/getUser?id=" + _user.email;
+                
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var userJson = webClient.DownloadString(url);
+                
+                Intent intent = new Intent(this, typeof(PrivProfileActivity));
+                intent.PutExtra("User", userJson);
+                intent.PutExtra("LoggedId", _loggedId);
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Finish();
+            }
+            toast = Toast.MakeText(this, toastText, ToastLength.Long);
+            toast.Show();
         }
     }
 }

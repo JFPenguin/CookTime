@@ -13,6 +13,8 @@ namespace CookTime.DialogFragments
     /// </summary>
     public class DialogRate : DialogFragment {
         private int _recipeId;
+        private string _chefId;
+        private int type;
         private string _loggedId;
         private RadioGroup _radioGroup;
         private Button _btnSendRate;
@@ -47,21 +49,28 @@ namespace CookTime.DialogFragments
         /// <param name="e"> Contains the event data </param>
         private void SendRate(object sender, EventArgs e)
         {
-             string value;
+             var value = "0";
             
-             int _checkedItemId = _radioGroup.CheckedRadioButtonId;
+             var _checkedItemId = _radioGroup.CheckedRadioButtonId;
             
              if (_checkedItemId == -1) {
                  value = "-1";
              }
-             else
-             {
+             else {
                  RadioButton radioButton = View.FindViewById<RadioButton>(_checkedItemId);
-            
                  using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-                 var url = "resources/rateRecipe?id=" + _recipeId + "&email=" + _loggedId + "&rating=" + radioButton.Text;
-                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                 value = webClient.DownloadString(url);
+                 string url;
+
+                 if (type == 0) {
+                     url = "resources/rateRecipe?id=" + _recipeId + "&email=" + _loggedId + "&rating=" + radioButton.Text;
+                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                     value = webClient.DownloadString(url);
+                 }
+                 else if (type == 1) {
+                     url = "resources/rateChef?ownEmail=" + _loggedId + "&chefEmail=" + _chefId + "&rating=" + radioButton.Text;
+                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                     value = webClient.DownloadString(url);
+                 }
                  
                  Dismiss();
              }
@@ -94,6 +103,22 @@ namespace CookTime.DialogFragments
         public string LoggedId
         {
             set => _loggedId = value;
+        }
+
+        /// <summary>
+        /// Property for the _type attribute
+        /// </summary>
+        public int Type
+        {
+            set => type = value;
+        }
+
+        /// <summary>
+        /// Property for the _chefId attribute
+        /// </summary>
+        public string ChefId
+        {
+            set => _chefId = value;
         }
     }
         
