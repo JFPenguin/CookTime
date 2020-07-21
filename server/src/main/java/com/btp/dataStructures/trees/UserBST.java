@@ -249,8 +249,6 @@ public class UserBST {
     private ArrayList<String> searchPreOrder(String data, UserTreeNode root){
         if (root != null && userList.size() < 5) {
             User user = root.getElement();
-            System.out.println(data);
-            System.out.println(user.fullName());
             if (user.fullName().toLowerCase().contains(data)){
                 String x;
                 if (user.isChef()){
@@ -291,7 +289,6 @@ public class UserBST {
                 String[] dataList = data.split(";");
                 if (dataList[0].equals(recommendedEmail)){
                     followed = true;
-                    System.out.println(dataList[0]);
                     break;
                 }
             }

@@ -509,9 +509,7 @@ public class RecipeTree{
             Recipe recipe = root.getElement();
             User recipeAuthor = UserRepo.getUser(recipe.getAuthorEmail());
             for (DishTag tag : recipe.getDishTags()) {
-                System.out.println(tag + data);
                 if (tag.toString().equalsIgnoreCase(data.toUpperCase())){
-                    System.out.println("here");
                     String x;
                     if (recipeAuthor.isChef()){
                         x = "chef";
