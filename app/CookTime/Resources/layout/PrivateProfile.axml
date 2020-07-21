@@ -52,6 +52,49 @@
                     android:textSize="20sp"/>
             <LinearLayout
                     android:orientation="horizontal"
+                    android:background="#BEA8A7"
+                    android:weightSum="100"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                        android:text="Chef"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="0dp"
+                        android:layout_weight="33"
+                        android:id="@+id/chefPText"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3E4465"
+                        android:background="#BEA8A7"
+                        android:textStyle="bold"
+                        android:paddingLeft="5dp"
+                        android:textSize="20sp"/>
+                <TextView
+                        android:text="Score"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="0dp"
+                        android:layout_weight="33"
+                        android:id="@+id/scorePText"
+                        android:layout_height="wrap_content"
+                        android:textColor="#3E4465"
+                        android:background="#BEA8A7"
+                        android:textStyle="bold"
+                        android:paddingLeft="5dp"
+                        android:textSize="20sp"/>
+                <Button
+                        android:text="Rate chef"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:id="@+id/btnRateChef"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:layout_weight="33"/>
+            </LinearLayout>
+            <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:weightSum="100"

@@ -58,12 +58,16 @@ namespace CookTime.Activities {
 
         private void ProfileClick(object sender, EventArgs e)
         {
-            // converting the existing user to a json string
-            var send = JsonConvert.SerializeObject(_loggedUser);
+            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+            var url = "resources/getUser?id=" + _loggedUser.email;
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var request = webClient.DownloadString(url);
+            
 
             Intent profileIntent = new Intent(this, typeof(MyProfileActivity));
             // passing the serialized User object as an intent extra with json string format
-            profileIntent.PutExtra("User", send);
+            profileIntent.PutExtra("User", request);
 
             StartActivity(profileIntent);
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft, Android.Resource.Animation.SlideOutRight);

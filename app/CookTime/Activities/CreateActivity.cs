@@ -174,15 +174,15 @@ namespace CookTime.Activities {
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                     webClient.UploadString(url, recipeJson);  
                     
-                     url = "resources/getUser?id=" + _loggedId;
-                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                     var userJson = webClient.DownloadString(url);  
+                    url = "resources/getUser?id=" + _loggedId;
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var userJson = webClient.DownloadString(url);  
                     
-                     Intent intent = new Intent(this, typeof(MyProfileActivity));
-                     intent.PutExtra("User", userJson);
-                     intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
-                     StartActivity(intent);
-                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                    Intent intent = new Intent(this, typeof(MyProfileActivity));
+                    intent.PutExtra("User", userJson);
+                    intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
                 }
                 _toast = Toast.MakeText(this, toastText, ToastLength.Short);
                 _toast.Show();

@@ -17,7 +17,7 @@ namespace CookTime.Activities {
         private Button _signUpButton;
         private Button _signInButton;
         private Toast _toast;
-        public const string Ipv4 = "192.168.100.49";
+        public const string Ipv4 = "192.168.1.8";
         
         /// <summary>
         /// This method is called when the activity is starting.
@@ -110,9 +110,6 @@ namespace CookTime.Activities {
             }
             else {
                 toastText = "Signed in!";
-                
-                _toast = Toast.MakeText(this, toastText, ToastLength.Short);
-                _toast.Show();
                 
                 using var webClient = new WebClient {BaseAddress = "http://" + Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
