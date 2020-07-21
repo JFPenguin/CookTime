@@ -75,10 +75,7 @@ namespace CookTime.Activities
             _bsnsContactTV.Text = "Contact: " + bsns.contact;
             _btnFollowers.Text = "Followers: " + bsns.followers.Count;
             scoreView.Text = "Score: " + bsns.rating;
-
-
-            //TODO optional add button to see member list (change list to email;name)
-
+            
             using var webClient = new WebClient
                 {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 

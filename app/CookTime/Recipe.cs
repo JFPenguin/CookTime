@@ -7,7 +7,7 @@ namespace CookTime {
     /// </summary>
     public class Recipe {
         public int id;
-        private int businessId;
+        public int businessId;
         public string authorEmail;
         public string authorName;
         public List<string> comments;

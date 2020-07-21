@@ -17,8 +17,6 @@ namespace CookTime.Activities {
         private string _loggedId;
         private TextView _titleText;
         private ListView _followListView;
-        
-        //TODO make sure server returns id;name;type
         private IList<string> followList;
         
         /// <summary>
@@ -55,34 +53,61 @@ namespace CookTime.Activities {
         /// <param name="e"> Contains the event data </param>
         private void FollowClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            string id = followList[e.Position].Split(";")[0];
-
-            //TODO check type of profile and change logic
+            var id = followList[e.Position].Split(";")[0];
+            var type = followList[e.Position].Split(";")[2];
             
-            if (id == _loggedId) {
-                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-
+            using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            Intent intent;
+            string send;
+            
+            if (type == "user") {
                 var url = "resources/getUser?id=" + id;
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var send = webClient.DownloadString(url);
+                send = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(MyProfileActivity));
-                intent.PutExtra("User", send);
-                StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                if (id ==_loggedId)
+                {
+                    intent = new Intent(this, typeof(MyProfileActivity));
+                    intent.PutExtra("User", send);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight); 
+                }
+                else
+                {
+                    intent = new Intent(this, typeof(PrivProfileActivity));
+                    intent.PutExtra("User", send);
+                    intent.PutExtra("LoggedId", _loggedId);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight); 
+                }
             }
-            else {
-                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-
-                var url = "resources/getUser?id=" + id;
+            else
+            {
+                var url = "resources/getBusiness?id=" + id;
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var send = webClient.DownloadString(url);
+                send = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(PrivProfileActivity));
-                intent.PutExtra("User", send);
-                intent.PutExtra("LoggedId", _loggedId);
-                StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight); 
+                url = "resources/isEmployee?email=" + _loggedId + "&id=" + id;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var result = webClient.DownloadString(url);
+
+                if (result == "1") 
+                {
+                    intent = new Intent(this, typeof(MyBusiness));
+                    intent.PutExtra("Bsns", send);
+                    intent.PutExtra("LoggedId", _loggedId);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                }
+                else
+                {
+                    //TODO add PrivBusiness activity
+                    // intent = new Intent(this, typeof(PrivBusiness));
+                    // intent.PutExtra("Bsns", send);
+                    // intent.PutExtra("LoggedId", _loggedId);
+                    // StartActivity(intent);
+                    // OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);   
+                }
             }
         }
     }

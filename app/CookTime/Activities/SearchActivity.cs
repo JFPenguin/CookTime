@@ -159,7 +159,7 @@ namespace CookTime.Activities {
                 //TODO test if businessess are loaded properly when server is functional again
                 
                 //TODO check is loggedUser is member of the business, with isEmployee method in Resources, to load either
-                //MyBusiness or PrivBusiness Activity
+                //MyBusiness or PrivBusiness Activity. You can check line 85 in FollowActivity.
                 
                 var busUrl = "resources/getBusiness?id=" + profileId;
                 var busRequest = webClient.DownloadString(busUrl);
@@ -184,10 +184,10 @@ namespace CookTime.Activities {
             _resultView.Adapter = _recomAdapter;
             string toastText;
             if (_recommendations.Count == 0) {
-                toastText = "results did not match with filter selection. Please try another search or refresh";
+                toastText = "Results did not match with filter selection. Please try another search or refresh";
             }
             else {
-                toastText = "results filtered according to selection";
+                toastText = "Results filtered according to selection";
             }
             _refToast = Toast.MakeText(this, toastText, ToastLength.Short);
             _refToast.Show();
@@ -215,10 +215,10 @@ namespace CookTime.Activities {
             _resultView.Adapter = _recomAdapter;
             string toastText;
             if (_recommendations.Count == 0) {
-                toastText = "no items in server matched the search query";
+                toastText = "No items in server matched the search query";
             }
             else {
-                toastText = "showing search results";
+                toastText = "Showing search results";
             }
             _refToast = Toast.MakeText(this, toastText, ToastLength.Short);
             _refToast.Show();
