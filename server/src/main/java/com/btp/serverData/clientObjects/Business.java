@@ -264,10 +264,19 @@ public class Business{
         return followers;
     }
 
+    /**
+     * Adds a recipe id to the privateList
+     * @param id int the id of the recipe to be added
+     */
     public void addRecipe(int id){
         this.getPrivateList().add(id);
     }
 
+    /**
+     * Swaps a recipe between private and public list
+     * @param id int the id id of the recipe to be swapped
+     * @return String "1" if moved from private to public, "0" from public to private
+     */
     public String moveRecipe(int id){
         String response;
         if (this.getPrivateList().contains(Integer.valueOf(id))){

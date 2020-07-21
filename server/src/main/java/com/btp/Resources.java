@@ -280,8 +280,8 @@ public class Resources {
      * Rates a business
      * @param id int the id of the business to be rated
      * @param rating int the rating of the user
-     * @param email String 
-     * @return
+     * @param email String the email of the user rating the business 
+     * @return String "0" if previously rated, "1" if not
      */
     @POST
     @Path("rateBusiness")
