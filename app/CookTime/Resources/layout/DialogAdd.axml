@@ -1,0 +1,45 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="#C09891"
+        android:weightSum="100"
+        android:minHeight="350dp"
+        android:minWidth="500dp"
+        >
+    <TextView
+            android:text="Add a business member"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="33"
+            android:textColor="#A1E2C8"
+            android:background="#3E4465"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="25sp"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:inputType="textEmailAddress"
+            android:ems="10"
+            android:hint="User email"
+            android:id="@+id/newEmail"
+            android:layout_weight="33"/>
+    <Button
+            android:text="Add"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="33"
+            android:id="@+id/btnAdd"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/ButtonStyle"
+            android:textColor="#405863"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp" 
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+</LinearLayout>

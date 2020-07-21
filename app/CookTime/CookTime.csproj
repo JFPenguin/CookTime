@@ -73,6 +73,7 @@
         <Compile Include="Adapters\RecipeAdapter.cs" />
         <Compile Include="Adapters\RecomAdapter.cs" />
         <Compile Include="Business.cs" />
+        <Compile Include="DialogFragments\DialogAdd.cs" />
         <Compile Include="DialogFragments\DialogChef.cs" />
         <Compile Include="DialogFragments\DialogChoice.cs" />
         <Compile Include="DialogFragments\DialogComment.cs" />
@@ -100,6 +101,7 @@
         <AndroidResource Include="Resources\layout\Business.axml" />
         <AndroidResource Include="Resources\layout\CreateBusiness.axml" />
         <AndroidResource Include="Resources\layout\CreateRecipe.axml" />
+        <AndroidResource Include="Resources\layout\DialogAdd.axml" />
         <AndroidResource Include="Resources\layout\DialogChef.axml" />
         <AndroidResource Include="Resources\layout\DialogChoice.axml" />
         <AndroidResource Include="Resources\layout\DialogComment.axml" />

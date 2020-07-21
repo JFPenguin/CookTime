@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using Android.App;
-using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using CookTime.Adapters;
-using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities
@@ -19,10 +16,12 @@ namespace CookTime.Activities
     public class MyBusiness : AppCompatActivity
     {
         private string bsnsJson;
+        private string loggedId;
         private Business bsns;
         private TextView bsnsNameTV;
         private TextView _bsnsHoursTV;
         private TextView _bsnsContactTV;
+        private TextView scoreView;
         private Button _btnMyProfile;
         private Button _btnFollowers;
         private Button _btnSettings;
@@ -49,12 +48,14 @@ namespace CookTime.Activities
 
             SetContentView(Resource.Layout.Business);
 
+            loggedId = Intent.GetStringExtra("LoggedId");
             bsnsJson = Intent.GetStringExtra("User");
             bsns = JsonConvert.DeserializeObject<Business>(bsnsJson);
 
             bsnsNameTV = FindViewById<TextView>(Resource.Id.bsnsName);
             _bsnsHoursTV = FindViewById<TextView>(Resource.Id.businessHoursView);
             _bsnsContactTV = FindViewById<TextView>(Resource.Id.contactView);
+            scoreView = FindViewById<TextView>(Resource.Id.scoreView);
             _btnMyProfile = FindViewById<Button>(Resource.Id.btnMyProfile);
             _btnFollowers = FindViewById<Button>(Resource.Id.btnBFollowers);
             _btnSettings = FindViewById<Button>(Resource.Id.btnBSettings);
@@ -65,7 +66,12 @@ namespace CookTime.Activities
             _btnDiff = FindViewById<Button>(Resource.Id.btnBDiff);
             _menuListView = FindViewById<ListView>(Resource.Id.myMenuListView);
 
-
+            bsnsNameTV.Text = bsns.name;
+            _bsnsHoursTV.Text = "Business hours: " + bsns.businessHours;
+            _bsnsContactTV.Text = "Contact: " + bsns.contact;
+            _btnFollowers.Text = "Followers: " + bsns.followers.Count;
+            scoreView.Text = "Score: " + bsns.rating;
+            
             // using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             //
             // var url = "resources/myMenu?email=" + _loggedUser.email + "&filter=date";
@@ -94,16 +100,16 @@ namespace CookTime.Activities
             //     Finish();
             // };
             //
-            // _btnSettings.Click += (sender, args) =>
-            // {
-            //     //Brings dialog fragment forward
-            //     var transaction = SupportFragmentManager.BeginTransaction();
-            //     var dialogSettings = new DialogSettings();
-            //     dialogSettings.Show(transaction, "settings");
-            //
-            //     dialogSettings.Email = _loggedUser.email;
-            //     dialogSettings.EventHandlerPass += PassResult;
-            // };
+            _btnSettings.Click += (sender, args) =>
+            {
+                //Brings dialog fragment forward
+                var transaction = SupportFragmentManager.BeginTransaction();
+                // var dialogSettings = new DialogSettings();
+                // dialogSettings.Show(transaction, "settings");
+                //
+                // dialogSettings.Email = _loggedUser.email;
+                // dialogSettings.EventHandlerPass += PassResult;
+            };
             //
             // _btnFollowers.Click += (sender, args) =>
             // {
