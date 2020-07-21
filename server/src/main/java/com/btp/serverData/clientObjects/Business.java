@@ -286,7 +286,7 @@ public class Business{
             this.getPrivateList().add(id);
         }
         else {
-            this.getPrivateList().add(id);
+            this.getPublicList().add(id);
         }
     }
 

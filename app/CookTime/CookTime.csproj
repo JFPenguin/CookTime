@@ -55,19 +55,16 @@
         <Reference Include="Mono.Android" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Activities\BusFollowActivity.cs" />
         <Compile Include="Activities\CreateBActivity.cs" />
         <Compile Include="Activities\CreateRActivity.cs" />
         <Compile Include="Activities\FollowActivity.cs" />
         <Compile Include="Activities\MainActivity.cs" />
-        <Compile Include="Activities\MyBusiness.cs" />
         <Compile Include="Activities\MyProfileActivity.cs" />
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\NotifActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />
         <Compile Include="Activities\SearchActivity.cs" />
-        <Compile Include="Adapters\BusFollowAdapter.cs" />
         <Compile Include="Adapters\CommentAdapter.cs" />
         <Compile Include="Adapters\FollowAdapter.cs" />
         <Compile Include="Adapters\IngredientAdapter.cs" />
@@ -75,7 +72,6 @@
         <Compile Include="Adapters\RecipeAdapter.cs" />
         <Compile Include="Adapters\RecomAdapter.cs" />
         <Compile Include="Business.cs" />
-        <Compile Include="DialogFragments\DialogAdd.cs" />
         <Compile Include="DialogFragments\DialogChef.cs" />
         <Compile Include="DialogFragments\DialogChoice.cs" />
         <Compile Include="DialogFragments\DialogComment.cs" />
@@ -104,6 +100,7 @@
         <AndroidResource Include="Resources\layout\CreateBusiness.axml" />
         <AndroidResource Include="Resources\layout\CreateRecipe.axml" />
         <AndroidResource Include="Resources\layout\DialogAdd.axml" />
+        <AndroidResource Include="Resources\layout\DialogBChoice.axml" />
         <AndroidResource Include="Resources\layout\DialogChef.axml" />
         <AndroidResource Include="Resources\layout\DialogChoice.axml" />
         <AndroidResource Include="Resources\layout\DialogComment.axml" />
