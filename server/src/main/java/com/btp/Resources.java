@@ -288,25 +288,6 @@ public class Resources {
     }
 
     /**
-     * Deletes a notification for a user
-     * @param id String email of the user
-     * @param notification String notification to be deleted
-     * @return String "1" if it was successful, "0" if not
-     */
-    @GET
-    @Path("deleteSingleNotification")
-    public String deleteSingleNotification(@QueryParam("id")String id,String notification){
-        UserRepo.getUser(id).getNotifications().remove(notification);
-        if(!UserRepo.getUser(id).getNotifications().contains(notification)){
-            return "1";
-        }
-        else {
-            return "0";
-        }
-    }
-
-
-    /**
      * Logins an user to its account
      * @param email String email of the user entering the account
      * @param password String password of the user
@@ -972,7 +953,6 @@ public class Resources {
                 return "2";
             }
             else{
-                UserRepo.getUser(id).sendMessage("You already have an active request!, please wait until you receive a response");
                 return "0";
             }
         }
