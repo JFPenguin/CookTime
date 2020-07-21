@@ -77,8 +77,20 @@ public class Recipe implements Comparable<Recipe> {
         return authorEmail;
     }
 
+    /**
+     * Setter of the authorEmail attribute
+     * @param authorEmail String the email of the author
+     */
     public void setAuthorEmail(String authorEmail){
         this.authorEmail = authorEmail;
+    }
+
+    /**
+     * Setter of the authorEmail attribute
+     * @param id int the id of the business
+     */
+    public void setAuthorEmail(int id){
+        this.authorEmail = String.valueOf(id);
     }
 
     /**

@@ -3,6 +3,7 @@ package com.btp;
 import com.btp.dataStructures.lists.SinglyList;
 import com.btp.dataStructures.nodes.SinglyNode;
 import com.btp.dataStructures.sorters.Sorter;
+import com.btp.serverData.clientObjects.Business;
 import com.btp.serverData.clientObjects.DishTag;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
@@ -431,7 +432,7 @@ public class Resources {
     /**
      * Checks if an user is a chef
      * @param email String email of the user
-     * @return String "0" if the chef can be rated, "1" if it can't be rated
+     * @return String "0" if the user is a chef, "1" if not
      */
     @GET
     @Path("isChef")
