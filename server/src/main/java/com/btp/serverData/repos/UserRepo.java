@@ -30,7 +30,7 @@ public class UserRepo {
         if(Initializer.isGUIOnline()){
             Initializer.getServerGUI().printLn("user added");
         }
-        updateTree();
+        dataWriter.writeData(userTree, pathUserDataBase);
     }
 
     /**

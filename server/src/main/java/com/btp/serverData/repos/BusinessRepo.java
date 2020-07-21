@@ -30,7 +30,7 @@ public class BusinessRepo {
         if(Initializer.isGUIOnline()){
             Initializer.getServerGUI().printLn("Business added");
         }
-        updateTree();
+        dataWriter.writeData(businessTree, path);
     }
 
     public static boolean checkBusinessById(int id){
@@ -81,5 +81,9 @@ public class BusinessRepo {
      */
     public static ArrayList<String> rating(){
         return businessTree.rating();
+    }
+
+    public static boolean checkId(int i) {
+        return businessTree.checkById(i);
     }
 }

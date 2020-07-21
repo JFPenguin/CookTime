@@ -471,7 +471,7 @@ public class Resources {
     private String checkChefRating(String ownEmail, String chefEmail) {
         User chef = UserRepo.getUser(chefEmail);
         String response = "0";
-        if (ownEmail.equals(chefEmail) || chef.isChef()){
+        if (ownEmail.equals(chefEmail) || !chef.isChef()){
             response = "1";
         }
         else {
@@ -854,7 +854,6 @@ public class Resources {
         ArrayList<String> userList = UserRepo.searchUsers(search);
         ArrayList<String> recipeList = RecipeRepo.searchByName(search);
         ArrayList<String> businessList = BusinessRepo.search(search);
-
         ArrayList<String> profilesList = createSearchList(userList, recipeList, businessList);
 
         return profilesList;
@@ -957,6 +956,26 @@ public class Resources {
             }
         }
         return "1";
+    }
+
+    @GET
+    @Path("getBusiness")
+    public Business getBussiness(@QueryParam("id") int id){
+        return BusinessRepo.getBusiness(id);
+    }
+
+    @POST
+    @Path("createBusiness")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public static void createBusiness(Business business){
+    int i = random.nextInt(999) +1001;
+    while (BusinessRepo.checkId(i)){
+        System.out.println(i);
+        i = random.nextInt(999) +1001;
+    }
+    business.setId(i);
+    UserRepo.getUser(business.getEmployeeList().get(0)).addBusiness(business.getId());
+    BusinessRepo.addBusiness(business);
     }
 
     /**
