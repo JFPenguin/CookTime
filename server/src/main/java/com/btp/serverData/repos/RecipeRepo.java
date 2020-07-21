@@ -30,7 +30,7 @@ public class RecipeRepo {
         if(Initializer.isGUIOnline()){
             Initializer.getServerGUI().printLn("Recipe added");
         }
-        dataWriter.writeData(recipeTree, path);
+        updateTree();
     }
 
     /**
