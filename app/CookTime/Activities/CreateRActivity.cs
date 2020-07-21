@@ -164,7 +164,7 @@ namespace CookTime.Activities {
                     }
                     
                     var recipe = new Recipe(_loggedId, name, diff, tags, time, type, duration, ingredients,
-                        instructions, portions, 0);
+                        instructions, portions, 0, 0);
                     var recipeJson = JsonConvert.SerializeObject(recipe);
                     
                     using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};

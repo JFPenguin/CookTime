@@ -21,8 +21,6 @@ namespace CookTime.Activities
         private string bsnsJson;
         private string loggedId;
         private Business bsns;
-        private bool _seeingPublic = true;
-        // axml objects
         private TextView bsnsNameTV;
         private TextView _bsnsHoursTV;
         private TextView _bsnsContactTV;
@@ -37,6 +35,8 @@ namespace CookTime.Activities
         private Button _btnDiff;
         private string sortStr;
         private ListView _menuListView;
+        
+        //TODO make sure server returns id;name;author
         private IList<string> _menuList;
         private Toast _toast;
         private RecipeAdapter _adapter;
@@ -77,6 +77,9 @@ namespace CookTime.Activities
             _btnFollowers.Text = "Followers: " + bsns.followers.Count;
             scoreView.Text = "Score: " + bsns.rating;
             
+            
+            //TODO optional add button to see member list (change list to email;name)
+            
             // using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             //
             // var url = "resources/businessPublic" + bsns.id + "&filter=date";
@@ -88,24 +91,23 @@ namespace CookTime.Activities
             // _adapter = new RecipeAdapter(this, _menuList);
             // _menuListView.Adapter = _adapter;
             // _menuListView.ItemClick += ListClick;
-            //
-            // _btnMyProfile.Click += (sender, args) =>
-            // {
-            //     using var webClient2 = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            //
-            //     var url2 = "resources/getUser?id=" + loggedId;
-            //     webClient2.Headers[HttpRequestHeader.ContentType] = "application/json";
-            //     var request = webClient2.DownloadString(url2);
-            //     
-            //     Intent intent = new Intent(this, typeof(NewsfeedActivity));
-            //     intent.PutExtra("User", request);
-            //     
-            //     StartActivity(intent);
-            //     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-            //     Finish();
-            // };
-            //
-            //
+            
+            _btnMyProfile.Click += (sender, args) =>
+            {
+                using var webClient2 = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            
+                var url2 = "resources/getUser?id=" + loggedId;
+                webClient2.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var request = webClient2.DownloadString(url2);
+                
+                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                intent.PutExtra("User", request);
+                intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Finish();
+            };
+            
             _btnSettings.Click += (sender, args) =>
             {
                 //Brings dialog fragment forward
@@ -119,7 +121,7 @@ namespace CookTime.Activities
             //
             // _btnFollowers.Click += (sender, args) => 
             // {
-            //     // TODO use BusFollowActivity to implement different logic without modifying the existing algorithms for regular users.
+            //     TODO make sure server already changed follow lists logic
             //     Intent intent = new Intent(this, typeof(BusFollowActivity));
             //     intent.PutExtra("Title", "Followers");
             //     intent.PutExtra("LoggedId", loggedId);
@@ -188,17 +190,17 @@ namespace CookTime.Activities
             // };
         }
 
-        private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
-        {
-            var recipeId = _menuList[eventArgs.Position].Split(';')[0];
-            
-            //Brings dialog fragment forward
-            var transaction = SupportFragmentManager.BeginTransaction();
-            var dialogChoice = new DialogChoice();
-            dialogChoice.RecipeId = recipeId;
-            dialogChoice.Show(transaction, "choice");
-            dialogChoice.EventHandlerChoice += ChoiceAction;
-        }
+        // private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
+        // {
+        //     var recipeId = _menuList[eventArgs.Position].Split(';')[0];
+        //     
+        //     //Brings dialog fragment forward
+        //     var transaction = SupportFragmentManager.BeginTransaction();
+        //     var dialogChoice = new DialogChoice();
+        //     dialogChoice.RecipeId = recipeId;
+        //     dialogChoice.Show(transaction, "choice");
+        //     dialogChoice.EventHandlerChoice += ChoiceAction;
+        // }
     
         /// <summary>
         /// This method is in charge of retrieving the data entered by the user in the Settings dialog fragment.
@@ -219,69 +221,69 @@ namespace CookTime.Activities
             _toast.Show();
         }
         
-        /// <summary>
-        /// This method is in charge of retrieving the result of the Choice dialog fragment.
-        /// </summary>
-        /// <param name="sender"> Reference to the object that raised the event </param>
-        /// <param name="e"> Contains the event data </param>
-        private void ChoiceAction(object sender, ChoiceEvent e) {
-            
-            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            var url = "resources/getRecipe?id=" + e.RecipeId;
-            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            var request = webClient.DownloadString(url);
-            
-            var response = e.Message;
-            if (response == 0) {
-                Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
-                recipeIntent.PutExtra("Recipe", request);
-                recipeIntent.PutExtra("LoggedId", loggedId);
-                StartActivity(recipeIntent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-            }
-            else
-            {
-                //TODO check if the email to be sent when deleting the recipe can be the contact email, or if it has to be a user's email.
-                url = "resources/deleteRecipe?email=" + loggedId + "&id=" + e.RecipeId; //here
-                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                webClient.DownloadString(url);
-                
-                url = "resources/getBusiness?id=" + bsns.id;
-                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var json = webClient.DownloadString(url);
-                
-                Intent intent = new Intent(this, typeof(Business));
-                intent.PutExtra("Business", json);
-                Intent.PutExtra("LoggedId", loggedId);
-                intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
-                StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-                Finish();
-                
-                _toast = Toast.MakeText(this, "Recipe deleted. Refreshing MyBusiness...", ToastLength.Short);
-                _toast.Show();
-            }
-        }
+        // /// <summary>
+        // /// This method is in charge of retrieving the result of the Choice dialog fragment.
+        // /// </summary>
+        // /// <param name="sender"> Reference to the object that raised the event </param>
+        // /// <param name="e"> Contains the event data </param>
+        // private void ChoiceAction(object sender, ChoiceEvent e) {
+        //     
+        //     using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+        //     var url = "resources/getRecipe?id=" + e.RecipeId;
+        //     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+        //     var request = webClient.DownloadString(url);
+        //     
+        //     var response = e.Message;
+        //     if (response == 0) {
+        //         Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
+        //         recipeIntent.PutExtra("Recipe", request);
+        //         recipeIntent.PutExtra("LoggedId", loggedId);
+        //         StartActivity(recipeIntent);
+        //         OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+        //     }
+        //     else
+        //     {
+        //         //TODO check if the email to be sent when deleting the recipe can be the contact email, or if it has to be a user's email.
+        //         url = "resources/deleteRecipe?email=" + loggedId + "&id=" + e.RecipeId; //here
+        //         webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+        //         webClient.DownloadString(url);
+        //         
+        //         url = "resources/getBusiness?id=" + bsns.id;
+        //         webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+        //         var json = webClient.DownloadString(url);
+        //         
+        //         Intent intent = new Intent(this, typeof(Business));
+        //         intent.PutExtra("Business", json);
+        //         Intent.PutExtra("LoggedId", loggedId);
+        //         intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+        //         StartActivity(intent);
+        //         OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+        //         Finish();
+        //         
+        //         _toast = Toast.MakeText(this, "Recipe deleted. Refreshing MyBusiness...", ToastLength.Short);
+        //         _toast.Show();
+        //     }
+        // }
         
-            /// <summary>
-            /// This method sorts the MyMenu of the user according to the sortStr attribute
-            /// </summary>
-            private void SortMenu() {
-                using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                
-                var type = "businessPublic";
-                //checking if the menu displayed is private or public to see which to filter
-                if (!_seeingPublic) {
-                    type = "businessPrivate";
-                }
-                
-                var url = "resources/" + type +  "?id=" + bsns.id + "&filter=" + sortStr;
-                var request = webClient.DownloadString(url);
-                _menuList = JsonConvert.DeserializeObject<IList<string>>(request);
-                _adapter.RecipeItems = _menuList;
-                _menuListView.Adapter = _adapter;
-            }
+            // /// <summary>
+            // /// This method sorts the MyMenu of the user according to the sortStr attribute
+            // /// </summary>
+            // private void SortMenu() {
+            //     using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            //     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            //     
+            //     var type = "businessPublic";
+            //     //checking if the menu displayed is private or public to see which to filter
+            //     if (!_seeingPublic) {
+            //         type = "businessPrivate";
+            //     }
+            //     
+            //     var url = "resources/" + type +  "?id=" + bsns.id + "&filter=" + sortStr;
+            //     var request = webClient.DownloadString(url);
+            //     _menuList = JsonConvert.DeserializeObject<IList<string>>(request);
+            //     _adapter.RecipeItems = _menuList;
+            //     _menuListView.Adapter = _adapter;
+            // }
             
     }
 }

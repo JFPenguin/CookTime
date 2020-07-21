@@ -17,6 +17,8 @@ namespace CookTime.Activities {
         private string _loggedId;
         private TextView _titleText;
         private ListView _followListView;
+        
+        //TODO make sure server returns id;name;type
         private IList<string> followList;
         
         /// <summary>
@@ -55,6 +57,8 @@ namespace CookTime.Activities {
         {
             string id = followList[e.Position].Split(";")[0];
 
+            //TODO check type of profile and change logic
+            
             if (id == _loggedId) {
                 using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 

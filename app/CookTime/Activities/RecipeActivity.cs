@@ -166,8 +166,9 @@ namespace CookTime.Activities {
                 dialogRate.EventHandlerRate += RateResult;
             };
             
-            authorButton.Click += (sender, args) => 
+            authorButton.Click += (sender, args) =>
             {
+                //TODO check if recipe is business to go to User or Business Profile
                 if (_recipe.authorEmail == _loggedId) {
                     using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 

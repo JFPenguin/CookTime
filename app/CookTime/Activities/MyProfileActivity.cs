@@ -36,6 +36,7 @@ namespace CookTime.Activities {
         private Button _btnBusiness;
         private string sortStr;
         private ListView _myMenuListView;
+        //TODO make sure server returns id;name;author
         private IList<string> _myMenuList;
         private Toast _toast;
         private RecipeAdapter _adapter;
@@ -227,7 +228,13 @@ namespace CookTime.Activities {
                 }
             };
         }
-
+        
+        
+        /// <summary>
+        /// This method is in charge of retrieving of showing recipes when clicking on them
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="eventArgs"> Contains the event data </param>
         private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
         {
             var recipeId = _myMenuList[eventArgs.Position].Split(';')[0];
