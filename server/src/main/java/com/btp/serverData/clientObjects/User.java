@@ -15,7 +15,7 @@ public class User implements Comparable<User> {
     private ArrayList<String> followerEmails = new ArrayList<>();
     private ArrayList<String> followingEmails = new ArrayList<>();
     private ArrayList<Integer> recipeList = new ArrayList<>();
-    private ArrayList<Integer> businessList = new ArrayList<>();
+    private int business;
     private ArrayList<String> userPhotos = new ArrayList<>();
     private ArrayList<Integer> newsFeed = new ArrayList<>();
     private ArrayList<String> ratedBy = new ArrayList<>();
@@ -247,12 +247,12 @@ public class User implements Comparable<User> {
      * This method returns the list of businesses associated with this user
      * @return
      */
-    public ArrayList<Integer> getBusinessList() {
-        return businessList;
+    public int getBusiness() {
+        return business;
     }
 
-    public void addBusiness(int id){
-        businessList.add(id);
+    public void setBusiness(int id){
+        this.business=id;
     }
 
     /**
