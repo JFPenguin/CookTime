@@ -4,8 +4,10 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
+using Android.Views;
 using Android.Widget;
 using CookTime.Adapters;
+using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
@@ -20,12 +22,15 @@ namespace CookTime.Activities {
         private string _loggedId;
         private TextView _nameView;
         private TextView _ageView;
+        private TextView _chefView;
+        private TextView _scoreView;
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnFollow;
         private Button _btnDate;
         private Button _btnScore;
         private Button _btnDiff;
+        private Button _btnRateChef;
         private string sortStr;
         private ListView _menuListView;
         private IList<string> _menuList;
@@ -49,6 +54,8 @@ namespace CookTime.Activities {
             
             _nameView = FindViewById<TextView>(Resource.Id.nameView);
             _ageView = FindViewById<TextView>(Resource.Id.ageView);
+            _chefView = FindViewById<TextView>(Resource.Id.chefPText);
+            _scoreView = FindViewById<TextView>(Resource.Id.scorePText);
 
             _btnFollowers = FindViewById<Button>(Resource.Id.btnFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
@@ -56,11 +63,23 @@ namespace CookTime.Activities {
             _btnDate = FindViewById<Button>(Resource.Id.btnPDate);
             _btnScore = FindViewById<Button>(Resource.Id.btnPScore);
             _btnDiff = FindViewById<Button>(Resource.Id.btnPDiff);
+            _btnRateChef = FindViewById<Button>(Resource.Id.btnRateChef);
             
             _menuListView = FindViewById<ListView>(Resource.Id.menuListView);
 
             _nameView.Text = "Name: " + _user.firstName + " " + _user.lastName;
             _ageView.Text = "Age: " + _user.age;
+
+            if (_user.chef) {
+                _chefView.Text = "Chef: yes";
+                _scoreView.Text = "Score: " + _user.chefScore;
+                _btnRateChef.Visibility = ViewStates.Visible;
+            }
+            else {
+                _chefView.Text = "Chef: no";
+                _scoreView.Text = "";
+                _btnRateChef.Visibility = ViewStates.Gone;
+            }
 
             _btnFollowers.Text = "FOLLOWERS: " + _user.followerEmails.Count;
             _btnFollowing.Text = "FOLLOWING: " + _user.followingEmails.Count;
@@ -146,6 +165,20 @@ namespace CookTime.Activities {
                 sortStr = "difficulty";
                 SortMenu();
             };
+            
+            _btnRateChef.Click += (sender, args) =>
+            {
+                //Brings dialog fragment forward
+                var transaction = SupportFragmentManager.BeginTransaction();
+                var dialogRate = new DialogRate();
+                
+                dialogRate.Show(transaction, "rate");
+                dialogRate.LoggedId = _loggedId;
+                dialogRate.ChefId = _user.email;
+                dialogRate.Type = 1;
+                    
+                dialogRate.EventHandlerRate += RateResult;
+            };
         }
         
         /// <summary>
@@ -183,6 +216,43 @@ namespace CookTime.Activities {
             _menuList = JsonConvert.DeserializeObject<IList<string>>(request);
             _adapter.RecipeItems = _menuList;
             _menuListView.Adapter = _adapter;
+        }
+        
+        /// <summary>
+        /// This method is in charge of retrieving the result of the Rate Chef dialog fragment.
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
+        private void RateResult(object sender, SendRateEvent e) {
+            Toast toast;
+            string toastText;
+
+            if (e.Message == "-1") {
+                toastText = "Please choose a rating";
+            }
+
+            else if (e.Message == "1")
+            {
+                toastText = "You already rated this chef.";
+            }
+            else {
+                toastText = "Recipe rated! Refreshing the profile...";
+                
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                var url = "resources/getUser?id=" + _user.email;
+                
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var userJson = webClient.DownloadString(url);
+                
+                Intent intent = new Intent(this, typeof(PrivProfileActivity));
+                intent.PutExtra("User", userJson);
+                intent.PutExtra("LoggedId", _loggedId);
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Finish();
+            }
+            toast = Toast.MakeText(this, toastText, ToastLength.Long);
+            toast.Show();
         }
     }
 }
