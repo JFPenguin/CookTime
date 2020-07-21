@@ -17,31 +17,21 @@ namespace CookTime.Activities {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
     public class CreateBActivity : AppCompatActivity {
         private string _loggedId;
-        private EditText recipeNameEditText;
-        private EditText recipePortionsEditText;
-        private EditText recipeDurationEditText;
-        private EditText recipeIngredientEditText;
-        private EditText recipeQuantityEditText;
-        private EditText recipeUnitEditText;
-        private EditText recipeInstructionEditText;
-        private RadioGroup radioGroupDiff;
-        private RadioGroup radioGroupTime;
-        private RadioGroup radioGroupType;
-        private CheckBox checkBox;
-        private CheckBox checkBox2;
-        private CheckBox checkBox3;
-        private CheckBox checkBox4;
-        private CheckBox checkBox5;
-        private CheckBox checkBox6;
-        private Button btnIngredient;
-        private Button btnInstruction;
-        private Button btnPost;
-        private bool tagsChecked;
-        private Toast _toast;
+        private EditText bsnsName;
+        private EditText bsnsContact;
+        private EditText bsnsTo;
+        private EditText bsnsFrom;
+        private CheckBox checkbox1;
+        private CheckBox checkbox2;
+        private CheckBox checkbox3;
+        private CheckBox checkbox4;
+        private CheckBox checkbox5;
+        private CheckBox checkbox6;
+        private CheckBox checkbox7;
+        private Button sendBsns;
+        private bool daysChecked;
         private string toastText;
-        private List<string> ingredients = new List<string>();
-        private List<string> instructions = new List<string>();
-        private List<string> tags = new List<string>();
+        private Toast _toast;
         
         /// <summary>
         /// This method is called when the activity is starting.
@@ -56,137 +46,161 @@ namespace CookTime.Activities {
             
             _loggedId = Intent.GetStringExtra("LoggedId");
 
-            // recipeNameEditText = FindViewById<EditText>(Resource.Id.editText);
-            // recipePortionsEditText = FindViewById<EditText>(Resource.Id.editText2);
-            // recipeDurationEditText = FindViewById<EditText>(Resource.Id.editText3);
-            // recipeIngredientEditText = FindViewById<EditText>(Resource.Id.editText4);
-            // recipeQuantityEditText = FindViewById<EditText>(Resource.Id.editText5);
-            // recipeUnitEditText = FindViewById<EditText>(Resource.Id.editText6);
-            // recipeInstructionEditText = FindViewById<EditText>(Resource.Id.editText7);
-            // radioGroupDiff = FindViewById<RadioGroup>(Resource.Id.radioGroupDiff);
-            // radioGroupTime = FindViewById<RadioGroup>(Resource.Id.radioGroupTime);
-            // radioGroupType = FindViewById<RadioGroup>(Resource.Id.radioGroupType);
-            // checkBox = FindViewById<CheckBox>(Resource.Id.checkBox);
-            // checkBox2 = FindViewById<CheckBox>(Resource.Id.checkBox2);
-            // checkBox3 = FindViewById<CheckBox>(Resource.Id.checkBox3);
-            // checkBox4 = FindViewById<CheckBox>(Resource.Id.checkBox4);
-            // checkBox5 = FindViewById<CheckBox>(Resource.Id.checkBox5);
-            // checkBox6 = FindViewById<CheckBox>(Resource.Id.checkBox6);
-            // btnIngredient = FindViewById<Button>(Resource.Id.btnIngredient);
-            // btnInstruction = FindViewById<Button>(Resource.Id.btnInstruction);
-            // btnPost = FindViewById<Button>(Resource.Id.btnPost);
-            //
-            // btnIngredient.Click += (sender, args) =>
-            // {
-            //     if (recipeIngredientEditText.Text.Equals("") || recipeQuantityEditText.Text.Equals("") ||
-            //         recipeUnitEditText.Text.Equals(""))
-            //     {
-            //         toastText = "Please fill in all of the ingredient information";
-            //     }
-            //     else
-            //     {
-            //         toastText = "Ingredient added!";
-            //         ingredients.Add(recipeIngredientEditText.Text + ";" + recipeQuantityEditText.Text + ";" + 
-            //                          recipeUnitEditText.Text);
-            //         recipeIngredientEditText.Text = "";
-            //         recipeQuantityEditText.Text = "";
-            //         recipeUnitEditText.Text = "";
-            //     }
-            //     _toast = Toast.MakeText(this, toastText, ToastLength.Short);
-            //     _toast.Show();
-            // };
-            //
-            // btnInstruction.Click += (sender, args) =>
-            // {
-            //     if (recipeInstructionEditText.Text.Equals(""))
-            //     {
-            //         toastText = "Please fill in the instruction";
-            //     }
-            //     else
-            //     {
-            //         toastText = "Instruction added!";
-            //         instructions.Add(recipeInstructionEditText.Text);
-            //         recipeInstructionEditText.Text = "";
-            //     }
-            //     _toast = Toast.MakeText(this, toastText, ToastLength.Short);
-            //     _toast.Show();
-            // };
-            //
-            // btnPost.Click += (sender, args) =>
-            // {
-            //     if (checkBox.Checked || checkBox2.Checked || checkBox3.Checked || checkBox4.Checked || checkBox5.Checked
-            //         || checkBox6.Checked) 
-            //     {
-            //         tagsChecked = true;
-            //     }
-            //     else {
-            //         tagsChecked = false;
-            //     }
-            //
-            //     if (recipeNameEditText.Text.Equals("") || recipePortionsEditText.Text.Equals("") ||
-            //         recipeDurationEditText.Text.Equals("") || instructions.Count == 0 || ingredients.Count == 0 ||
-            //         radioGroupDiff.CheckedRadioButtonId == -1 || radioGroupTime.CheckedRadioButtonId == -1 ||
-            //         radioGroupType.CheckedRadioButtonId == -1 || !tagsChecked)
-            //     {
-            //         toastText = "Please fill in all of the required information";
-            //     }
-            //     else
-            //     {
-            //         toastText = "Recipe posted!";
-            //
-            //         var name = recipeNameEditText.Text;
-            //         var portions = int.Parse(recipePortionsEditText.Text);
-            //         var duration = int.Parse(recipeDurationEditText.Text);
-            //         
-            //         var checkedDiff = radioGroupDiff.CheckedRadioButtonId;
-            //         var checkedTime = radioGroupTime.CheckedRadioButtonId;
-            //         var checkedType = radioGroupType.CheckedRadioButtonId;
-            //         
-            //         var diff = int.Parse(FindViewById<RadioButton>(checkedDiff).Text);
-            //         var time = FindViewById<RadioButton>(checkedTime).Text;
-            //         var type = FindViewById<RadioButton>(checkedType).Text;
-            //
-            //         if (checkBox.Checked) {
-            //             tags.Add(checkBox.Text);
-            //         }
-            //         if (checkBox2.Checked) {
-            //             tags.Add(checkBox2.Text);
-            //         }
-            //         if (checkBox3.Checked) {
-            //             tags.Add(checkBox3.Text);
-            //         }
-            //         if (checkBox4.Checked) {
-            //             tags.Add(checkBox4.Text);
-            //         }
-            //         if (checkBox5.Checked) {
-            //             tags.Add(checkBox5.Text);
-            //         }
-            //         if (checkBox6.Checked) {
-            //             tags.Add(checkBox6.Text);
-            //         }
-            //         
-            //         var recipe = new Recipe(_loggedId, name, diff, tags, time, type, duration, ingredients,
-            //             instructions, portions, 0);
-            //         var recipeJson = JsonConvert.SerializeObject(recipe);
-            //         
-            //         using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            //         var url = "resources/createRecipe";
-            //         webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            //         webClient.UploadString(url, recipeJson);  
-            //         
-            //         url = "resources/getUser?id=" + _loggedId;
-            //         webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            //         var userJson = webClient.DownloadString(url);  
-            //         
-            //         Intent intent = new Intent(this, typeof(MyProfileActivity));
-            //         intent.PutExtra("User", userJson);
-            //         intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
-            //         StartActivity(intent);
-            //         OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-            //     }
-            //     _toast = Toast.MakeText(this, toastText, ToastLength.Short);
-            //     _toast.Show();
-            //};
+            bsnsName = FindViewById<EditText>(Resource.Id.editText);
+            bsnsContact = FindViewById<EditText>(Resource.Id.editText2);
+            bsnsFrom = FindViewById<EditText>(Resource.Id.editText3);
+            bsnsTo = FindViewById<EditText>(Resource.Id.editText4);
+            checkbox1 = FindViewById<CheckBox>(Resource.Id.checkBox);
+            checkbox2 = FindViewById<CheckBox>(Resource.Id.checkBox2);
+            checkbox3 = FindViewById<CheckBox>(Resource.Id.checkBox3);
+            checkbox4 = FindViewById<CheckBox>(Resource.Id.checkBox4);
+            checkbox5 = FindViewById<CheckBox>(Resource.Id.checkBox5);
+            checkbox6 = FindViewById<CheckBox>(Resource.Id.checkBox6);
+            checkbox7 = FindViewById<CheckBox>(Resource.Id.checkBox7);
+            sendBsns = FindViewById<Button>(Resource.Id.btnPost);
+
+            
+             sendBsns.Click += (sender, args) =>
+             {
+                 if (checkbox1.Checked || checkbox2.Checked || checkbox3.Checked || checkbox4.Checked || checkbox5.Checked
+                     || checkbox6.Checked || checkbox7.Checked) 
+                 {
+                     daysChecked = true;
+                 }
+                 else {
+                     daysChecked = false;
+                 }
+            
+                 if (bsnsName.Text.Equals("") || bsnsContact.Text.Equals("") || bsnsFrom.Text.Equals("") || 
+                     bsnsTo.Text.Equals("") || !daysChecked || !isHours(bsnsFrom.Text, bsnsTo.Text))  
+                 {
+                     toastText = "Please fill in correctly all of the required information";
+                 }
+                 else 
+                 {
+                     toastText = "Business created";
+                     var name = bsnsName.Text;
+                     var contact = bsnsContact.Text;
+                     var from = bsnsFrom.Text;
+                     var to = bsnsTo.Text;
+                     var hours = from + " to " + to;
+                     var days = "";
+                     var firstAdded = false;
+                     
+                     if (checkbox1.Checked) {
+                         firstAdded = true;
+                         days += checkbox1.Text;
+                     }
+                     if (checkbox2.Checked) {
+                         if (!firstAdded) {
+                             firstAdded = true;
+                             days += checkbox2.Text;
+                         }
+                         else {
+                             days += "-" + checkbox2.Text;
+                         }
+                     }
+                     if (checkbox3.Checked) {
+                         if (!firstAdded) {
+                             firstAdded = true;
+                             days += checkbox3.Text;
+                         }
+                         else {
+                             days += "-" + checkbox3.Text;
+                         }
+                     }
+                     if (checkbox4.Checked) {
+                         if (!firstAdded) {
+                             firstAdded = true;
+                             days += checkbox4.Text;
+                         }
+                         else {
+                             days += "-" + checkbox4.Text;
+                         }
+                     }
+                     if (checkbox5.Checked) {
+                         if (!firstAdded) {
+                             firstAdded = true;
+                             days += checkbox5.Text;
+                         }
+                         else {
+                             days += "-" + checkbox5.Text;
+                         }
+                     }
+                     if (checkbox6.Checked) {
+                         if (!firstAdded) {
+                             firstAdded = true;
+                             days += checkbox6.Text;
+                         }
+                         else {
+                             days += "-" + checkbox6.Text;
+                         }
+                     }
+                     if (checkbox7.Checked) {
+                         if (!firstAdded) {
+                             days += checkbox7.Text;
+                         }
+                         else {
+                             days += "-" + checkbox7.Text;
+                         }
+                     }
+
+                     var employeeList = new List<string>();
+                     employeeList.Add(_loggedId);
+                     
+                     var bsnsHoursStr = days + " " + hours;
+                     var bsns = new Business(name, contact, bsnsHoursStr, employeeList);
+                     var bsnsJson = JsonConvert.SerializeObject(bsns);
+
+                     using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                     var url = "resources/createBusiness";
+                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                     webClient.UploadString(url, bsnsJson);  
+                     
+                     url = "resources/getUser?id=" + _loggedId;
+                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                     var userJson = webClient.DownloadString(url);  
+                     
+                     Intent intent = new Intent(this, typeof(MyProfileActivity));
+                     intent.PutExtra("User", userJson);
+                     intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                     StartActivity(intent);
+                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                 }
+                 _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                 _toast.Show();
+            };
+        }
+
+        private bool isHours(string from, string to) {
+            var isHours = false;
+            try {
+                var openTime = from.Split(":");
+                var closeTime = to.Split(":");
+                if (openTime.Length == 2 && openTime[0].Length == 2 && openTime[1].Length == 2
+                    && closeTime.Length == 2 && closeTime[0].Length == 2 && closeTime[1].Length ==2) 
+                {
+                    var hh1 = int.Parse(openTime[0]);
+                    var mm1 = int.Parse(openTime[1]);
+                    var hh2 = int.Parse(closeTime[0]);
+                    var mm2 = int.Parse(closeTime[1]);
+                    if (hh1 < hh2) {
+                        if (hh1 < 24 && mm1 < 60 && hh2 < 24 && mm2 < 60) {
+                            isHours = true;
+                        }
+                    }
+                    else if (hh1 == hh2) {
+                        if (hh1 < 24 && mm1 < 60 && mm2 > mm1 && mm2 < 60) {
+                            isHours = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return isHours;
         }
     }
 }

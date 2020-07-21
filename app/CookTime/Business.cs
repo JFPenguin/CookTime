@@ -6,30 +6,32 @@ namespace CookTime {
     /// used for JSON serialization into client-side workable objects.
     /// </summary>
     public class Business {
-        private int id;
-        private string name;
-        private float rating;
-        private int scoreTimes;
-        private List<string> raters;
-        private List<int> privateList;
-        private List<int> publicList;
-        private string location;
-        private List<string> employeeList;
-        private string contact;
-        private string photo;
-        private string businessHours;
+        public int id;
+        public string name;
+        public float rating;
+        public int scoreTimes;
+        public List<string> raters;
+        public List<int> publicList;
+        public List<int> privateList;
+        public string location;
+        public List<string> employeeList;
+        public string contact;
+        public string photo;
+        public string businessHours;
         
         /// <summary>
         /// constructor for the Business class
         /// </summary>
         /// <param name="name">the business name given by the user creator group</param>
-        /// <param name="contact"></param>
-        /// <param name="businessHours"></param>
-        public Business(string name, string contact, string businessHours)
+        /// <param name="contact"> the email of contact </param>
+        /// <param name="businessHours"> the business hours </param>
+        /// <param name="employeeList"> list of employees </param>
+        public Business(string name, string contact, string businessHours, List<string> employeeList)
         {
             this.name = name;
             this.contact = contact;
             this.businessHours = businessHours;
+            this.employeeList = employeeList;
         }
     }
 }
