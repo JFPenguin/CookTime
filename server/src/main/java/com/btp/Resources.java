@@ -976,6 +976,7 @@ public class Resources {
     business.setId(i);
     UserRepo.getUser(business.getEmployeeList().get(0)).addBusiness(business.getId());
     BusinessRepo.addBusiness(business);
+    UserRepo.updateTree();
     }
 
     /**

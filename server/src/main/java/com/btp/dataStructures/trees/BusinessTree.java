@@ -194,7 +194,6 @@ public class BusinessTree {
         current = new BusinessNode();
         current.setElement(element);
         current.setParent(parent);
-        System.out.println("linea 180");
         int x;
         if(parent!=null) {
              x = element.getId() - parent.getElement().getId();
@@ -202,7 +201,6 @@ public class BusinessTree {
         else {
             x = element.getId();
         }
-        System.out.println("sirvio");
         if (parent == null) {
             root = current;
         } else if (x > 0) {
@@ -221,15 +219,15 @@ public class BusinessTree {
      * @param parent parent to be rotated
      */
     public void zigRotation(BusinessNode child, BusinessNode parent) {
-        if ((child == null) || (parent == null) || (parent.getLeft() != child) || (child.getParent() != parent)) {
+        if ((child == null) || (parent == null) || (parent.getLeft() != child) || (child.parent() != parent)) {
             throw new RuntimeException("wrong rotational operation for this value");
         }
 
-        if (parent.getParent() != null) {
-            if (parent == parent.getParent().getLeft()) {
-                parent.getParent().setLeft(child);
+        if (parent.parent() != null) {
+            if (parent == parent.parent().getLeft()) {
+                parent.parent().setLeft(child);
             } else {
-                parent.getParent().setRight(child);
+                parent.parent().setRight(child);
             }
         }
 
@@ -237,7 +235,7 @@ public class BusinessTree {
             child.getRight().setParent(parent);
         }
 
-        child.setParent(parent.getParent());
+        child.setParent(parent.parent());
         parent.setParent(child);
         parent.setLeft(child.getRight());
         child.setRight(parent);
@@ -250,21 +248,21 @@ public class BusinessTree {
      * @param parent parent to be rotated
      */
     public void zagRotation(BusinessNode child, BusinessNode parent) {
-        if ((child == null) || (parent == null) || (parent.getRight() != child) || (child.getParent() != parent)) {
+        if ((child == null) || (parent == null) || (parent.getRight() != child) || (child.parent() != parent)) {
             throw new RuntimeException("wrong rotational operation for this value");
         }
-        if (parent.getParent() != null) {
-            if (parent == parent.getParent().getLeft()) {
-                parent.getParent().setLeft(child);
+        if (parent.parent() != null) {
+            if (parent == parent.parent().getLeft()) {
+                parent.parent().setLeft(child);
             } else {
-                parent.getParent().setRight(child);
+                parent.parent().setRight(child);
             }
         }
         if (child.getLeft() != null) {
             child.getLeft().setParent(parent);
         }
 
-        child.setParent(parent.getParent());
+        child.setParent(parent.parent());
         parent.setParent(child);
         parent.setRight(child.getLeft());
         child.setLeft(parent);
@@ -276,9 +274,9 @@ public class BusinessTree {
      * @param x node to be rotated
      */
     private void Splay(BusinessNode x) {
-        while (x.getParent() != null) {
-            BusinessNode parent = x.getParent();
-            BusinessNode grandParent = parent.getParent();
+        while (x.parent() != null) {
+            BusinessNode parent = x.parent();
+            BusinessNode grandParent = parent.parent();
             if (grandParent == null) {
                 if (x == parent.getLeft()) {
                     zigRotation(x, parent);
@@ -291,13 +289,13 @@ public class BusinessTree {
                         zigRotation(parent, grandParent);
                         zigRotation(x, parent);
                     } else {
-                        zigRotation(x, x.getParent());
-                        zagRotation(x, x.getParent());
+                        zigRotation(x, x.parent());
+                        zagRotation(x, x.parent());
                     }
                 } else {
                     if (parent == grandParent.getLeft()) {
-                        zagRotation(x, x.getParent());
-                        zigRotation(x, x.getParent());
+                        zagRotation(x, x.parent());
+                        zigRotation(x, x.parent());
                     } else {
                         zagRotation(parent, grandParent);
                         zagRotation(x, parent);

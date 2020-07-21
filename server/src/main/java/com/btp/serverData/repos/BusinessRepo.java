@@ -24,13 +24,13 @@ public class BusinessRepo {
      * @param business Business obj
      */
     public static void addBusiness(Business business){
-        System.out.println("llegue aqui");
         businessTree.insert(business);
         System.out.println("Business added");
         if(Initializer.isGUIOnline()){
             Initializer.getServerGUI().printLn("Business added");
         }
         dataWriter.writeData(businessTree, path);
+        System.out.println("business added to dataBase");
     }
 
     public static boolean checkBusinessById(int id){
