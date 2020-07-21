@@ -148,6 +148,7 @@ public class Resources {
             Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
         }
         UserRepo.updateTree();
+        RecipeRepo.updateTree();
     }
 
     /**
@@ -175,6 +176,7 @@ public class Resources {
             Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
         }
         BusinessRepo.updateTree();
+        RecipeRepo.updateTree();
     }
 
     /**
@@ -398,6 +400,8 @@ public class Resources {
 
         if (recipe.getBusinessId() != 0 && fromMyMenu.equals("1")){
             user.getRecipeList().remove(Integer.valueOf(id));
+            BusinessRepo.updateTree();
+            RecipeRepo.updateTree();
             UserRepo.updateTree();
             return "1";
         } else if (recipe.getBusinessId() != 0 && fromMyMenu.equals("0")){
@@ -411,11 +415,14 @@ public class Resources {
         } else {
             if (!recipe.getAuthorEmail().equals(email)) {
                 user.getRecipeList().remove(Integer.valueOf(id));
+                BusinessRepo.updateTree();
+                RecipeRepo.updateTree();
                 UserRepo.updateTree();
                 return "1";
             } else {
                 UserRepo.deleteRecipe(id);
                 RecipeRepo.deleteRecipe(id);
+                BusinessRepo.updateTree();
                 RecipeRepo.updateTree();
                 UserRepo.updateTree();
                 return "1";
@@ -1281,5 +1288,24 @@ public class Resources {
             }
         }
         return response;
+    }
+
+    /**
+     * 
+     * @param email
+     * @param id
+     * @return
+     */
+    @GET
+    @Path("isEmployee")
+    public String isEmployee(@QueryParam("email") String email, @QueryParam("id") int id){
+        Business business = BusinessRepo.getBusiness(id);
+
+        for (String data: business.getEmployeeList()){
+            if (data.contains(email)){
+                return "1";
+            }
+        }
+        return "0";
     }
 }
