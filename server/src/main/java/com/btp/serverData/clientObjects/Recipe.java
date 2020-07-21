@@ -8,6 +8,7 @@ import java.util.Date;
  * This is the class of the recipe obj, it holds the recipe information
  */
 public class Recipe implements Comparable<Recipe> {
+    private boolean isPrivate;
     private String name;
     private String authorEmail;
     private DishTime dishTime;
@@ -28,6 +29,22 @@ public class Recipe implements Comparable<Recipe> {
     private int scoreTimes = 0;
     private ArrayList<String> comments = new ArrayList<>();
     private ArrayList<String> ratedBy = new ArrayList<>();
+
+    /**
+     * Getter for the private attribute
+     * @return boolean value
+     */
+    public boolean isPrivate() {
+        return isPrivate;
+    }
+
+    /**
+     * Setter for the private attribute
+     * @param aPrivate boolean to be set
+     */
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
 
     /**
      * setter for the recipe's photo
