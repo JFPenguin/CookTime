@@ -28,6 +28,7 @@ namespace CookTime.Activities {
         private ImageButton _srchBtn;
         private Button _refresh;
         //filter buttons
+        private Button _rating;
         //tags
         private Button _vegan;
         private Button _vegetarian;
@@ -63,6 +64,8 @@ namespace CookTime.Activities {
             _refresh.Click += RefreshClick;
             _resultType = FindViewById<TextView>(Resource.Id.resultType);
             //finding buttons
+            _rating = FindViewById<Button>(Resource.Id.ratingBtn);
+            _rating.Click += RatingClick;
             //tags
             _vegan = FindViewById<Button>(Resource.Id.veganBtn);
             _vegan.Click += FilterClick;
@@ -220,6 +223,21 @@ namespace CookTime.Activities {
             StartActivity(refresh);
             OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             Finish();
+        }
+
+        private void RatingClick(object sender, EventArgs e) {
+            _resultType.Text = "best rated results";
+            using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var url = "resources/ratings";
+            
+            var response = webClient.DownloadString(url);
+            request = response;
+            _recommendations = JsonConvert.DeserializeObject<List<string>>(response);
+            _recomAdapter.ProfileItems = _recommendations;
+            _resultView.Adapter = _recomAdapter;
+            _refToast = Toast.MakeText(this, "showing by rating", ToastLength.Short);
+            _refToast.Show();
         }
     }
 }
