@@ -4,6 +4,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
+using Android.Views;
 using Android.Widget;
 using CookTime.Adapters;
 using Newtonsoft.Json;
@@ -20,12 +21,15 @@ namespace CookTime.Activities {
         private string _loggedId;
         private TextView _nameView;
         private TextView _ageView;
+        private TextView _chefView;
+        private TextView _scoreView;
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnFollow;
         private Button _btnDate;
         private Button _btnScore;
         private Button _btnDiff;
+        private Button _btnRateChef;
         private string sortStr;
         private ListView _menuListView;
         private IList<string> _menuList;
@@ -49,6 +53,8 @@ namespace CookTime.Activities {
             
             _nameView = FindViewById<TextView>(Resource.Id.nameView);
             _ageView = FindViewById<TextView>(Resource.Id.ageView);
+            _chefView = FindViewById<TextView>(Resource.Id.chefPText);
+            _scoreView = FindViewById<TextView>(Resource.Id.scorePText);
 
             _btnFollowers = FindViewById<Button>(Resource.Id.btnFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
@@ -56,11 +62,23 @@ namespace CookTime.Activities {
             _btnDate = FindViewById<Button>(Resource.Id.btnPDate);
             _btnScore = FindViewById<Button>(Resource.Id.btnPScore);
             _btnDiff = FindViewById<Button>(Resource.Id.btnPDiff);
+            _btnRateChef = FindViewById<Button>(Resource.Id.btnRateChef);
             
             _menuListView = FindViewById<ListView>(Resource.Id.menuListView);
 
             _nameView.Text = "Name: " + _user.firstName + " " + _user.lastName;
             _ageView.Text = "Age: " + _user.age;
+
+            if (_user.chef) {
+                _chefView.Text = "Chef: yes";
+                _scoreView.Text = "Score: " + _user.chefScore;
+                _btnRateChef.Visibility = ViewStates.Visible;
+            }
+            else {
+                _chefView.Text = "Chef: no";
+                _scoreView.Text = "";
+                _btnRateChef.Visibility = ViewStates.Gone;
+            }
 
             _btnFollowers.Text = "FOLLOWERS: " + _user.followerEmails.Count;
             _btnFollowing.Text = "FOLLOWING: " + _user.followingEmails.Count;

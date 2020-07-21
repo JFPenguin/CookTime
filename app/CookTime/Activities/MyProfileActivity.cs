@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using Android.App;
 using Android.Content;
@@ -8,6 +9,7 @@ using Android.Widget;
 using CookTime.Adapters;
 using CookTime.DialogFragments;
 using Newtonsoft.Json;
+using Boolean = Java.Lang.Boolean;
 
 namespace CookTime.Activities {
     /// <summary>
@@ -70,8 +72,9 @@ namespace CookTime.Activities {
 
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
-
-            if (_loggedUser.isChef) {
+            
+            
+            if (_loggedUser.chef) {
                 _chefView.Text = "Chef: yes";
                 _scoreText.Text = "Score : " + _loggedUser.chefScore;
             }
