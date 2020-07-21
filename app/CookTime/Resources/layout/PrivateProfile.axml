@@ -106,6 +106,61 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="25sp"/>
+            <TextView
+                    android:text="Filter by:"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:textColor="#A1E2C8"
+                    android:background="#3E4465"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="15sp"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:weightSum="100"
+                    android:layout_height="50dp">
+                <Button
+                        android:text="Date"
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:layout_weight="33"
+                        android:id="@+id/btnPDate"
+                        android:gravity="center"/>
+                <Button
+                        android:text="Score"
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:layout_weight="33"
+                        android:id="@+id/btnPScore"
+                        android:gravity="center"/>
+                <Button
+                        android:text="Difficulty"
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:layout_weight="33"
+                        android:id="@+id/btnPDiff"
+                        android:gravity="center"/>
+            </LinearLayout>
             <ListView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

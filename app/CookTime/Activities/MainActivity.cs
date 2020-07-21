@@ -12,7 +12,7 @@ namespace CookTime.Activities {
     /// This class represents the first view seen when the app is opened.
     /// It inherits from the base class for Android activities
     /// </summary>
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Icon = "@drawable/cooktime_icon", Theme = "@style/AppTheme", MainLauncher = true)]
     public class MainActivity : AppCompatActivity {
         private Button _signUpButton;
         private Button _signInButton;

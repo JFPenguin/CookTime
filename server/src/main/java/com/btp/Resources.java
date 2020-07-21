@@ -88,20 +88,6 @@ public class Resources {
             Initializer.getServerGUI().printLn("new user!");
             Initializer.getServerGUI().printLn("name: " + user.fullName() + "\nemail: " + user.getEmail() + "\npassword: " + user.getPassword() + "\nage: " + user.getAge());
         }
-//        int i = random.nextInt(999) + 1;
-//        System.out.println("generating id...");
-//        System.out.println("userID: "+i);
-//        if(Initializer.isGUIOnline()){
-//            Initializer.getServerGUI().printLn("generating id...");
-//            Initializer.getServerGUI().printLn("userID: "+i);
-//        }
-//        while (UserRepo.checkByID(i)){
-//            i = random.nextInt(999) + 1;
-//            System.out.println("id in use, generating new id...");
-//            if(Initializer.isGUIOnline()){
-//                Initializer.getServerGUI().printLn("id in use, generating new id...");
-//            }
-//        }
         user.setPassword(hashPassword(user.getPassword()));
         user.sendMessage("Welcome to CookTime!");
         UserRepo.addUser(user);
@@ -120,11 +106,12 @@ public class Resources {
             System.out.println(i);
             i = random.nextInt(999) +1;
         }
-        User user = UserRepo.getUser(recipe.getAuthorEmail());
         recipe.setId(i);
         recipe.setPostTime(System.currentTimeMillis());
-        recipe.setAuthorName(user.fullName());
         RecipeRepo.addRecipe(recipe);
+        System.out.println(recipe.getAuthorEmail());
+        User user = UserRepo.getUser(recipe.getAuthorEmail());
+        recipe.setAuthorName(user.fullName());
         user.addRecipe(i);
         user.addNewsFeed(i);
         SinglyList<Recipe> recipeList = new SinglyList<>();
@@ -290,6 +277,7 @@ public class Resources {
     @Path("deleteAllNotifications")
     public String deleteAllNotifications(@QueryParam("id")String id){
         UserRepo.getUser(id).clearNotifications();
+        UserRepo.updateTree();
         if(UserRepo.getUser(id).getNotifications().size()==0){
             return "1";
         }
@@ -641,19 +629,11 @@ public class Resources {
 
         for (String st:list.split(",")) {
             st = st.substring(1, st.length() - 1);
-            System.out.println(st);
             filterList.add(st);
         }
 
         data = data.split(" ")[0];
 
-        System.out.println(data);
-
-        if (data != null){
-            String last = filterList.get(filterList.size() - 1);
-            last = last.substring(0, last.length() - 1);
-            filterList.set(filterList.size() - 1, last);
-        }
 
         ArrayList<String> tagList = new ArrayList<>();
 
@@ -764,7 +744,7 @@ public class Resources {
             String object = data.split(";")[2];
             if (object.equalsIgnoreCase("recipe")){
                 Recipe recipe = RecipeRepo.getRecipe(Integer.parseInt(data.split(";")[0]));
-                if (recipe.getDishType().toString().equalsIgnoreCase(search)){
+                if (recipe.getDishType().toString().contains(search.toUpperCase())){
                     filteredList.add(data);
                 }
             }
@@ -892,12 +872,6 @@ public class Resources {
         ArrayList<String> userList = UserRepo.searchUsers(search);
         ArrayList<String> recipeList = RecipeRepo.searchByName(search);
         ArrayList<String> businessList = BusinessRepo.search(search);
-
-        System.out.println(userList);
-
-        System.out.println(recipeList);
-
-        System.out.println(businessList);
 
         ArrayList<String> profilesList = createSearchList(userList, recipeList, businessList);
 

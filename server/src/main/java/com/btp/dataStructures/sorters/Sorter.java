@@ -129,7 +129,7 @@ public class Sorter {
         if (list.getHead().getData().getClass() == Integer.class) {
             radixSortInteger(list);
         } else if (list.getHead().getData().getClass() == Recipe.class){
-            insertionSortRecipe(list);
+            radixSortRecipe(list);
         } else{
             System.out.println("Can't sort this data type");
         }
@@ -344,7 +344,7 @@ public class Sorter {
         for (int i = 0; i < list.getLength()-1; i++) {
             tmp = list.get(i);
             next = list.get(i + 1);
-            if(tmp.getData().getDifficulty() < next.getData().getDifficulty()){
+            if(tmp.getData().getDifficulty() > next.getData().getDifficulty()){
                 sorted = false;
                 i = list.getLength();
             }

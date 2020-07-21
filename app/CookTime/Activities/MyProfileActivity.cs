@@ -25,9 +25,15 @@ namespace CookTime.Activities {
         private Button _btnSettings;
         private Button _btnNewsfeed;
         private Button _btnNotif;
+        private Button _btnDate;
+        private Button _btnScore;
+        private Button _btnDiff;
+        private Button _btnRecipe;
+        private string sortStr;
         private ListView _myMenuListView;
         private IList<string> _myMenuList;
         private Toast _toast;
+        private RecipeAdapter _adapter;
 
         /// <summary>
         /// This method is called when the activity is starting.
@@ -45,39 +51,43 @@ namespace CookTime.Activities {
             
             _nameView = FindViewById<TextView>(Resource.Id.myNameView);
             _ageView = FindViewById<TextView>(Resource.Id.myAgeView);
-
+            
             _btnFollowers = FindViewById<Button>(Resource.Id.btnMyFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnMyFollowing);
             _btnSettings = FindViewById<Button>(Resource.Id.btnSettings);
             _btnNewsfeed = FindViewById<Button>(Resource.Id.btnNewsfeed);
             _btnNotif = FindViewById<Button>(Resource.Id.btnNotif);
+            _btnDate = FindViewById<Button>(Resource.Id.btnDate);
+            _btnScore = FindViewById<Button>(Resource.Id.btnScore);
+            _btnDiff = FindViewById<Button>(Resource.Id.btnDiff);
+            _btnRecipe = FindViewById<Button>(Resource.Id.btnRecipe);
             
             _myMenuListView = FindViewById<ListView>(Resource.Id.myMenuListView);
-
+            
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
-
+            
             _btnFollowers.Text = "FOLLOWERS: " + _loggedUser.followerEmails.Count;
             _btnFollowing.Text = "FOLLOWING: " + _loggedUser.followingEmails.Count;
             
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-
+            
             var url = "resources/myMenu?email=" + _loggedUser.email + "&filter=date";
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var send = webClient.DownloadString(url);
-
+            
             _myMenuList = JsonConvert.DeserializeObject<IList<string>>(send);
             
-            RecipeAdapter adapter = new RecipeAdapter(this, _myMenuList);
-            _myMenuListView.Adapter = adapter;
+            _adapter = new RecipeAdapter(this, _myMenuList);
+            _myMenuListView.Adapter = _adapter;
             _myMenuListView.ItemClick += ListClick;
             
             _btnNewsfeed.Click += (sender, args) =>
             {
-                var userJson = JsonConvert.SerializeObject(_loggedUser);
+                var userJsonStr = JsonConvert.SerializeObject(_loggedUser);
                 
                 Intent intent = new Intent(this, typeof(NewsfeedActivity));
-                intent.PutExtra("User", userJson);
+                intent.PutExtra("User", userJsonStr);
                 
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
@@ -90,7 +100,7 @@ namespace CookTime.Activities {
                 var transaction = SupportFragmentManager.BeginTransaction();
                 var dialogSettings = new DialogSettings();
                 dialogSettings.Show(transaction, "settings");
-
+            
                 dialogSettings.Email = _loggedUser.email;
                 dialogSettings.EventHandlerPass += PassResult;
             };
@@ -119,11 +129,39 @@ namespace CookTime.Activities {
             
             _btnNotif.Click += (sender, args) =>
             {
-                // Intent intent = new Intent(this, typeof(FollowActivity));
-                // intent.PutStringArrayListExtra("List", _loggedUser.notifications);
-                //
-                // StartActivity(intent);
-                // OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Intent intent = new Intent(this, typeof(NotifActivity));
+                intent.PutStringArrayListExtra("NotifList", _loggedUser.notifications);
+                intent.PutExtra("LoggedId", _loggedUser.email);
+
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            };
+            
+            _btnDate.Click += (sender, args) =>
+            {
+                sortStr = "date";
+                SortMenu();
+            };
+            
+            _btnScore.Click += (sender, args) =>
+            {
+                sortStr = "score";
+                SortMenu();
+            };
+            
+            _btnDiff.Click += (sender, args) =>
+            {
+                sortStr = "difficulty";
+                SortMenu();
+            };
+            
+            _btnRecipe.Click += (sender, args) =>
+            {
+                Intent intent = new Intent(this, typeof(CreateActivity));
+                intent.PutExtra("LoggedId", _loggedUser.email);
+
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
         }
 
@@ -138,7 +176,7 @@ namespace CookTime.Activities {
             dialogChoice.Show(transaction, "choice");
             dialogChoice.EventHandlerChoice += ChoiceAction;
         }
-
+        
         /// <summary>
         /// This method is in charge of retrieving the data entered by the user in the Settings dialog fragment.
         /// </summary>
@@ -158,7 +196,7 @@ namespace CookTime.Activities {
             else {
                 toastText = "Password changed successfully";
             }
-
+        
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();
         }
@@ -183,8 +221,41 @@ namespace CookTime.Activities {
                 StartActivity(recipeIntent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             }
-            
-            //TODO else (check if 1 to delete recipe)
+            else
+            {
+                url = "resources/deleteRecipe?email=" + _loggedUser.email + "&id=" + e.RecipeId;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                webClient.DownloadString(url);
+                
+                url = "resources/getUser?id=" + _loggedUser.email;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var json = webClient.DownloadString(url);
+                
+                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                intent.PutExtra("User", json);
+                intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Finish();
+                
+                _toast = Toast.MakeText(this, "Recipe deleted. Refreshing MyProfile...", ToastLength.Short);
+                _toast.Show();
+            }
+        }
+
+        /// <summary>
+        /// This method sorts the MyMenu of the user according to the sortStr attribute
+        /// </summary>
+        private void SortMenu()
+        {
+            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            var url = "resources/myMenu?email=" + _loggedUser.email + "&filter=" + sortStr;
+            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+            var request = webClient.DownloadString(url);
+
+            _myMenuList = JsonConvert.DeserializeObject<IList<string>>(request);
+            _adapter.RecipeItems = _myMenuList;
+            _myMenuListView.Adapter = _adapter;
         }
     }
 }
