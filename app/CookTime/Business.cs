@@ -10,9 +10,9 @@ namespace CookTime {
         public string name;
         public float rating;
         public int scoreTimes;
-        public List<string> raters;
-        public List<int> publicList;
-        public List<int> privateList;
+        public List<string> raters = new List<string>();
+        public List<int> publicList = new List<int>();
+        public List<int> privateList = new List<int>();
         public string location;
         public List<string> employeeList;
         public string contact;
