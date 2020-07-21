@@ -209,6 +209,11 @@ public class Resources {
 
         if (sortList.getLength() == 0){
             return myMenuList;
+        } else if (sortList.getLength() == 1){
+            Recipe recipe = RecipeRepo.getRecipe(business.getPrivateList().get(0));
+            myMenuList.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+recipe.getAuthorName()+";"+recipe.getAuthorEmail());
+            return myMenuList;
         }
 
         switch (filter){
@@ -252,6 +257,11 @@ public class Resources {
 
         if (sortList.getLength() == 0){
             return myMenuList;
+        } else if (sortList.getLength() == 1){
+            Recipe recipe = RecipeRepo.getRecipe(business.getPrivateList().get(0));
+            myMenuList.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+recipe.getAuthorName()+";"+recipe.getAuthorEmail());
+            return myMenuList;
         }
 
         switch (filter){
@@ -269,7 +279,7 @@ public class Resources {
         while (tmp!=null){
             Recipe recipe = (Recipe) tmp.getData();
             myMenuList.add(recipe.getId()+";"+recipe.getName()+
-                    ";"+UserRepo.getUser(recipe.getAuthorEmail()).fullName()+";"+recipe.getAuthorEmail());
+                    ";"+recipe.getAuthorName()+";"+recipe.getAuthorEmail());
             tmp =(SinglyNode) tmp.getNext();
         }
         return myMenuList;

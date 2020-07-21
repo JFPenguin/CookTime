@@ -455,8 +455,14 @@ public class BusinessTree {
         if (root != null){
             Business business = root.getElement();
             boolean rated = false;
-            for (String email: business.getRaters()){
-                if(data.equals(email)){
+            for (String email: business.getFollowers()){
+                if(email.contains(data)){
+                    rated = true;
+                    break;
+                }
+            }
+            for (String email: business.getEmployeeList()){
+                if (email.contains(data)){
                     rated = true;
                     break;
                 }
