@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using Android.App;
 using Android.Content;
@@ -9,7 +8,6 @@ using Android.Widget;
 using CookTime.Adapters;
 using CookTime.DialogFragments;
 using Newtonsoft.Json;
-using Boolean = Java.Lang.Boolean;
 
 namespace CookTime.Activities {
     /// <summary>
@@ -33,6 +31,7 @@ namespace CookTime.Activities {
         private Button _btnScore;
         private Button _btnDiff;
         private Button _btnRecipe;
+        private Button _btnChef;
         private string sortStr;
         private ListView _myMenuListView;
         private IList<string> _myMenuList;
@@ -67,6 +66,7 @@ namespace CookTime.Activities {
             _btnScore = FindViewById<Button>(Resource.Id.btnScore);
             _btnDiff = FindViewById<Button>(Resource.Id.btnDiff);
             _btnRecipe = FindViewById<Button>(Resource.Id.btnRecipe);
+            _btnChef = FindViewById<Button>(Resource.Id.btnChef);
             
             _myMenuListView = FindViewById<ListView>(Resource.Id.myMenuListView);
 
@@ -100,10 +100,14 @@ namespace CookTime.Activities {
             
             _btnNewsfeed.Click += (sender, args) =>
             {
-                var userJsonStr = JsonConvert.SerializeObject(_loggedUser);
+                using var webClient2 = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+
+                var url2 = "resources/getUser?id=" + _loggedUser.email;
+                webClient2.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var request = webClient2.DownloadString(url2);
                 
                 Intent intent = new Intent(this, typeof(NewsfeedActivity));
-                intent.PutExtra("User", userJsonStr);
+                intent.PutExtra("User", request);
                 
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
@@ -178,6 +182,23 @@ namespace CookTime.Activities {
 
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            };
+            
+            _btnChef.Click += (sender, args) =>
+            {
+                if (_loggedUser.chef) {
+                    Toast toast = Toast.MakeText(this, "You're already a chef", ToastLength.Short);
+                    toast.Show();
+                }
+                else {
+                    //Brings dialog fragment forward
+                    var transaction = SupportFragmentManager.BeginTransaction();
+                    var dialogChef = new DialogChef();
+                    dialogChef.LoggedId = _loggedUser.email;
+                    dialogChef.Show(transaction, "chef");
+                    
+                    dialogChef.EventHandlerChef += ChefResult;
+                }
             };
         }
 
@@ -272,6 +293,32 @@ namespace CookTime.Activities {
             _myMenuList = JsonConvert.DeserializeObject<IList<string>>(request);
             _adapter.RecipeItems = _myMenuList;
             _myMenuListView.Adapter = _adapter;
+        }
+        
+        /// <summary>
+        /// This method is in charge of retrieving theresult of a chef request by the user..
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
+        private void ChefResult(object sender, SendChefEvent e) {
+            var toastText = "You already have a pending request";
+            if (e.Message == "2") {
+                toastText = "Request sent!";
+
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                var url = "resources/getUser?id=" + _loggedUser.email;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var message = webClient.DownloadString(url);
+                
+                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                intent.PutExtra("User", message);
+                intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Finish();
+            }
+            _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+            _toast.Show();
         }
     }
 }
