@@ -998,6 +998,17 @@ public class Resources {
         }
     }
 
+    @GET
+    @Path("hasBusiness")
+    public String hasBusiness(@QueryParam("id") String id){
+        if(UserRepo.getUser(id).getBusiness()!=0){
+            return "1";
+        }
+        else {
+            return "0";
+        }
+    }
+
     /**
      * Saves a file to an specific path
      * @param uploadedInputStream InputStream the file to be saved.
