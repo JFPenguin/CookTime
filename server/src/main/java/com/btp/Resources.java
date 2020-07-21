@@ -280,8 +280,8 @@ public class Resources {
      * Rates a business
      * @param id int the id of the business to be rated
      * @param rating int the rating of the user
-     * @param email String 
-     * @return
+     * @param email String the email of the user rating the business 
+     * @return String "0" if previously rated, "1" if not
      */
     @POST
     @Path("rateBusiness")
@@ -376,28 +376,39 @@ public class Resources {
     public String deleteRecipe(@QueryParam("email") String email, @QueryParam("id") int id){
         boolean response;
         Recipe recipe = RecipeRepo.getRecipe(id);
-
         User user = UserRepo.getUser(email);
 
-        if (recipe == null){
-            response = false;
+        if(BusinessRepo.getBusiness(recipe.getBusinessId()).getEmployeeList().get(0).equals(email)) {
+            if (recipe.isBusiness()) {
+                BusinessRepo.getBusiness(recipe.getBusinessId()).removeRecipe(recipe.getId());
+                BusinessRepo.updateTree();
+                RecipeRepo.deleteRecipe(recipe.getId());
+                return "1";
+            }
+            else {
+                return "0";
+            }
         }
-        else if (!recipe.getAuthorEmail().equals(email)) {
-            response = user.getRecipeList().remove(Integer.valueOf(id));
+        else {
+            if (recipe == null) {
+                response = false;
+            } else if (!recipe.getAuthorEmail().equals(email)) {
+                response = user.getRecipeList().remove(Integer.valueOf(id));
 
-        } else {
-            UserRepo.deleteRecipe(id);
+            } else {
+                UserRepo.deleteRecipe(id);
+                RecipeRepo.deleteRecipe(id);
+                response = true;
+            }
 
-            RecipeRepo.deleteRecipe(id);
-            response = true;
-        }
-
-        RecipeRepo.updateTree();
-        UserRepo.updateTree();
-        if (response){
-            return "1";
-        } else {
-            return "0";
+            RecipeRepo.updateTree();
+            UserRepo.updateTree();
+            if (response) {
+                return "1";
+            }
+            else {
+                return "0";
+            }
         }
     }
 
