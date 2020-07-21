@@ -157,7 +157,12 @@ namespace CookTime.Activities {
             }
             else {
                 //gets business information
-                //TODO make Business classes to load information from server.
+                var busUrl = "resources/getBusiness?id=" + profileId;
+                var busRequest = webClient.DownloadString(busUrl);
+                Intent busIntent = new Intent(this, typeof(MyBusiness));
+                busIntent.PutExtra("LoggedId", _loggedUser.email);
+                busIntent.PutExtra("Business", busRequest);
+                StartActivity(busIntent);
             }
         }
         private void FilterClick(object sender, EventArgs e) {

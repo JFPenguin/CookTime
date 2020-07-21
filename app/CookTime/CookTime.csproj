@@ -55,6 +55,7 @@
         <Reference Include="Mono.Android" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Activities\BusFollowActivity.cs" />
         <Compile Include="Activities\CreateBActivity.cs" />
         <Compile Include="Activities\CreateRActivity.cs" />
         <Compile Include="Activities\FollowActivity.cs" />
@@ -66,6 +67,7 @@
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />
         <Compile Include="Activities\SearchActivity.cs" />
+        <Compile Include="Adapters\BusFollowAdapter.cs" />
         <Compile Include="Adapters\CommentAdapter.cs" />
         <Compile Include="Adapters\FollowAdapter.cs" />
         <Compile Include="Adapters\IngredientAdapter.cs" />
