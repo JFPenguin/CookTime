@@ -3,6 +3,7 @@ package com.btp;
 import com.btp.dataStructures.lists.SinglyList;
 import com.btp.dataStructures.nodes.SinglyNode;
 import com.btp.dataStructures.sorters.Sorter;
+import com.btp.serverData.clientObjects.Business;
 import com.btp.serverData.clientObjects.DishTag;
 import com.btp.serverData.clientObjects.Recipe;
 import com.btp.serverData.clientObjects.User;
@@ -287,25 +288,6 @@ public class Resources {
     }
 
     /**
-     * Deletes a notification for a user
-     * @param id String email of the user
-     * @param notification String notification to be deleted
-     * @return String "1" if it was successful, "0" if not
-     */
-    @GET
-    @Path("deleteSingleNotification")
-    public String deleteSingleNotification(@QueryParam("id")String id,String notification){
-        UserRepo.getUser(id).getNotifications().remove(notification);
-        if(!UserRepo.getUser(id).getNotifications().contains(notification)){
-            return "1";
-        }
-        else {
-            return "0";
-        }
-    }
-
-
-    /**
      * Logins an user to its account
      * @param email String email of the user entering the account
      * @param password String password of the user
@@ -431,7 +413,7 @@ public class Resources {
     /**
      * Checks if an user is a chef
      * @param email String email of the user
-     * @return String "0" if the chef can be rated, "1" if it can't be rated
+     * @return String "0" if the user is a chef, "1" if not
      */
     @GET
     @Path("isChef")
@@ -971,7 +953,6 @@ public class Resources {
                 return "2";
             }
             else{
-                UserRepo.getUser(id).sendMessage("You already have an active request!, please wait until you receive a response");
                 return "0";
             }
         }

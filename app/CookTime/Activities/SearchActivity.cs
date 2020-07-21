@@ -167,13 +167,21 @@ namespace CookTime.Activities {
             var url = "resources/filterRecommend?array=" + newQuery + "&data=" + button.Text;
             var response = webClient.DownloadString(url);
             _recommendations = JsonConvert.DeserializeObject<List<string>>(response);
+            request = response;
             _recomAdapter.ProfileItems = _recommendations;
             _resultView.Adapter = _recomAdapter;
+            string toastText;
+            if (_recommendations.Count == 0) {
+                toastText = "results did not match with filter selection. Please try another search or refresh";
+            }
+            else {
+                toastText = "results filtered according to selection";
+            }
+            _refToast = Toast.MakeText(this, toastText, ToastLength.Short);
+            _refToast.Show();
         }
         
         private void SearchClick(object sender, EventArgs e) {
-            Console.WriteLine(_searchTxt.Text);
-            Console.WriteLine("finder");
             if (_searchTxt.Text == "") {
                 _refToast = Toast.MakeText(this, "please write a search query", ToastLength.Short);
                 _refToast.Show();
@@ -188,10 +196,19 @@ namespace CookTime.Activities {
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var url = "resources/searchByName?search=" + _searchTxt.Text;
             var response = webClient.DownloadString(url);
+            
+            request = response;
             _recommendations = JsonConvert.DeserializeObject<List<string>>(response);
             _recomAdapter.ProfileItems = _recommendations;
             _resultView.Adapter = _recomAdapter;
-            _refToast = Toast.MakeText(this, "showing query results", ToastLength.Short);
+            string toastText;
+            if (_recommendations.Count == 0) {
+                toastText = "no items in server matched the search query";
+            }
+            else {
+                toastText = "showing search results";
+            }
+            _refToast = Toast.MakeText(this, toastText, ToastLength.Short);
             _refToast.Show();
         }
         private void RefreshClick(object sender, EventArgs e)
