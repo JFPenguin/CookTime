@@ -139,7 +139,6 @@ namespace CookTime.Activities {
                 }
                 else {
                     // loads another user's profile, for the user is not the same logged instance.
-                    //TODO check if another user profile is or not a chef.
                     Intent userIntent = new Intent(this, typeof(PrivProfileActivity));
                     userIntent.PutExtra("User", userRequest);
                     userIntent.PutExtra("LoggedId", _loggedUser.email);
@@ -158,6 +157,10 @@ namespace CookTime.Activities {
             else {
                 //gets business information
                 //TODO test if businessess are loaded properly when server is functional again
+                
+                //TODO check is loggedUser is member of the business, with isEmployee method in Resources, to load either
+                //MyBusiness or PrivBusiness Activity
+                
                 var busUrl = "resources/getBusiness?id=" + profileId;
                 var busRequest = webClient.DownloadString(busUrl);
                 Intent busIntent = new Intent(this, typeof(MyBusiness));

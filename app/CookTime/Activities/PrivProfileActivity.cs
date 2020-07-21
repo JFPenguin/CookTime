@@ -32,7 +32,6 @@ namespace CookTime.Activities {
         private Button _btnDiff;
         private Button _btnRateChef;
         private string sortStr;
-        //TODO make sure server returns id;name;author
         private ListView _menuListView;
         private IList<string> _menuList;
         private RecipeAdapter _adapter;

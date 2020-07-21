@@ -36,8 +36,6 @@ namespace CookTime.Activities
         private Button _btnDiff;
         private string sortStr;
         private ListView _menuListView;
-
-        //TODO make sure server returns id;name;author
         private IList<string> _menuList;
         private Toast _toast;
         private RecipeAdapter _adapter;
@@ -261,7 +259,7 @@ namespace CookTime.Activities
             else if (response == 1)
             {
                 toastText = "Recipe deleted.";
-                url = "resources/deleteRecipe?email=" + loggedId + "&id=" + e.RecipeId;
+                url = "resources/deleteRecipe?email=" + loggedId + "&id=" + e.RecipeId + "&fromMyMenu=0";
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 webClient.DownloadString(url);
             }

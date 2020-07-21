@@ -81,8 +81,6 @@ namespace CookTime.Activities {
         /// <param name="eventArgs"> Contains the event data </param>
         private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
         {
-            //TODO check if recipe is bussiness and choose the corresponding activity
-            
             var recipeId = _recipes[eventArgs.Position].Split(';')[0];
             
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
