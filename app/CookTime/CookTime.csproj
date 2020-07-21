@@ -70,6 +70,7 @@
         <Compile Include="Adapters\CompAdapter.cs" />
         <Compile Include="Adapters\RecipeAdapter.cs" />
         <Compile Include="Adapters\RecomAdapter.cs" />
+        <Compile Include="Business.cs" />
         <Compile Include="DialogFragments\DialogChoice.cs" />
         <Compile Include="DialogFragments\DialogComment.cs" />
         <Compile Include="DialogFragments\DialogRate.cs" />
