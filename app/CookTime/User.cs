@@ -16,6 +16,7 @@ namespace CookTime {
         public List<string> notifications;
         public bool chef;
         public float chefScore;
+        public int business;
 
         /// <summary>
         /// Constructor for the User class

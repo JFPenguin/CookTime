@@ -55,7 +55,8 @@
         <Reference Include="Mono.Android" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Activities\CreateActivity.cs" />
+        <Compile Include="Activities\CreateBActivity.cs" />
+        <Compile Include="Activities\CreateRActivity.cs" />
         <Compile Include="Activities\FollowActivity.cs" />
         <Compile Include="Activities\MainActivity.cs" />
         <Compile Include="Activities\MyProfileActivity.cs" />
@@ -70,6 +71,7 @@
         <Compile Include="Adapters\CompAdapter.cs" />
         <Compile Include="Adapters\RecipeAdapter.cs" />
         <Compile Include="Adapters\RecomAdapter.cs" />
+        <Compile Include="Business.cs" />
         <Compile Include="DialogFragments\DialogChef.cs" />
         <Compile Include="DialogFragments\DialogChoice.cs" />
         <Compile Include="DialogFragments\DialogComment.cs" />
@@ -95,6 +97,7 @@
         <AndroidResource Include="Resources\drawable\cooktime_icon.png" />
         <AndroidResource Include="Resources\drawable\ListRowStyle.xml" />
         <AndroidResource Include="Resources\layout\Business.axml" />
+        <AndroidResource Include="Resources\layout\CreateBusiness.axml" />
         <AndroidResource Include="Resources\layout\CreateRecipe.axml" />
         <AndroidResource Include="Resources\layout\DialogChef.axml" />
         <AndroidResource Include="Resources\layout\DialogChoice.axml" />
