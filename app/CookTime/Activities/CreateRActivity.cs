@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
-using CookTime.Adapters;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
@@ -15,7 +13,7 @@ namespace CookTime.Activities {
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
-    public class CreateActivity : AppCompatActivity {
+    public class CreateRActivity : AppCompatActivity {
         private string _loggedId;
         private EditText recipeNameEditText;
         private EditText recipePortionsEditText;

@@ -32,6 +32,7 @@ namespace CookTime.Activities {
         private Button _btnDiff;
         private Button _btnRecipe;
         private Button _btnChef;
+        private Button _btnBusiness;
         private string sortStr;
         private ListView _myMenuListView;
         private IList<string> _myMenuList;
@@ -67,6 +68,7 @@ namespace CookTime.Activities {
             _btnDiff = FindViewById<Button>(Resource.Id.btnDiff);
             _btnRecipe = FindViewById<Button>(Resource.Id.btnRecipe);
             _btnChef = FindViewById<Button>(Resource.Id.btnChef);
+            _btnBusiness = FindViewById<Button>(Resource.Id.btnCreateBsns);
             
             _myMenuListView = FindViewById<ListView>(Resource.Id.myMenuListView);
 
@@ -177,7 +179,7 @@ namespace CookTime.Activities {
             
             _btnRecipe.Click += (sender, args) =>
             {
-                Intent intent = new Intent(this, typeof(CreateActivity));
+                Intent intent = new Intent(this, typeof(CreateRActivity));
                 intent.PutExtra("LoggedId", _loggedUser.email);
 
                 StartActivity(intent);
@@ -198,6 +200,23 @@ namespace CookTime.Activities {
                     dialogChef.Show(transaction, "chef");
                     
                     dialogChef.EventHandlerChef += ChefResult;
+                }
+            };
+            
+            _btnBusiness.Click += (sender, args) =>
+            {
+                if (_loggedUser.business == 0) {
+                    Intent intent = new Intent(this, typeof(CreateBActivity));
+                    intent.PutExtra("LoggedId", _loggedUser.email);
+
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                }
+                else {
+                    // using var webClient3 = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                    // var url3= "resources/getBusiness?id=" + _loggedUser.business;
+                    // webClient3.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    // var bsnsJson = webClient3.DownloadString(url3);
                 }
             };
         }

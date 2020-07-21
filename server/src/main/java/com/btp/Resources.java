@@ -16,7 +16,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
-    
+
 import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -147,6 +147,157 @@ public class Resources {
             Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
         }
         UserRepo.updateTree();
+    }
+
+    /**
+     * Creates a recipe for a business
+     * @param recipe Recipe to be added
+     */
+    @POST
+    @Path("createRecipeB")
+    public void createRecipeB(Recipe recipe){
+        System.out.println("Starting");
+        int i = random.nextInt(999) + 1;
+        while (RecipeRepo.checkId(i)){
+            System.out.println(i);
+            i = random.nextInt(999) +1;
+        }
+        recipe.setId(i);
+        recipe.setPostTime(System.currentTimeMillis());
+        RecipeRepo.addRecipe(recipe);
+        Business business = BusinessRepo.getBusiness(recipe.getBusinessId());
+        recipe.setAuthorName(business.getName());
+        business.addRecipe(i);
+        recipe.setBusiness(true);
+
+        if (Initializer.isGUIOnline()) {
+            Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
+        }
+        BusinessRepo.updateTree();
+    }
+
+    /**
+     * Moves a recipe to the other business list
+     * @param id int id of the recipe to be moved
+     * @param businessId int id of the business that owns the recipe
+     * @return String "1" if moved from private to public, "0" from public to private
+     */
+    @GET
+    @Path("moveRecipe")
+    public String moveRecipe(@QueryParam("recipeId") int id, @QueryParam("businnessId") int businessId){
+        Business business = BusinessRepo.getBusiness(businessId);
+        BusinessRepo.updateTree();
+        return business.moveRecipe(id);
+    }
+
+    /**
+     * Shows the publicList of the business
+     * @param id int the id of the specific business
+     * @param filter String the filter used to sort the recipe
+     * @return ArrayList<String> with the recipe information
+     */
+    @GET
+    @Path("businessPublic")
+    public ArrayList<String> showPublic(@QueryParam("id") int id, @QueryParam("filter") String filter){
+        ArrayList<String> myMenuList = new ArrayList<>();
+        Business business = BusinessRepo.getBusiness(id);
+        SinglyList<Recipe> sortList = new SinglyList<>();
+
+        for (int i:business.getPublicList()) {
+            Recipe recipe = RecipeRepo.getRecipe(i);
+            sortList.add(recipe);
+        }
+
+        if (sortList.getLength() == 0){
+            return myMenuList;
+        }
+
+        switch (filter){
+            case "date":
+                Sorter.bubbleSort(sortList);
+                break;
+            case "score":
+                Sorter.quickSort(sortList);
+                break;
+            case "difficulty":
+                Sorter.radixSort(sortList);
+                break;
+        }
+        SinglyNode tmp = sortList.getHead();
+        while (tmp!=null){
+            Recipe recipe = (Recipe) tmp.getData();
+            myMenuList.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+UserRepo.getUser(recipe.getAuthorEmail()).fullName()+";"+recipe.getAuthorEmail());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+        return myMenuList;
+    }
+
+    /**
+     * Shows the privateList of the business
+     * @param id int the id of the specific business
+     * @param filter String the filter used to sort the recipe
+     * @return ArrayList<String> with the recipe information
+     */
+    @GET
+    @Path("businessPrivate")
+    public ArrayList<String> showPrivate(@QueryParam("id") int id, @QueryParam("filter") String filter){
+        ArrayList<String> myMenuList = new ArrayList<>();
+        Business business = BusinessRepo.getBusiness(id);
+        SinglyList<Recipe> sortList = new SinglyList<>();
+
+        for (int i:business.getPrivateList()) {
+            Recipe recipe = RecipeRepo.getRecipe(i);
+            sortList.add(recipe);
+        }
+
+        if (sortList.getLength() == 0){
+            return myMenuList;
+        }
+
+        switch (filter){
+            case "date":
+                Sorter.bubbleSort(sortList);
+                break;
+            case "score":
+                Sorter.quickSort(sortList);
+                break;
+            case "difficulty":
+                Sorter.radixSort(sortList);
+                break;
+        }
+        SinglyNode tmp = sortList.getHead();
+        while (tmp!=null){
+            Recipe recipe = (Recipe) tmp.getData();
+            myMenuList.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+UserRepo.getUser(recipe.getAuthorEmail()).fullName()+";"+recipe.getAuthorEmail());
+            tmp =(SinglyNode) tmp.getNext();
+        }
+        return myMenuList;
+    }
+
+    /**
+     * Rates a business
+     * @param id int the id of the business to be rated
+     * @param rating int the rating of the user
+     * @param email String the email of the user rating the business 
+     * @return String "0" if previously rated, "1" if not
+     */
+    @POST
+    @Path("rateBusiness")
+    public String rateBusiness(@QueryParam("id") int id, @QueryParam("rating") int rating,
+                               @QueryParam("email") String email){
+        String response;
+        Business business = BusinessRepo.getBusiness(id);
+        if (business.getRaters().contains(email)){
+            response = "0";
+        } else {
+            business.addRating(rating);
+            business.addRater(email);
+            response = "1";
+        }
+        BusinessRepo.updateTree();
+        return response;
     }
 
     /**
