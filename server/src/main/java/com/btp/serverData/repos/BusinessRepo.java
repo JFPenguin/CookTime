@@ -29,6 +29,10 @@ public class BusinessRepo {
         dataWriter.writeData(businessTree, path);
     }
 
+    public static boolean checkBusinessById(int id){
+        return businessTree.checkById(id);
+    }
+
     /**
      * This method is used to retrieve a business using the id
      * @param id int id to identify the business
