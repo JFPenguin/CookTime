@@ -8,7 +8,8 @@ import java.util.Date;
  * This is the class of the recipe obj, it holds the recipe information
  */
 public class Recipe implements Comparable<Recipe> {
-    private boolean isPrivate;
+    private boolean isBusiness;
+    private int businessId;
     private String name;
     private String authorEmail;
     private DishTime dishTime;
@@ -27,23 +28,39 @@ public class Recipe implements Comparable<Recipe> {
     private String postTimeString;
     private float score = 0.0f;
     private int scoreTimes = 0;
-    private ArrayList<String> comments = new ArrayList<>();
-    private ArrayList<String> ratedBy = new ArrayList<>();
+    private final ArrayList<String> comments = new ArrayList<>();
+    private final ArrayList<String> ratedBy = new ArrayList<>();
+
+    /**
+     * Getter for the business id
+     * @return
+     */
+    public int getBusinessId() {
+        return businessId;
+    }
+
+    /**
+     * setter for the business id
+     * @param businessId
+     */
+    public void setBusinessId(int businessId) {
+        this.businessId = businessId;
+    }
 
     /**
      * Getter for the private attribute
      * @return boolean value
      */
-    public boolean isPrivate() {
-        return isPrivate;
+    public boolean isBusiness() {
+        return isBusiness;
     }
 
     /**
      * Setter for the private attribute
-     * @param aPrivate boolean to be set
+     * @param business boolean to be set
      */
-    public void setPrivate(boolean aPrivate) {
-        isPrivate = aPrivate;
+    public void setBusiness(boolean business) {
+        isBusiness = business;
     }
 
     /**
