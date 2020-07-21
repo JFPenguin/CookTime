@@ -254,10 +254,10 @@ public class Business{
      */
     public void removeRecipe(int id) {
         if(privateList.contains(id)){
-            privateList.remove(id);
+            privateList.remove(Integer.valueOf(id));
         }
         else if(publicList.contains(id)){
-            publicList.remove(id);
+            publicList.remove(Integer.valueOf(id));
         }
     }
 
@@ -297,15 +297,13 @@ public class Business{
      */
     public String moveRecipe(int id){
         String response;
-        if (this.getPrivateList().contains(Integer.valueOf(id))){
+        if (this.getPrivateList().contains(id)){ ;
             this.getPublicList().add(id);
             this.getPrivateList().remove(Integer.valueOf(id));
-            Recipe recipe = RecipeRepo.getRecipe(id);
             response = "1";
         } else {
             this.getPrivateList().add(id);
             this.getPublicList().remove(Integer.valueOf(id));
-            Recipe recipe = RecipeRepo.getRecipe(id);
             response = "0";
         }
         return response;
