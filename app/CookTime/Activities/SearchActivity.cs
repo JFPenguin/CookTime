@@ -157,6 +157,7 @@ namespace CookTime.Activities {
             }
             else {
                 //gets business information
+                //TODO test if businessess are loaded properly when server is functional again
                 var busUrl = "resources/getBusiness?id=" + profileId;
                 var busRequest = webClient.DownloadString(busUrl);
                 Intent busIntent = new Intent(this, typeof(MyBusiness));
