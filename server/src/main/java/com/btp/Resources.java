@@ -974,9 +974,28 @@ public class Resources {
         i = random.nextInt(999) +1001;
     }
     business.setId(i);
-    UserRepo.getUser(business.getEmployeeList().get(0)).addBusiness(business.getId());
+    UserRepo.getUser(business.getEmployeeList().get(0)).setBusiness(business.getId());
     BusinessRepo.addBusiness(business);
     UserRepo.updateTree();
+    }
+
+    @GET
+    @Path("addEmployee")
+    public String addEmployee(@QueryParam("email") String email,@QueryParam("id") int id){
+        if(UserRepo.getUser(email)==null){
+            return "3";
+        }
+        else if(BusinessRepo.getBusiness(id)==null){
+            return "2";
+        }
+        else if(UserRepo.getUser(email).getBusiness()!=0){
+            return "0";
+        }
+        else {
+            BusinessRepo.getBusiness(id).addEmployee(email);
+            UserRepo.getUser(email).setBusiness(id);
+            return "1";
+        }
     }
 
     /**
