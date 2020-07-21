@@ -23,6 +23,7 @@
                     android:layout_gravity="center"/>
             <TextView
                     android:text="My Business"
+                    android:id="@+id/bsnsName"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"

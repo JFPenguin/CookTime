@@ -59,6 +59,7 @@
         <Compile Include="Activities\CreateRActivity.cs" />
         <Compile Include="Activities\FollowActivity.cs" />
         <Compile Include="Activities\MainActivity.cs" />
+        <Compile Include="Activities\MyBusiness.cs" />
         <Compile Include="Activities\MyProfileActivity.cs" />
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\NotifActivity.cs" />
