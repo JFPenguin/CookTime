@@ -406,7 +406,7 @@ public class Resources {
             return "1";
         } else if (recipe.getBusinessId() != 0 && fromMyMenu.equals("0")){
             BusinessRepo.getBusiness(recipe.getBusinessId()).removeRecipe(id);
-            RecipeRepo.deleteRecipe(recipe.getId());
+            RecipeRepo.deleteRecipe(id);
             UserRepo.deleteRecipe(id);
             BusinessRepo.updateTree();
             RecipeRepo.updateTree();
