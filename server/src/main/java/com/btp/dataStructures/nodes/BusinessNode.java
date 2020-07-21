@@ -85,7 +85,7 @@ public class BusinessNode{
      * getter method for the 'parent' node memory direction
      * @return the memory placement of the parent node object
      */
-    public BusinessNode getParent() {
+    public BusinessNode parent() {
         return this.parent;
     }
 
