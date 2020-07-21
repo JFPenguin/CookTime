@@ -2,6 +2,7 @@ package com.btp.dataStructures.trees;
 
 import com.btp.dataStructures.nodes.BusinessNode;
 import com.btp.serverData.clientObjects.Business;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 
@@ -10,10 +11,27 @@ import java.util.ArrayList;
  * https://www.sanfoundry.com/java-program-implement-splay-tree/, with major syntax modifications
  * for using generic type nodes and getter/setter methods for data-scope reduction.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BusinessTree {
     private BusinessNode root;
     int values = 0;
     private ArrayList<String> businessList = new ArrayList<>();
+
+    /**
+     * Getter for the root element
+     * @return root element
+     */
+    public BusinessNode getRoot() {
+        return root;
+    }
+
+    /**
+     * setter for the root element
+     * @param root root element
+     */
+    public void setRoot(BusinessNode root) {
+        this.root = root;
+    }
 
     /**
      * Constructor for the class
@@ -176,7 +194,15 @@ public class BusinessTree {
         current = new BusinessNode();
         current.setElement(element);
         current.setParent(parent);
-        int x = element.getId() - parent.getElement().getId();
+        System.out.println("linea 180");
+        int x;
+        if(parent!=null) {
+             x = element.getId() - parent.getElement().getId();
+        }
+        else {
+            x = element.getId();
+        }
+        System.out.println("sirvio");
         if (parent == null) {
             root = current;
         } else if (x > 0) {

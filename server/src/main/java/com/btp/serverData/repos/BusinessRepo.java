@@ -4,7 +4,10 @@ import com.btp.Initializer;
 import com.btp.dataStructures.trees.BusinessTree;
 import com.btp.serverData.clientObjects.Business;
 import com.btp.utils.DataWriter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -21,16 +24,28 @@ public class BusinessRepo {
      * @param business Business obj
      */
     public static void addBusiness(Business business){
+        System.out.println("llegue aqui");
         businessTree.insert(business);
         System.out.println("Business added");
         if(Initializer.isGUIOnline()){
             Initializer.getServerGUI().printLn("Business added");
         }
-        dataWriter.writeData(businessTree, path);
+        updateTree();
     }
 
     public static boolean checkBusinessById(int id){
         return businessTree.checkById(id);
+    }
+
+    public static void loadTree() throws IOException {
+        System.out.println("loading business data base...");
+        ObjectMapper objectMapper = new ObjectMapper();
+        FileReader file = new FileReader(path);
+        businessTree = objectMapper.readValue(file, businessTree.getClass());
+    }
+
+    public static void updateTree() {
+        dataWriter.writeData(businessTree, path);
     }
 
     /**
