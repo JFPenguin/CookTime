@@ -163,4 +163,13 @@ public class Business{
     public ArrayList<Integer> getPublicList() {
         return publicList;
     }
+
+    public void removeRecipe(int id) {
+        if(privateList.contains(id)){
+            privateList.remove(id);
+        }
+        else if(publicList.contains(id)){
+            publicList.remove(id);
+        }
+    }
 }
