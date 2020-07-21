@@ -167,8 +167,9 @@ public class Resources {
         recipe.setPostTime(System.currentTimeMillis());
         RecipeRepo.addRecipe(recipe);
         Business business = BusinessRepo.getBusiness(recipe.getBusinessId());
-        recipe.setAuthorName(business.getName());
         business.addRecipe(i,type);
+
+        recipe.setAuthorName(business.getName());
 
         if (Initializer.isGUIOnline()) {
             Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
@@ -379,47 +380,45 @@ public class Resources {
      * Deletes a recipe from the database or myMenu depending of user ownership
      * @param email String email of the user asking for deletion
      * @param id int id of the recipe
-     * @return String "1" if deletion was successful, "0" if not
+     * @param fromMyMenu String "1" if the request comes from an user profile, "0" if  it comes from a business profile
+     * @return String "1" if deletion was successful, "0" if the recipe doesn't exist
      */
     @GET
     @Path("deleteRecipe")
     @Produces(MediaType.APPLICATION_JSON)
-    public String deleteRecipe(@QueryParam("email") String email, @QueryParam("id") int id){
+    public String deleteRecipe(@QueryParam("email") String email, @QueryParam("id") int id,
+                               @QueryParam("fromMyMenu") String fromMyMenu){
         boolean response;
         Recipe recipe = RecipeRepo.getRecipe(id);
         User user = UserRepo.getUser(email);
 
-        if(BusinessRepo.getBusiness(recipe.getBusinessId()).getEmployeeList().get(0).equals(email)) {
-            if (recipe.getBusinessId()!=0) {
-                BusinessRepo.getBusiness(recipe.getBusinessId()).removeRecipe(recipe.getId());
-                BusinessRepo.updateTree();
-                RecipeRepo.deleteRecipe(recipe.getId());
-                UserRepo.deleteRecipe(id);
-                return "1";
-            }
-            else {
-                return "0";
-            }
+        if (recipe == null){
+            return "0";
         }
-        else {
-            if (recipe == null) {
-                response = false;
-            } else if (!recipe.getAuthorEmail().equals(email)) {
-                response = user.getRecipeList().remove(Integer.valueOf(id));
 
+        if (recipe.getBusinessId() != 0 && fromMyMenu.equals("1")){
+            user.getRecipeList().remove(Integer.valueOf(id));
+            UserRepo.updateTree();
+            return "1";
+        } else if (recipe.getBusinessId() != 0 && fromMyMenu.equals("0")){
+            BusinessRepo.getBusiness(recipe.getBusinessId()).removeRecipe(id);
+            RecipeRepo.deleteRecipe(recipe.getId());
+            UserRepo.deleteRecipe(id);
+            BusinessRepo.updateTree();
+            RecipeRepo.updateTree();
+            UserRepo.updateTree();
+            return "1";
+        } else {
+            if (!recipe.getAuthorEmail().equals(email)) {
+                user.getRecipeList().remove(Integer.valueOf(id));
+                UserRepo.updateTree();
+                return "1";
             } else {
                 UserRepo.deleteRecipe(id);
                 RecipeRepo.deleteRecipe(id);
-                response = true;
-            }
-
-            RecipeRepo.updateTree();
-            UserRepo.updateTree();
-            if (response) {
+                RecipeRepo.updateTree();
+                UserRepo.updateTree();
                 return "1";
-            }
-            else {
-                return "0";
             }
         }
     }
