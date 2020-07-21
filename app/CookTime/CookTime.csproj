@@ -91,8 +91,31 @@
         <AndroidResource Include="Resources\anim\SlideRight.xml" />
         <AndroidResource Include="Resources\anim\SlideUp.xml" />
         <AndroidResource Include="Resources\drawable\ButtonStyle.xml" />
-        <AndroidResource Include="Resources\drawable\cooktime_icon.png" />
+        <AndroidResource Include="Resources\drawable\cooktime_icon.png">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
         <AndroidResource Include="Resources\drawable\ListRowStyle.xml" />
+        <AndroidResource Include="Resources\drawable\mipmap-hdpi\cooktime_icon.png">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable\mipmap-mdpi\cooktime_icon.png">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable\mipmap-xhdpi\cooktime_icon.png">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable\mipmap-xxhdpi\cooktime_icon.png">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\drawable\mipmap-xxxhdpi\cooktime_icon.png">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
         <AndroidResource Include="Resources\layout\CreateRecipe.axml" />
         <AndroidResource Include="Resources\layout\DialogChoice.axml" />
         <AndroidResource Include="Resources\layout\DialogComment.axml" />
