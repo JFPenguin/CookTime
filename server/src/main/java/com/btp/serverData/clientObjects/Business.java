@@ -281,8 +281,13 @@ public class Business{
      * Adds a recipe id to the privateList
      * @param id int the id of the recipe to be added
      */
-    public void addRecipe(int id){
-        this.getPrivateList().add(id);
+    public void addRecipe(int id, String type){
+        if(type.equals("1")){
+            this.getPrivateList().add(id);
+        }
+        else {
+            this.getPrivateList().add(id);
+        }
     }
 
     /**
@@ -296,13 +301,11 @@ public class Business{
             this.getPublicList().add(id);
             this.getPrivateList().remove(Integer.valueOf(id));
             Recipe recipe = RecipeRepo.getRecipe(id);
-            recipe.setBusiness(true);
             response = "1";
         } else {
             this.getPrivateList().add(id);
             this.getPublicList().remove(Integer.valueOf(id));
             Recipe recipe = RecipeRepo.getRecipe(id);
-            recipe.setBusiness(true);
             response = "0";
         }
         return response;

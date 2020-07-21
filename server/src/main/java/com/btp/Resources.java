@@ -155,7 +155,7 @@ public class Resources {
      */
     @POST
     @Path("createRecipeB")
-    public void createRecipeB(Recipe recipe){
+    public void createRecipeB(Recipe recipe,@QueryParam("isPrivate") String type){
         System.out.println("Starting");
         int i = random.nextInt(999) + 1;
         while (RecipeRepo.checkId(i)){
@@ -167,8 +167,7 @@ public class Resources {
         RecipeRepo.addRecipe(recipe);
         Business business = BusinessRepo.getBusiness(recipe.getBusinessId());
         recipe.setAuthorName(business.getName());
-        business.addRecipe(i);
-        recipe.setBusiness(true);
+        business.addRecipe(i,type);
 
         if (Initializer.isGUIOnline()) {
             Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
@@ -379,7 +378,7 @@ public class Resources {
         User user = UserRepo.getUser(email);
 
         if(BusinessRepo.getBusiness(recipe.getBusinessId()).getEmployeeList().get(0).equals(email)) {
-            if (recipe.isBusiness()) {
+            if (recipe.getBusinessId()!=0) {
                 BusinessRepo.getBusiness(recipe.getBusinessId()).removeRecipe(recipe.getId());
                 BusinessRepo.updateTree();
                 RecipeRepo.deleteRecipe(recipe.getId());
