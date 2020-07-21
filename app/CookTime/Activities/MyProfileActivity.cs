@@ -28,6 +28,7 @@ namespace CookTime.Activities {
         private Button _btnDate;
         private Button _btnScore;
         private Button _btnDiff;
+        private Button _btnRecipe;
         private string sortStr;
         private ListView _myMenuListView;
         private IList<string> _myMenuList;
@@ -59,6 +60,7 @@ namespace CookTime.Activities {
             _btnDate = FindViewById<Button>(Resource.Id.btnDate);
             _btnScore = FindViewById<Button>(Resource.Id.btnScore);
             _btnDiff = FindViewById<Button>(Resource.Id.btnDiff);
+            _btnRecipe = FindViewById<Button>(Resource.Id.btnRecipe);
             
             _myMenuListView = FindViewById<ListView>(Resource.Id.myMenuListView);
             
@@ -151,6 +153,15 @@ namespace CookTime.Activities {
             {
                 sortStr = "difficulty";
                 SortMenu();
+            };
+            
+            _btnRecipe.Click += (sender, args) =>
+            {
+                Intent intent = new Intent(this, typeof(CreateActivity));
+                intent.PutExtra("LoggedId", _loggedUser.email);
+
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
             };
         }
 

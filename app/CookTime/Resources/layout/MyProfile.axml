@@ -180,7 +180,8 @@
                     android:background="@drawable/ButtonStyle"
                     android:textColor="#405863"
                     android:textStyle="bold"
-                    android:id="@+id/btnRecipe" android:gravity="center"
+                    android:id="@+id/btnRecipe" 
+                    android:gravity="center"
                     android:layout_gravity="center"/>
             
         </LinearLayout>

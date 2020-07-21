@@ -24,5 +24,35 @@ namespace CookTime {
         public float price;
         public float score;
         public int scoreTimes;
+
+        /// <summary>
+        /// Constructor for the Recipe class
+        /// </summary>
+        /// <param name="email"> The email of the user that created the recipe </param>
+        /// <param name="recipeName"> The recipe's name </param>
+        /// <param name="diff"> The recipe's difficulty </param>
+        /// <param name="tags"> The recipe's tags </param>
+        /// <param name="time">The recipe's dishTime </param>
+        /// <param name="type"> The recipe's dish type </param>
+        /// <param name="durat"> The recipe's duration </param>
+        /// <param name="ingredients"> The recipe's ingredients </param>
+        /// <param name="instruct"> The recipe's instructions </param>
+        /// <param name="port"> The recipe's portions </param>
+        /// <param name="cost"> The recipe's price </param>
+        public Recipe(string email, string recipeName, int diff, List<string> tags, string time, string type, int durat, 
+            List<string> ingredients, List<string> instruct, int port, float cost)
+        {
+            authorEmail = email;
+            name = recipeName;
+            difficulty = diff;
+            dishTags = tags;
+            dishTime = time;
+            dishType = type;
+            duration = durat;
+            ingredientsList = ingredients;
+            instructions = instruct;
+            portions = port;
+            price = cost;
+        }
     }
 }
