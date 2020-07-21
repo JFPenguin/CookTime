@@ -168,7 +168,6 @@ public class Resources {
         Business business = BusinessRepo.getBusiness(recipe.getBusinessId());
         recipe.setAuthorName(business.getName());
         business.addRecipe(i);
-        recipe.setBusiness(true);
 
         if (Initializer.isGUIOnline()) {
             Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
@@ -379,7 +378,7 @@ public class Resources {
         User user = UserRepo.getUser(email);
 
         if(BusinessRepo.getBusiness(recipe.getBusinessId()).getEmployeeList().get(0).equals(email)) {
-            if (recipe.isBusiness()) {
+            if (recipe.getBusinessId()!=0) {
                 BusinessRepo.getBusiness(recipe.getBusinessId()).removeRecipe(recipe.getId());
                 BusinessRepo.updateTree();
                 RecipeRepo.deleteRecipe(recipe.getId());
