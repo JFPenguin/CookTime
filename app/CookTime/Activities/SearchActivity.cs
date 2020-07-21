@@ -178,6 +178,7 @@ namespace CookTime.Activities {
                 toastText = "results filtered according to selection";
             }
             _refToast = Toast.MakeText(this, toastText, ToastLength.Short);
+            _refToast.Show();
         }
         
         private void SearchClick(object sender, EventArgs e) {
@@ -200,8 +201,14 @@ namespace CookTime.Activities {
             _recommendations = JsonConvert.DeserializeObject<List<string>>(response);
             _recomAdapter.ProfileItems = _recommendations;
             _resultView.Adapter = _recomAdapter;
-            
-            _refToast = Toast.MakeText(this, "showing query results", ToastLength.Short);
+            string toastText;
+            if (_recommendations.Count == 0) {
+                toastText = "no items in server matched the search query";
+            }
+            else {
+                toastText = "showing search results";
+            }
+            _refToast = Toast.MakeText(this, toastText, ToastLength.Short);
             _refToast.Show();
         }
         private void RefreshClick(object sender, EventArgs e)
