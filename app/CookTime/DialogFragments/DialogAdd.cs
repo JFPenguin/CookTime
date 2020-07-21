@@ -10,10 +10,12 @@ namespace CookTime.DialogFragments {
     /// <summary>
     /// This class represents the dialog fragment that shows when the user wants to rate a recipe
     /// </summary>
-    public class DialogChef : DialogFragment {
-        private string _loggedId;
-        private Button _btnSendChef;
-        public event EventHandler<SendChefEvent> EventHandlerChef;
+    public class DialogAdd : DialogFragment {
+        private EditText emailTV;
+        private int bsnsId;
+        private Button _btnAdd;
+        private string toastText;
+        public event EventHandler<SendAddEvent> EventHandlerAdd;
 
         /// <summary>
         /// Creates the fragment, instantiates its user interface view and returns the view
@@ -25,32 +27,44 @@ namespace CookTime.DialogFragments {
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             base.OnCreateView(inflater, container, savedInstanceState);
-            var view = inflater.Inflate(Resource.Layout.DialogChef, container, false);
+            var view = inflater.Inflate(Resource.Layout.DialogAdd, container, false);
 
-            _btnSendChef = view.FindViewById<Button>(Resource.Id.btnSendChef);
+            _btnAdd = view.FindViewById<Button>(Resource.Id.btnSendChef);
+            emailTV = view.FindViewById<EditText>(Resource.Id.newEmail);
 
-            _btnSendChef.Click += SendChef;
+            _btnAdd.Click += Add;
 
             return view;
         }
 
         /// <summary>
-        /// This method is called when the user presses the button to submit a request to be a chef.
+        /// This method is called when the user presses the button to add someone to the business.
         /// It invokes the SendRate event, instantiating the class and passing all the data.
         /// Finally it closes the fragment.
         /// </summary>
         /// <param name="sender"> Reference to the object that raised the event</param>
         /// <param name="e"> Contains the event data </param>
-        private void SendChef(object sender, EventArgs e) { 
-            using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            var url = "resources/chefRequest?id=" + _loggedId;
-            webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            var message = webClient.DownloadString(url);
-                 
-            Dismiss();
+        private void Add(object sender, EventArgs e) { 
+            string value;
             
-             if (EventHandlerChef != null)
-                 EventHandlerChef.Invoke(this, new SendChefEvent(message));
+            if (emailTV.Text.Equals("")) {
+                value = "4";
+            }
+            else {
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                var url = "resources/addEmployee?email=" + emailTV.Text + "&id=" + bsnsId;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                value = webClient.DownloadString(url);
+                
+                if (value == "1")
+                {
+                    Dismiss();
+                } 
+                
+            }
+            
+            if (EventHandlerAdd != null)
+                EventHandlerAdd.Invoke(this, new SendAddEvent(value));
         }
 
         /// <summary>
@@ -63,12 +77,13 @@ namespace CookTime.DialogFragments {
             Dialog.Window.Attributes.WindowAnimations = Resource.Style.fragment_anim;
         }
 
+        
         /// <summary>
-        /// Property for the _loggedId attribute
+        /// Property for the _bsnsId attribute
         /// </summary>
-        public string LoggedId
+        public int BsnsId
         {
-            set => _loggedId = value;
+            set => bsnsId = value;
         }
     }
         
@@ -76,12 +91,12 @@ namespace CookTime.DialogFragments {
         /// This class represents an event. It contains the rating request result.
         /// The properties inside this class will let the main view access the result.
         /// </summary>
-        public class SendChefEvent : EventArgs {
+        public class SendAddEvent : EventArgs {
             /// <summary>
             /// Constructor for the SendRateEvent class
             /// </summary>
             /// <param name="message"> String that will indicate the text in a message for the user  </param>
-            public SendChefEvent(string message) {
+            public SendAddEvent(string message) {
                 Message = message;
             }
             

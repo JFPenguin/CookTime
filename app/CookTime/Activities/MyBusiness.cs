@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using CookTime.Adapters;
+using CookTime.DialogFragments;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities
@@ -49,7 +50,7 @@ namespace CookTime.Activities
             SetContentView(Resource.Layout.Business);
 
             loggedId = Intent.GetStringExtra("LoggedId");
-            bsnsJson = Intent.GetStringExtra("User");
+            bsnsJson = Intent.GetStringExtra("Bsns");
             bsns = JsonConvert.DeserializeObject<Business>(bsnsJson);
 
             bsnsNameTV = FindViewById<TextView>(Resource.Id.bsnsName);
@@ -104,11 +105,11 @@ namespace CookTime.Activities
             {
                 //Brings dialog fragment forward
                 var transaction = SupportFragmentManager.BeginTransaction();
-                // var dialogSettings = new DialogSettings();
-                // dialogSettings.Show(transaction, "settings");
-                //
-                // dialogSettings.Email = _loggedUser.email;
-                // dialogSettings.EventHandlerPass += PassResult;
+                var dialogAdd = new DialogAdd();
+                dialogAdd.Show(transaction, "settings");
+                dialogAdd.BsnsId = bsns.id;
+                dialogAdd.EventHandlerAdd += AddResult;
+                
             };
             //
             // _btnFollowers.Click += (sender, args) =>
@@ -217,29 +218,29 @@ namespace CookTime.Activities
         //         dialogChoice.EventHandlerChoice += ChoiceAction;
         //     }
         //     
-        //     /// <summary>
-        //     /// This method is in charge of retrieving the data entered by the user in the Settings dialog fragment.
-        //     /// </summary>
-        //     /// <param name="sender"> Reference to the object that raised the event </param>
-        //     /// <param name="e"> Contains the event data </param>
-        //     private void PassResult(object sender, SendPassEvent e) {
-        //         string toastText;
-        //         if (e.Message == "3") {
-        //             toastText = "Please fill in all of the information";
-        //         }
-        //         else if (e.Message == "2") {
-        //             toastText = "The new passwords do not match";
-        //         }
-        //         else if (e.Message == "0") {
-        //             toastText = "Wrong current password";
-        //         }
-        //         else {
-        //             toastText = "Password changed successfully";
-        //         }
-        //     
-        //         _toast = Toast.MakeText(this, toastText, ToastLength.Short);
-        //         _toast.Show();
-        //     }
+        /// <summary>
+        /// This method is in charge of retrieving the data entered by the user in the Settings dialog fragment.
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
+        private void AddResult(object sender,SendAddEvent e) {
+            var toastText = "";
+            if (e.Message == "3")
+            {
+                toastText = "Email doesn't exist";
+            } 
+            else if (e.Message == "0")
+            {
+                toastText = "User already in a business";
+            } 
+            else if (e.Message == "1")
+            {
+                toastText = "User added";
+            } 
+        
+            _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+            _toast.Show();
+        }
         //     
         //     /// <summary>
         //     /// This method is in charge of retrieving the result of the Choice dialog fragment.
