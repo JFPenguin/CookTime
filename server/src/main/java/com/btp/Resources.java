@@ -183,10 +183,11 @@ public class Resources {
      */
     @GET
     @Path("moveRecipe")
-    public String moveRecipe(@QueryParam("recipeId") int id, @QueryParam("businnessId") int businessId){
+    public String moveRecipe(@QueryParam("recipeId") int id, @QueryParam("businessId") int businessId){
         Business business = BusinessRepo.getBusiness(businessId);
+        String response = business.moveRecipe(id);
         BusinessRepo.updateTree();
-        return business.moveRecipe(id);
+        return response;
     }
 
     /**
@@ -729,6 +730,31 @@ public class Resources {
         UserRepo.updateTree();
         return response;
     }
+
+//    @GET
+//    @Path("followBusiness")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public String followBusiness(@QueryParam("email") String email, @QueryParam("id") int id){
+//        String response;
+//        User user = UserRepo.getUser(email);
+//        Business business = BusinessRepo.getBusiness(id);
+//
+//        boolean alreadyFollows = false;
+//
+//        for (String data : user.getFollowingEmails()) {
+//            if (data.contains(String.valueOf(business.getId()))) {
+//                alreadyFollows = true;
+//                break;
+//            }
+//        }
+//
+//        if (alreadyFollows) {
+//            user.unFollowing(business.getId()+";"+business.getName());
+//            business
+//        } else {
+//
+//        }
+//    }
 
      /**
      * Changes an user password
