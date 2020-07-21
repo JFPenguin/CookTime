@@ -958,12 +958,21 @@ public class Resources {
         return "1";
     }
 
+    /**
+     * This method takes and int ID and returns a Business Obj
+     * @param id int id of the business to request
+     * @return Business obj
+     */
     @GET
     @Path("getBusiness")
     public Business getBussiness(@QueryParam("id") int id){
         return BusinessRepo.getBusiness(id);
     }
 
+    /**
+     * This method is used to create a business obj assigns it an id, and adds it to the database, it also adds the id to the users id
+     * @param business Business obj
+     */
     @POST
     @Path("createBusiness")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -979,6 +988,12 @@ public class Resources {
     UserRepo.updateTree();
     }
 
+    /**
+     * This method adds an user to a business user list, and sets the reference on the users attribute
+     * @param email String email of the user that is being added to the business
+     * @param id int id of the business
+     * @return String response, depending on different scenarios; 3:user doesnt exist, 2:business doesnt exist, 0 if the user already belongs to a business, and 1 if everything worked
+     */
     @GET
     @Path("addEmployee")
     public String addEmployee(@QueryParam("email") String email,@QueryParam("id") int id){
@@ -995,17 +1010,6 @@ public class Resources {
             BusinessRepo.getBusiness(id).addEmployee(email);
             UserRepo.getUser(email).setBusiness(id);
             return "1";
-        }
-    }
-
-    @GET
-    @Path("hasBusiness")
-    public String hasBusiness(@QueryParam("id") String id){
-        if(UserRepo.getUser(id).getBusiness()!=0){
-            return "1";
-        }
-        else {
-            return "0";
         }
     }
 
