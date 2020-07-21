@@ -22,6 +22,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
 
 import static com.btp.utils.security.HashPassword.hashPassword;
 
@@ -393,6 +394,7 @@ public class Resources {
                 BusinessRepo.getBusiness(recipe.getBusinessId()).removeRecipe(recipe.getId());
                 BusinessRepo.updateTree();
                 RecipeRepo.deleteRecipe(recipe.getId());
+                UserRepo.deleteRecipe(id);
                 return "1";
             }
             else {
@@ -506,6 +508,11 @@ public class Resources {
 
         if (sortList.getLength() == 0){
             return myMenuList;
+        } else if (sortList.getLength() == 1){
+            Recipe recipe = RecipeRepo.getRecipe(user.getRecipeList().get(0));
+            myMenuList.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+recipe.getAuthorName()+";"+recipe.getAuthorEmail());
+            return myMenuList;
         }
 
         switch (filter){
@@ -546,6 +553,16 @@ public class Resources {
             Recipe recipe = RecipeRepo.getRecipe(i);
             sortList.add(recipe);
         }
+
+        if (sortList.getLength() == 0){
+            return newsfeed;
+        } else if (sortList.getLength() == 1){
+            Recipe recipe = RecipeRepo.getRecipe(user.getRecipeList().get(0));
+            newsfeed.add(recipe.getId()+";"+recipe.getName()+
+                    ";"+recipe.getAuthorName()+";"+recipe.getAuthorEmail());
+            return newsfeed;
+        }
+
         Sorter.bubbleSort(sortList);
 
         SinglyNode tmp = sortList.getHead();
@@ -731,30 +748,36 @@ public class Resources {
         return response;
     }
 
-//    @GET
-//    @Path("followBusiness")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String followBusiness(@QueryParam("email") String email, @QueryParam("id") int id){
-//        String response;
-//        User user = UserRepo.getUser(email);
-//        Business business = BusinessRepo.getBusiness(id);
-//
-//        boolean alreadyFollows = false;
-//
-//        for (String data : user.getFollowingEmails()) {
-//            if (data.contains(String.valueOf(business.getId()))) {
-//                alreadyFollows = true;
-//                break;
-//            }
-//        }
-//
-//        if (alreadyFollows) {
-//            user.unFollowing(business.getId()+";"+business.getName());
-//            business
-//        } else {
-//
-//        }
-//    }
+    @GET
+    @Path("followBusiness")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String followBusiness(@QueryParam("email") String email, @QueryParam("id") int id){
+        String response;
+        User user = UserRepo.getUser(email);
+        Business business = BusinessRepo.getBusiness(id);
+
+        boolean alreadyFollows = false;
+
+        for (String data : user.getFollowingEmails()) {
+            if (data.contains(String.valueOf(business.getId()))) {
+                alreadyFollows = true;
+                break;
+            }
+        }
+
+        if (alreadyFollows) {
+            user.unFollowing(business.getId()+";"+business.getName());
+            business.unFollower(email+";"+user.fullName());
+            response = "0";
+        } else {
+            user.addFollowing(business.getId()+";"+business.getName());
+            business.addFollower(email+";"+user.fullName());
+            response = "1";
+        }
+        UserRepo.updateTree();
+        BusinessRepo.updateTree();
+        return response;
+    }
 
      /**
      * Changes an user password

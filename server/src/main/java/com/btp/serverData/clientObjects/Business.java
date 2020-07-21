@@ -308,4 +308,20 @@ public class Business{
         }
         return response;
     }
+
+    /**
+     * Deletes an user from the follower list
+     * @param email String the email of the user to be removed
+     */
+    public void unFollower(String email) {
+        this.getFollowers().remove(email);
+    }
+
+    /**
+     * Adds an user to the follower list
+     * @param email String the email of the user to be added
+     */
+    public void addFollower(String email) {
+        this.getFollowers().add(email);
+    }
 }
