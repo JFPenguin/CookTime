@@ -61,7 +61,7 @@ namespace CookTime.Activities {
             _pfp = FindViewById<ImageView>(Resource.Id.profilePic);
             _btnFollowers = FindViewById<Button>(Resource.Id.btnFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
-            _btnFollow = FindViewById<Button>(Resource.Id.btnFollow);
+            _btnFollow = FindViewById<Button>(Resource.Id.btnCFollow);
             _btnDate = FindViewById<Button>(Resource.Id.btnPDate);
             _btnScore = FindViewById<Button>(Resource.Id.btnPScore);
             _btnDiff = FindViewById<Button>(Resource.Id.btnPDiff);
@@ -92,6 +92,8 @@ namespace CookTime.Activities {
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var response = webClient.DownloadString(url);
 
+            _btnFollow.Text = response == "0" ? "FOLLOW" : "UNFOLLOW";
+            
             url = "resources/myMenu?email=" + _user.email + "&filter=date";
             var send = webClient.DownloadString(url);
             
@@ -99,9 +101,7 @@ namespace CookTime.Activities {
             _adapter = new RecipeAdapter(this, _menuList);
             _menuListView.Adapter = _adapter;
             _menuListView.ItemClick += ListClick;
-            
-            _btnFollow.Text = response == "0" ? "FOLLOW" : "UNFOLLOW";
-            
+
             _btnFollow.Click += (sender, args) =>
             {
                 using var webClient2 = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
@@ -117,10 +117,10 @@ namespace CookTime.Activities {
 
                 var toastText = answer == "0" ? "unfollowed" : "followed";
                 
-                Toast toast = Toast.MakeText(this, "User " + toastText + ". Redirecting to MyProfile...", ToastLength.Short);
+                var toast = Toast.MakeText(this, "User " + toastText + ". Redirecting to MyProfile...", ToastLength.Short);
                 toast.Show();
                 
-                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                var intent = new Intent(this, typeof(MyProfileActivity));
                 intent.PutExtra("User", userJson);
                 intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
                 StartActivity(intent);
@@ -130,7 +130,7 @@ namespace CookTime.Activities {
             
             _btnFollowers.Click += (sender, args) =>
             {
-                Intent intent = new Intent(this, typeof(FollowActivity));
+                var intent = new Intent(this, typeof(FollowActivity));
                 intent.PutExtra("Title", "Followers");
                 intent.PutExtra("LoggedId", _loggedId);
                 intent.PutStringArrayListExtra("FollowList", _user.followerEmails);
@@ -141,7 +141,7 @@ namespace CookTime.Activities {
             
             _btnFollowing.Click += (sender, args) =>
             {
-                Intent intent = new Intent(this, typeof(FollowActivity));
+                var intent = new Intent(this, typeof(FollowActivity));
                 intent.PutExtra("Title", "Following");
                 intent.PutExtra("LoggedId", _loggedId);
                 intent.PutStringArrayListExtra("FollowList", _user.followingEmails);
@@ -198,7 +198,7 @@ namespace CookTime.Activities {
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var request = webClient.DownloadString(url);
             
-            Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
+            var recipeIntent = new Intent(this, typeof(RecipeActivity));
             recipeIntent.PutExtra("Recipe", request);
             recipeIntent.PutExtra("LoggedId", _loggedId);
             StartActivity(recipeIntent);
@@ -229,29 +229,32 @@ namespace CookTime.Activities {
             Toast toast;
             string toastText;
 
-            if (e.Message == "-1") {
-                toastText = "Please choose a rating";
-            }
-
-            else if (e.Message == "1")
+            switch (e.Message)
             {
-                toastText = "You already rated this chef.";
-            }
-            else {
-                toastText = "Recipe rated! Refreshing the profile...";
+                case "-1":
+                    toastText = "Please choose a rating";
+                    break;
+                case "1":
+                    toastText = "You already rated this chef.";
+                    break;
+                default:
+                {
+                    toastText = "Chef rated! Refreshing the profile...";
                 
-                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-                var url = "resources/getUser?id=" + _user.email;
+                    using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                    var url = "resources/getUser?id=" + _user.email;
                 
-                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var userJson = webClient.DownloadString(url);
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var userJson = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(PrivProfileActivity));
-                intent.PutExtra("User", userJson);
-                intent.PutExtra("LoggedId", _loggedId);
-                StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-                Finish();
+                    var intent = new Intent(this, typeof(PrivProfileActivity));
+                    intent.PutExtra("User", userJson);
+                    intent.PutExtra("LoggedId", _loggedId);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                    Finish();
+                    break;
+                }
             }
             toast = Toast.MakeText(this, toastText, ToastLength.Long);
             toast.Show();

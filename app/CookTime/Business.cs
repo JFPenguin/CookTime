@@ -18,7 +18,7 @@ namespace CookTime {
         public string contact;
         public string photo;
         public string businessHours;
-        public List<string> followers;
+        public List<string> followers = new List<string>();
         
         /// <summary>
         /// constructor for the Business class

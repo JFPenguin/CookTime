@@ -13,18 +13,21 @@ namespace CookTime.Activities {
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
-    public class CreateRActivity : AppCompatActivity {
+    public class CreateRBActivity : AppCompatActivity {
         private string _loggedId;
+        private int _bsnsId;
         private EditText recipeNameEditText;
         private EditText recipePortionsEditText;
         private EditText recipeDurationEditText;
         private EditText recipeIngredientEditText;
         private EditText recipeQuantityEditText;
         private EditText recipeUnitEditText;
+        private EditText recipePriceEditText;
         private EditText recipeInstructionEditText;
         private RadioGroup radioGroupDiff;
         private RadioGroup radioGroupTime;
         private RadioGroup radioGroupType;
+        private RadioGroup radioGroupVis;
         private CheckBox checkBox;
         private CheckBox checkBox2;
         private CheckBox checkBox3;
@@ -50,10 +53,11 @@ namespace CookTime.Activities {
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
 
-            SetContentView(Resource.Layout.CreateRecipe);
+            SetContentView(Resource.Layout.CreateBRecipe);
             
             _loggedId = Intent.GetStringExtra("LoggedId");
-
+            _bsnsId = Intent.GetIntExtra("BsnsId", 0);
+            
             recipeNameEditText = FindViewById<EditText>(Resource.Id.editText);
             recipePortionsEditText = FindViewById<EditText>(Resource.Id.editText2);
             recipeDurationEditText = FindViewById<EditText>(Resource.Id.editText3);
@@ -61,9 +65,11 @@ namespace CookTime.Activities {
             recipeQuantityEditText = FindViewById<EditText>(Resource.Id.editText5);
             recipeUnitEditText = FindViewById<EditText>(Resource.Id.editText6);
             recipeInstructionEditText = FindViewById<EditText>(Resource.Id.editText7);
+            recipePriceEditText = FindViewById<EditText>(Resource.Id.editText8);
             radioGroupDiff = FindViewById<RadioGroup>(Resource.Id.radioGroupDiff);
             radioGroupTime = FindViewById<RadioGroup>(Resource.Id.radioGroupTime);
             radioGroupType = FindViewById<RadioGroup>(Resource.Id.radioGroupType);
+            radioGroupVis = FindViewById<RadioGroup>(Resource.Id.radioGroupVis);
             checkBox = FindViewById<CheckBox>(Resource.Id.checkBox);
             checkBox2 = FindViewById<CheckBox>(Resource.Id.checkBox2);
             checkBox3 = FindViewById<CheckBox>(Resource.Id.checkBox3);
@@ -122,9 +128,10 @@ namespace CookTime.Activities {
                 }
 
                 if (recipeNameEditText.Text.Equals("") || recipePortionsEditText.Text.Equals("") ||
-                    recipeDurationEditText.Text.Equals("") || instructions.Count == 0 || ingredients.Count == 0 ||
-                    radioGroupDiff.CheckedRadioButtonId == -1 || radioGroupTime.CheckedRadioButtonId == -1 ||
-                    radioGroupType.CheckedRadioButtonId == -1 || !tagsChecked)
+                    recipeDurationEditText.Text.Equals("") || recipePriceEditText.Text.Equals("") || 
+                    instructions.Count == 0 || ingredients.Count == 0 || radioGroupDiff.CheckedRadioButtonId == -1 || 
+                    radioGroupTime.CheckedRadioButtonId == -1 || radioGroupType.CheckedRadioButtonId == -1 || 
+                    radioGroupVis.CheckedRadioButtonId == -1 || !tagsChecked)
                 {
                     toastText = "Please fill in all of the required information";
                 }
@@ -135,14 +142,19 @@ namespace CookTime.Activities {
                     var name = recipeNameEditText.Text;
                     var portions = int.Parse(recipePortionsEditText.Text);
                     var duration = int.Parse(recipeDurationEditText.Text);
+                    var price = float.Parse(recipePriceEditText.Text);
                     
                     var checkedDiff = radioGroupDiff.CheckedRadioButtonId;
                     var checkedTime = radioGroupTime.CheckedRadioButtonId;
                     var checkedType = radioGroupType.CheckedRadioButtonId;
+                    var checkedVis = radioGroupVis.CheckedRadioButtonId;
                     
                     var diff = int.Parse(FindViewById<RadioButton>(checkedDiff).Text);
                     var time = FindViewById<RadioButton>(checkedTime).Text;
                     var type = FindViewById<RadioButton>(checkedType).Text;
+                    var vis = FindViewById<RadioButton>(checkedVis).Text;
+
+                    var isPrivate = vis == "Private" ? "1" : "0";
 
                     if (checkBox.Checked) {
                         tags.Add(checkBox.Text);
@@ -164,11 +176,11 @@ namespace CookTime.Activities {
                     }
                     
                     var recipe = new Recipe(_loggedId, name, diff, tags, time, type, duration, ingredients,
-                        instructions, portions, 0, 0);
+                        instructions, portions, price, _bsnsId);
                     var recipeJson = JsonConvert.SerializeObject(recipe);
                     
                     using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-                    var url = "resources/createRecipe";
+                    var url = "resources/createRecipeB?isPrivate=" + isPrivate;
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                     webClient.UploadString(url, recipeJson);  
                     

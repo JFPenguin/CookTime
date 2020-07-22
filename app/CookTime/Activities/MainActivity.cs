@@ -62,30 +62,34 @@ namespace CookTime.Activities {
         /// <param name="e"> Contains the event data </param>
         private void SignUpResult(object sender, SignUpEvent e) {
             string toastText;
-            if (e.Message == "2") {
-                toastText = "Please fill in all of the information";
-            }
-            else if (e.Message == "1")
+            switch (e.Message)
             {
-                toastText = "The email entered is already taken";
-            }
-            else {
-                toastText = "You have successfully signed up to the platform";
-                var newUserName = e.UserName;
-                var newUserLastName = e.UserLastName;
-                var newUserAge = e.UserAge;
-                var newUserEmail = e.UserEmail;
-                var newUserPassword = e.UserPassword;
+                case "2":
+                    toastText = "Please fill in all of the information";
+                    break;
+                case "1":
+                    toastText = "The email entered is already taken";
+                    break;
+                default:
+                {
+                    toastText = "You have successfully signed up to the platform";
+                    var newUserName = e.UserName;
+                    var newUserLastName = e.UserLastName;
+                    var newUserAge = e.UserAge;
+                    var newUserEmail = e.UserEmail;
+                    var newUserPassword = e.UserPassword;
                 
-                var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, newUserLastName, newUserPassword);
+                    var user = new User(int.Parse(newUserAge), newUserEmail, newUserName, newUserLastName, newUserPassword);
 
-                var jsonResult = JsonConvert.SerializeObject(user);
+                    var jsonResult = JsonConvert.SerializeObject(user);
 
-                using var webClient = new WebClient {BaseAddress = "http://" + Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                    using var webClient = new WebClient {BaseAddress = "http://" + Ipv4 + ":8080/CookTime_war/cookAPI/"};
  
-                const string url = "resources/createUser";
-                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                webClient.UploadString(url, jsonResult);
+                    const string url = "resources/createUser";
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    webClient.UploadString(url, jsonResult);
+                    break;
+                }
             }
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();
@@ -99,29 +103,34 @@ namespace CookTime.Activities {
         /// <param name="e"> Contains the event data </param>
         private void SignInResult(object sender, SignInEvent e) {
             string toastText;
-            if (e.Message == "3") {
-                toastText = "Please fill in all of the information";
-            }
-            else if (e.Message == "2") {
-                toastText = "The combination of user/password doesn't exist";
-            }
-            else if (e.Message == "0") {
-                toastText = "Incorrect password";
-            }
-            else {
-                toastText = "Signed in!";
+            switch (e.Message)
+            {
+                case "3":
+                    toastText = "Please fill in all of the information";
+                    break;
+                case "2":
+                    toastText = "The combination of user/password doesn't exist";
+                    break;
+                case "0":
+                    toastText = "Incorrect password";
+                    break;
+                default:
+                {
+                    toastText = "Signed in!";
                 
-                using var webClient = new WebClient {BaseAddress = "http://" + Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                    using var webClient = new WebClient {BaseAddress = "http://" + Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
-                var url = "resources/getUser?id=" + e.UserEmail;
-                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var send = webClient.DownloadString(url);
+                    var url = "resources/getUser?id=" + e.UserEmail;
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var send = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(NewsfeedActivity));
-                intent.PutExtra("User", send);
-                StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-                Finish();
+                    var intent = new Intent(this, typeof(NewsfeedActivity));
+                    intent.PutExtra("User", send);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                    Finish();
+                    break;
+                }
             }
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();

@@ -57,12 +57,15 @@
     <ItemGroup>
         <Compile Include="Activities\CreateBActivity.cs" />
         <Compile Include="Activities\CreateRActivity.cs" />
+        <Compile Include="Activities\CreateRBActivity.cs" />
         <Compile Include="Activities\FollowActivity.cs" />
         <Compile Include="Activities\MainActivity.cs" />
         <Compile Include="Activities\MyBusiness.cs" />
         <Compile Include="Activities\MyProfileActivity.cs" />
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\NotifActivity.cs" />
+        <Compile Include="Activities\PrivateBusiness.cs" />
+        <Compile Include="Activities\PrivateMenuActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />
         <Compile Include="Activities\SearchActivity.cs" />
@@ -102,6 +105,7 @@
         <AndroidResource Include="Resources\drawable\default_logo.png" />
         <AndroidResource Include="Resources\drawable\default_pfp.png" />
         <AndroidResource Include="Resources\layout\Business.axml" />
+        <AndroidResource Include="Resources\layout\CreateBRecipe.axml" />
         <AndroidResource Include="Resources\layout\CreateBusiness.axml" />
         <AndroidResource Include="Resources\layout\CreateRecipe.axml" />
         <AndroidResource Include="Resources\layout\DialogAdd.axml" />
@@ -127,6 +131,7 @@
         <AndroidResource Include="Resources\layout\Notif.axml" />
         <AndroidResource Include="Resources\layout\PrivateProfile.axml" />
         <AndroidResource Include="Resources\layout\PrivBusiness.axml" />
+        <AndroidResource Include="Resources\layout\PrivMenu.axml" />
         <AndroidResource Include="Resources\layout\Recipe.axml">
           <SubType>Designer</SubType>
           <Generator>MSBuild:UpdateGeneratedFiles</Generator>

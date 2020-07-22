@@ -39,7 +39,7 @@ namespace CookTime.Activities {
             _loggedId = Intent.GetStringExtra("LoggedId");
             followList = Intent.GetStringArrayListExtra("FollowList");
             
-            FollowAdapter adapter = new FollowAdapter(this, followList);
+            var adapter = new FollowAdapter(this, followList);
             
             _followListView.Adapter = adapter;
             
@@ -101,12 +101,11 @@ namespace CookTime.Activities {
                 }
                 else
                 {
-                    //TODO add PrivBusiness activity
-                    // intent = new Intent(this, typeof(PrivBusiness));
-                    // intent.PutExtra("Bsns", send);
-                    // intent.PutExtra("LoggedId", _loggedId);
-                    // StartActivity(intent);
-                    // OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);   
+                     intent = new Intent(this, typeof(PrivateBusiness));
+                     intent.PutExtra("Bsns", send);
+                     intent.PutExtra("LoggedId", _loggedId);
+                     StartActivity(intent);
+                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);   
                 }
             }
         }

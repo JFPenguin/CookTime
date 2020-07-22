@@ -290,18 +290,18 @@ public class Resources {
      * @param email String the email of the user rating the business 
      * @return String "0" if previously rated, "1" if not
      */
-    @POST
+    @GET
     @Path("rateBusiness")
     public String rateBusiness(@QueryParam("id") int id, @QueryParam("rating") int rating,
                                @QueryParam("email") String email){
         String response;
         Business business = BusinessRepo.getBusiness(id);
         if (business.getRaters().contains(email)){
-            response = "0";
+            response = "1";
         } else {
             business.addRating(rating);
             business.addRater(email);
-            response = "1";
+            response = "0";
         }
         BusinessRepo.updateTree();
         return response;
@@ -344,6 +344,15 @@ public class Resources {
             user.addRecipe(recipeTmp.getId());
             tmp =(SinglyNode) tmp.getNext();
         }
+
+        for(String data:user.getFollowerEmails()){
+            String[] temp = data.split(";");
+            User follower = UserRepo.getUser(temp[0]);
+            if (!follower.getNewsFeed().contains(id)){
+                follower.addNewsFeed(id);
+            }
+        }
+
         UserRepo.updateTree();
 
         return "1";
@@ -578,7 +587,7 @@ public class Resources {
      * Checks if an user is following another user
      * @param ownEmail String email of the user sending the request
      * @param followingEmail String email of the user that needs to be checked
-     * @return String
+     * @return String "0" if not following, "1" if following
      */
     @GET
     @Path("isFollowing")
@@ -590,7 +599,32 @@ public class Resources {
         String response = "0";
 
         for (String email : ownUser.getFollowingEmails()) {
-            if (email.equals(followingEmail+";"+followingUser.fullName())) {
+            if (email.contains(followingEmail+";"+followingUser.fullName())) {
+                response = "1";
+                break;
+            }
+        }
+        return response;
+    }
+
+
+    /**
+     * Checks if an user is following a business
+     * @param email String email of the user sending the request
+     * @param id int id of the business that needs to be checked
+     * @return String "0" if not following, "1" if following
+     */
+    @GET
+    @Path("isFollowingBusiness")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isFollowingB(@QueryParam("email") String email, @QueryParam("id") int id){
+        User user = UserRepo.getUser(email);
+        Business business = BusinessRepo.getBusiness(id);
+
+        String response = "0";
+
+        for (String data : user.getFollowingEmails()) {
+            if (data.contains(business.getId()+";"+business.getName())) {
                 response = "1";
                 break;
             }
@@ -732,11 +766,11 @@ public class Resources {
         }
 
         if (alreadyFollows) {
-            ownUser.unFollowing(followingEmail+";"+followingUser.fullName());
+            ownUser.unFollowing(followingEmail+";"+followingUser.fullName()+";user");
             followingUser.unFollower(ownEmail+";"+ownUser.fullName()+";user");
             response = "0";
         }else{
-            ownUser.addFollowing(followingEmail+";"+followingUser.fullName());
+            ownUser.addFollowing(followingEmail+";"+followingUser.fullName()+";user");
             followingUser.addFollower(ownEmail+";"+ownUser.fullName()+";user");
             followingUser.sendMessage(ownUser.fullName()+" is now following you");
             response = "1";
@@ -765,12 +799,12 @@ public class Resources {
         }
 
         if (alreadyFollows) {
-            user.unFollowing(business.getId()+";"+business.getName());
-            business.unFollower(email+";"+user.fullName()+";business");
+            user.unFollowing(business.getId()+";"+business.getName()+";business");
+            business.unFollower(email+";"+user.fullName()+";user");
             response = "0";
         } else {
-            user.addFollowing(business.getId()+";"+business.getName());
-            business.addFollower(email+";"+user.fullName()+";business");
+            user.addFollowing(business.getId()+";"+business.getName()+";business");
+            business.addFollower(email+";"+user.fullName()+";user");
             response = "1";
         }
         UserRepo.updateTree();

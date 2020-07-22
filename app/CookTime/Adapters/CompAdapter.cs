@@ -52,13 +52,13 @@ namespace CookTime.Adapters {
         /// <param name="parent"> The parent that this view will eventually be attached to </param>
         /// <returns></returns>
         public override View GetView(int position, View convertView, ViewGroup parent) {
-            View row = convertView;
+            var row = convertView;
 
             if (row == null) {
                 row = LayoutInflater.From(_context).Inflate(Resource.Layout.ListViewRow, null, false);
             }
 
-            TextView followTxt = row.FindViewById<TextView>(Resource.Id.rowText);
+            var followTxt = row.FindViewById<TextView>(Resource.Id.rowText);
 
             followTxt.Text = (position + 1) + ". " + _compItems[position];
 
