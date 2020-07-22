@@ -24,6 +24,7 @@ namespace CookTime.Activities {
         private TextView _ageView;
         private TextView _chefView;
         private TextView _scoreView;
+        private ImageView _pfp;
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnFollow;
@@ -57,6 +58,7 @@ namespace CookTime.Activities {
             _chefView = FindViewById<TextView>(Resource.Id.chefPText);
             _scoreView = FindViewById<TextView>(Resource.Id.scorePText);
 
+            _pfp = FindViewById<ImageView>(Resource.Id.profilePic);
             _btnFollowers = FindViewById<Button>(Resource.Id.btnFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
             _btnFollow = FindViewById<Button>(Resource.Id.btnFollow);

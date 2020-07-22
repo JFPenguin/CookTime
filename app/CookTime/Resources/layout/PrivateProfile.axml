@@ -18,6 +18,15 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="30sp"/>
+            <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:maxWidth="100dp"
+                    android:maxHeight="100dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/profilePic"
+                    android:layout_marginVertical="2dp"
+                    android:src="@drawable/default_pfp"/>
             <TextView
                     android:text="Info"
                     android:textAppearance="?android:attr/textAppearanceMedium"
