@@ -119,7 +119,6 @@ namespace CookTime.Activities {
 
         private void RecomClick(object sender, AdapterView.ItemClickEventArgs e) {
             var profileId = _recommendations[e.Position].Split(';')[0];
-            var profileName = _recommendations[e.Position].Split(';')[1];
             var profileType = _recommendations[e.Position].Split(';')[2];
             
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
@@ -156,17 +155,30 @@ namespace CookTime.Activities {
             }
             else {
                 //gets business information
-                //TODO test if businessess are loaded properly when server is functional again
+                var url = "resources/getBusiness?id=" + profileId;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var send = webClient.DownloadString(url);
                 
-                //TODO check is loggedUser is member of the business, with isEmployee method in Resources, to load either
-                //MyBusiness or PrivBusiness Activity. You can check line 85 in FollowActivity.
-                
-                var busUrl = "resources/getBusiness?id=" + profileId;
-                var busRequest = webClient.DownloadString(busUrl);
-                var busIntent = new Intent(this, typeof(MyBusiness));
-                busIntent.PutExtra("LoggedId", _loggedUser.email);
-                busIntent.PutExtra("Bsns", busRequest);
-                StartActivity(busIntent);
+                url = "resources/isEmployee?email=" + _loggedUser.email + "&id=" + profileId;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var result = webClient.DownloadString(url);
+
+                if (result == "1") 
+                {
+                    var intent = new Intent(this, typeof(MyBusiness));
+                    intent.PutExtra("Bsns", send);
+                    intent.PutExtra("LoggedId", _loggedUser.email);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                }
+                else
+                {
+                    var intent = new Intent(this, typeof(PrivateBusiness));
+                    intent.PutExtra("Bsns", send);
+                    intent.PutExtra("LoggedId", _loggedUser.email);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);   
+                }
             }
         }
         private void FilterClick(object sender, EventArgs e) {

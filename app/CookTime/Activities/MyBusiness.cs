@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace CookTime.Activities
 {
     /// <summary>
-    /// This class represents the My Profile view.
+    /// This class represents the MyBusiness view.
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]

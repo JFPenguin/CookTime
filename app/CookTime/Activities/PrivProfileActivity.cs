@@ -59,7 +59,7 @@ namespace CookTime.Activities {
 
             _btnFollowers = FindViewById<Button>(Resource.Id.btnFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnFollowing);
-            _btnFollow = FindViewById<Button>(Resource.Id.btnFollow);
+            _btnFollow = FindViewById<Button>(Resource.Id.btnCFollow);
             _btnDate = FindViewById<Button>(Resource.Id.btnPDate);
             _btnScore = FindViewById<Button>(Resource.Id.btnPScore);
             _btnDiff = FindViewById<Button>(Resource.Id.btnPDiff);
@@ -90,6 +90,8 @@ namespace CookTime.Activities {
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var response = webClient.DownloadString(url);
 
+            _btnFollow.Text = response == "0" ? "FOLLOW" : "UNFOLLOW";
+            
             url = "resources/myMenu?email=" + _user.email + "&filter=date";
             var send = webClient.DownloadString(url);
             
@@ -97,9 +99,7 @@ namespace CookTime.Activities {
             _adapter = new RecipeAdapter(this, _menuList);
             _menuListView.Adapter = _adapter;
             _menuListView.ItemClick += ListClick;
-            
-            _btnFollow.Text = response == "0" ? "FOLLOW" : "UNFOLLOW";
-            
+
             _btnFollow.Click += (sender, args) =>
             {
                 using var webClient2 = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
@@ -237,7 +237,7 @@ namespace CookTime.Activities {
                     break;
                 default:
                 {
-                    toastText = "Recipe rated! Refreshing the profile...";
+                    toastText = "Chef rated! Refreshing the profile...";
                 
                     using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
                     var url = "resources/getUser?id=" + _user.email;

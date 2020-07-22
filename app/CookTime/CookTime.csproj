@@ -64,6 +64,7 @@
         <Compile Include="Activities\MyProfileActivity.cs" />
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\NotifActivity.cs" />
+        <Compile Include="Activities\PrivateBusiness.cs" />
         <Compile Include="Activities\PrivateMenuActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />

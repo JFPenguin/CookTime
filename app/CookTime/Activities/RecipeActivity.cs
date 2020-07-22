@@ -214,12 +214,11 @@ namespace CookTime.Activities {
                     }
                     else
                     {
-                        //TODO add PrivBusiness activity
-                        // intent = new Intent(this, typeof(PrivBusiness));
-                        // intent.PutExtra("Bsns", send);
-                        // intent.PutExtra("LoggedId", _loggedId);
-                        // StartActivity(intent);
-                        // OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);   
+                         intent = new Intent(this, typeof(PrivateBusiness));
+                         intent.PutExtra("Bsns", send);
+                         intent.PutExtra("LoggedId", _loggedId);
+                         StartActivity(intent);
+                         OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);   
                     }
                 }
             };

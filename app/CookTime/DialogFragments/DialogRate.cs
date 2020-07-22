@@ -14,6 +14,7 @@ namespace CookTime.DialogFragments
     public class DialogRate : DialogFragment {
         private int _recipeId;
         private string _chefId;
+        private int _bsnsId;
         private int type;
         private string _loggedId;
         private RadioGroup _radioGroup;
@@ -49,7 +50,7 @@ namespace CookTime.DialogFragments
         /// <param name="e"> Contains the event data </param>
         private void SendRate(object sender, EventArgs e)
         {
-             var value = "0";
+             string value;
             
              var _checkedItemId = _radioGroup.CheckedRadioButtonId;
             
@@ -68,6 +69,12 @@ namespace CookTime.DialogFragments
                  }
                  else if (type == 1) {
                      url = "resources/rateChef?ownEmail=" + _loggedId + "&chefEmail=" + _chefId + "&rating=" + radioButton.Text;
+                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                     value = webClient.DownloadString(url);
+                 }
+                 else
+                 {
+                     url = "resources/rateBusiness?id=" + _bsnsId + "&rating=" + radioButton.Text + "&email=" + _loggedId; 
                      webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                      value = webClient.DownloadString(url);
                  }
@@ -119,6 +126,14 @@ namespace CookTime.DialogFragments
         public string ChefId
         {
             set => _chefId = value;
+        }
+
+        /// <summary>
+        /// Property for the _bsnsId attribute
+        /// </summary>
+        public int BsnsId
+        {
+            set => _bsnsId = value;
         }
     }
         
