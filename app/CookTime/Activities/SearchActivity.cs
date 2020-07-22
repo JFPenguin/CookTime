@@ -139,7 +139,6 @@ namespace CookTime.Activities {
                 }
                 else {
                     // loads another user's profile, for the user is not the same logged instance.
-                    //TODO check if another user profile is or not a chef.
                     Intent userIntent = new Intent(this, typeof(PrivProfileActivity));
                     userIntent.PutExtra("User", userRequest);
                     userIntent.PutExtra("LoggedId", _loggedUser.email);
@@ -157,7 +156,17 @@ namespace CookTime.Activities {
             }
             else {
                 //gets business information
-                //TODO make Business classes to load information from server.
+                //TODO test if businessess are loaded properly when server is functional again
+                
+                //TODO check is loggedUser is member of the business, with isEmployee method in Resources, to load either
+                //MyBusiness or PrivBusiness Activity. You can check line 85 in FollowActivity.
+                
+                var busUrl = "resources/getBusiness?id=" + profileId;
+                var busRequest = webClient.DownloadString(busUrl);
+                Intent busIntent = new Intent(this, typeof(MyBusiness));
+                busIntent.PutExtra("LoggedId", _loggedUser.email);
+                busIntent.PutExtra("Bsns", busRequest);
+                StartActivity(busIntent);
             }
         }
         private void FilterClick(object sender, EventArgs e) {
@@ -175,10 +184,10 @@ namespace CookTime.Activities {
             _resultView.Adapter = _recomAdapter;
             string toastText;
             if (_recommendations.Count == 0) {
-                toastText = "results did not match with filter selection. Please try another search or refresh";
+                toastText = "Results did not match with filter selection. Please try another search or refresh";
             }
             else {
-                toastText = "results filtered according to selection";
+                toastText = "Results filtered according to selection";
             }
             _refToast = Toast.MakeText(this, toastText, ToastLength.Short);
             _refToast.Show();
@@ -206,10 +215,10 @@ namespace CookTime.Activities {
             _resultView.Adapter = _recomAdapter;
             string toastText;
             if (_recommendations.Count == 0) {
-                toastText = "no items in server matched the search query";
+                toastText = "No items in server matched the search query";
             }
             else {
-                toastText = "showing search results";
+                toastText = "Showing search results";
             }
             _refToast = Toast.MakeText(this, toastText, ToastLength.Short);
             _refToast.Show();

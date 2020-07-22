@@ -7,6 +7,7 @@ namespace CookTime {
     /// </summary>
     public class Recipe {
         public int id;
+        public int businessId;
         public string authorEmail;
         public string authorName;
         public List<string> comments;
@@ -38,9 +39,10 @@ namespace CookTime {
         /// <param name="ingredients"> The recipe's ingredients </param>
         /// <param name="instruct"> The recipe's instructions </param>
         /// <param name="port"> The recipe's portions </param>
+        /// <param name="bsns"> Business id </param>
         /// <param name="cost"> The recipe's price </param>
         public Recipe(string email, string recipeName, int diff, List<string> tags, string time, string type, int durat, 
-            List<string> ingredients, List<string> instruct, int port, float cost)
+            List<string> ingredients, List<string> instruct, int port, float cost, int bsns)
         {
             authorEmail = email;
             name = recipeName;
@@ -53,6 +55,7 @@ namespace CookTime {
             instructions = instruct;
             portions = port;
             price = cost;
+            businessId = bsns;
         }
     }
 }

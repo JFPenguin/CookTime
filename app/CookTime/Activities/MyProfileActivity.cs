@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using Android.App;
 using Android.Content;
@@ -213,14 +214,26 @@ namespace CookTime.Activities {
                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
                 }
                 else {
-                    // using var webClient3 = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-                    // var url3= "resources/getBusiness?id=" + _loggedUser.business;
-                    // webClient3.Headers[HttpRequestHeader.ContentType] = "application/json";
-                    // var bsnsJson = webClient3.DownloadString(url3);
+                    using var webClient3 = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                    var url3= "resources/getBusiness?id=" + _loggedUser.business;
+                    webClient3.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var bsnsJson = webClient3.DownloadString(url3);
+                    
+                    Intent intent = new Intent(this, typeof(MyBusiness));
+                    intent.PutExtra("Bsns", bsnsJson);
+                    intent.PutExtra("LoggedId", _loggedUser.email);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
                 }
             };
         }
-
+        
+        
+        /// <summary>
+        /// This method is in charge of retrieving of showing recipes when clicking on them
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="eventArgs"> Contains the event data </param>
         private void ListClick(object sender, AdapterView.ItemClickEventArgs eventArgs)
         {
             var recipeId = _myMenuList[eventArgs.Position].Split(';')[0];
@@ -279,7 +292,7 @@ namespace CookTime.Activities {
             }
             else
             {
-                url = "resources/deleteRecipe?email=" + _loggedUser.email + "&id=" + e.RecipeId;
+                url = "resources/deleteRecipe?email=" + _loggedUser.email + "&id=" + e.RecipeId + "&fromMyMenu=1";
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 webClient.DownloadString(url);
                 

@@ -1223,6 +1223,8 @@ public class Resources {
         else {
             BusinessRepo.getBusiness(id).addEmployee(email);
             UserRepo.getUser(email).setBusiness(id);
+            BusinessRepo.updateTree();
+            UserRepo.updateTree();
             return "1";
         }
     }
