@@ -57,6 +57,7 @@
     <ItemGroup>
         <Compile Include="Activities\CreateBActivity.cs" />
         <Compile Include="Activities\CreateRActivity.cs" />
+        <Compile Include="Activities\CreateRBActivity.cs" />
         <Compile Include="Activities\FollowActivity.cs" />
         <Compile Include="Activities\MainActivity.cs" />
         <Compile Include="Activities\MyBusiness.cs" />
@@ -101,6 +102,7 @@
         <AndroidResource Include="Resources\drawable\cooktime_icon.png" />
         <AndroidResource Include="Resources\drawable\ListRowStyle.xml" />
         <AndroidResource Include="Resources\layout\Business.axml" />
+        <AndroidResource Include="Resources\layout\CreateBRecipe.axml" />
         <AndroidResource Include="Resources\layout\CreateBusiness.axml" />
         <AndroidResource Include="Resources\layout\CreateRecipe.axml" />
         <AndroidResource Include="Resources\layout\DialogAdd.axml" />

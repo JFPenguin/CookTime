@@ -143,15 +143,16 @@ namespace CookTime.Activities
                 sortStr = "difficulty";
                 SortMenu();
             };
-            //
-            // _btPost.Click += (sender, args) => {
-            //     //TODO change normal recipe creation to business specific creation
-            //     Intent intent = new Intent(this, typeof(CreateRActivity));
-            //     intent.PutExtra("LoggedId", loggedId);
-            //     StartActivity(intent);
-            //     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
-            // };
-            //
+            
+            _btPost.Click += (sender, args) => 
+            {
+                var intent = new Intent(this, typeof(CreateRBActivity));
+                intent.PutExtra("LoggedId", loggedId);
+                intent.PutExtra("BsnsId", bsns.id);
+                StartActivity(intent);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+            };
+            
             _btnPrivMenu.Click += (sender, args) =>
             {
                 var intent = new Intent(this, typeof(PrivateMenuActivity));
