@@ -578,7 +578,7 @@ public class Resources {
      * Checks if an user is following another user
      * @param ownEmail String email of the user sending the request
      * @param followingEmail String email of the user that needs to be checked
-     * @return String
+     * @return String "0" if not following, "1" if following
      */
     @GET
     @Path("isFollowing")
@@ -591,6 +591,31 @@ public class Resources {
 
         for (String email : ownUser.getFollowingEmails()) {
             if (email.equals(followingEmail+";"+followingUser.fullName())) {
+                response = "1";
+                break;
+            }
+        }
+        return response;
+    }
+
+
+    /**
+     * Checks if an user is following a business
+     * @param email String email of the user sending the request
+     * @param id int id of the business that needs to be checked
+     * @return String "0" if not following, "1" if following
+     */
+    @GET
+    @Path("isFollowingBusiness")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String isFollowingB(@QueryParam("email") String email, @QueryParam("id") int id){
+        User user = UserRepo.getUser(email);
+        Business business = BusinessRepo.getBusiness(id);
+
+        String response = "0";
+
+        for (String data : user.getFollowingEmails()) {
+            if (email.contains(business.getId()+";"+business.getName())) {
                 response = "1";
                 break;
             }
