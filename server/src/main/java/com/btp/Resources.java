@@ -290,18 +290,18 @@ public class Resources {
      * @param email String the email of the user rating the business 
      * @return String "0" if previously rated, "1" if not
      */
-    @POST
+    @GET
     @Path("rateBusiness")
     public String rateBusiness(@QueryParam("id") int id, @QueryParam("rating") int rating,
                                @QueryParam("email") String email){
         String response;
         Business business = BusinessRepo.getBusiness(id);
         if (business.getRaters().contains(email)){
-            response = "0";
+            response = "1";
         } else {
             business.addRating(rating);
             business.addRater(email);
-            response = "1";
+            response = "0";
         }
         BusinessRepo.updateTree();
         return response;
@@ -590,7 +590,7 @@ public class Resources {
         String response = "0";
 
         for (String email : ownUser.getFollowingEmails()) {
-            if (email.equals(followingEmail+";"+followingUser.fullName())) {
+            if (email.contains(followingEmail+";"+followingUser.fullName())) {
                 response = "1";
                 break;
             }
@@ -615,7 +615,7 @@ public class Resources {
         String response = "0";
 
         for (String data : user.getFollowingEmails()) {
-            if (email.contains(business.getId()+";"+business.getName())) {
+            if (data.contains(business.getId()+";"+business.getName())) {
                 response = "1";
                 break;
             }

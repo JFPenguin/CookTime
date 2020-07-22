@@ -137,7 +137,7 @@
                         android:textColor="#405863"
                         android:textStyle="bold"
                         android:layout_weight="33"
-                        android:id="@+id/btnFollow"/>
+                        android:id="@+id/btnCFollow"/>
             </LinearLayout>
             <TextView
                     android:text="Menu"

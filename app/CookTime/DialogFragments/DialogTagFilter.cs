@@ -12,6 +12,7 @@ namespace CookTime.DialogFragments
     /// This class represents the dialog fragment that shows when the user wants to rate a recipe
     /// </summary>
     public class DialogTagFilter : DialogFragment {
+        //TODO nunca lo usas alv?
         private string _loggedId;
         private RadioGroup _radioGroup;
         private Button _btnAcceptFilter;
@@ -47,14 +48,14 @@ namespace CookTime.DialogFragments
         {
              string value;
             
-             int checkedItemId = _radioGroup.CheckedRadioButtonId;
+             var checkedItemId = _radioGroup.CheckedRadioButtonId;
             
              if (checkedItemId == -1) {
                  value = "-1";
              }
              else
              {
-                 RadioButton radioButton = View.FindViewById<RadioButton>(checkedItemId);
+                 var radioButton = View.FindViewById<RadioButton>(checkedItemId);
             
                  using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
                  // var url = "resources/rateRecipe?id=" + _recipeId + "&email=" + _loggedId + "&rating=" + radioButton.Text;

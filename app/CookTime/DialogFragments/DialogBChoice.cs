@@ -13,6 +13,7 @@ namespace CookTime.DialogFragments
         private Button _btnView;
         private Button _btnDelete;
         private Button _btnSwap;
+        private string btnText;
         private string _recipeId;
         public event EventHandler<ChoiceBEvent> EventHandlerChoice;
 
@@ -31,6 +32,7 @@ namespace CookTime.DialogFragments
             _btnView = view.FindViewById<Button>(Resource.Id.btnView);
             _btnDelete = view.FindViewById<Button>(Resource.Id.btnDelete);
             _btnSwap = view.FindViewById<Button>(Resource.Id.btnSwap);
+            _btnSwap.Text = btnText;
 
             _btnView.Click += (sender, args) =>
             {
@@ -71,6 +73,14 @@ namespace CookTime.DialogFragments
         /// </summary>
         public string RecipeId {
             set => _recipeId = value;
+        }
+
+        /// <summary>
+        /// Property for the btnText attribute
+        /// </summary>
+        public string BtnText
+        {
+            set => btnText = value;
         }
     }
 

@@ -36,7 +36,7 @@ namespace CookTime.Activities {
             _loggedId = Intent.GetStringExtra("LoggedId");
             notifList = Intent.GetStringArrayListExtra("NotifList");
             
-            CompAdapter adapter = new CompAdapter(this, notifList);
+            var adapter = new CompAdapter(this, notifList);
             
             _notifListView.Adapter = adapter;
             
@@ -49,13 +49,13 @@ namespace CookTime.Activities {
                 url = "resources/getUser?id=" + _loggedId;
                 var userJson = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                var intent = new Intent(this, typeof(MyProfileActivity));
                 intent.PutExtra("User", userJson);
                 intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
                 StartActivity(intent);
                 OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
 
-                Toast toast = Toast.MakeText(this, "Notifications cleared", ToastLength.Short);
+                var toast = Toast.MakeText(this, "Notifications cleared", ToastLength.Short);
                 toast.Show();
             };
         }

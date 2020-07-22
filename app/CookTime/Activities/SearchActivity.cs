@@ -119,7 +119,6 @@ namespace CookTime.Activities {
 
         private void RecomClick(object sender, AdapterView.ItemClickEventArgs e) {
             var profileId = _recommendations[e.Position].Split(';')[0];
-            var profileName = _recommendations[e.Position].Split(';')[1];
             var profileType = _recommendations[e.Position].Split(';')[2];
             
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
@@ -132,14 +131,14 @@ namespace CookTime.Activities {
                 
                 if (_loggedUser.email.Equals(profileId)) {
                     // loads the same user's profile, since they clicked on themselves
-                    Intent userIntent = new Intent(this, typeof(MyProfileActivity));
+                    var userIntent = new Intent(this, typeof(MyProfileActivity));
                     
                     userIntent.PutExtra("User", userRequest);
                     StartActivity(userIntent);
                 }
                 else {
                     // loads another user's profile, for the user is not the same logged instance.
-                    Intent userIntent = new Intent(this, typeof(PrivProfileActivity));
+                    var userIntent = new Intent(this, typeof(PrivProfileActivity));
                     userIntent.PutExtra("User", userRequest);
                     userIntent.PutExtra("LoggedId", _loggedUser.email);
                     StartActivity(userIntent);
@@ -149,31 +148,44 @@ namespace CookTime.Activities {
                 // logic for when the recommended result is a recipe instance
                 var recipUrl = "resources/getRecipe?id=" + profileId;
                 var recipRequest = webClient.DownloadString(recipUrl);
-                Intent recipIntent = new Intent(this, typeof(RecipeActivity));
+                var recipIntent = new Intent(this, typeof(RecipeActivity));
                 recipIntent.PutExtra("Recipe", recipRequest);
                 recipIntent.PutExtra("LoggedId", _loggedUser.email);
                 StartActivity(recipIntent);
             }
             else {
                 //gets business information
-                //TODO test if businessess are loaded properly when server is functional again
+                var url = "resources/getBusiness?id=" + profileId;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var send = webClient.DownloadString(url);
                 
-                //TODO check is loggedUser is member of the business, with isEmployee method in Resources, to load either
-                //MyBusiness or PrivBusiness Activity. You can check line 85 in FollowActivity.
-                
-                var busUrl = "resources/getBusiness?id=" + profileId;
-                var busRequest = webClient.DownloadString(busUrl);
-                Intent busIntent = new Intent(this, typeof(MyBusiness));
-                busIntent.PutExtra("LoggedId", _loggedUser.email);
-                busIntent.PutExtra("Bsns", busRequest);
-                StartActivity(busIntent);
+                url = "resources/isEmployee?email=" + _loggedUser.email + "&id=" + profileId;
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var result = webClient.DownloadString(url);
+
+                if (result == "1") 
+                {
+                    var intent = new Intent(this, typeof(MyBusiness));
+                    intent.PutExtra("Bsns", send);
+                    intent.PutExtra("LoggedId", _loggedUser.email);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                }
+                else
+                {
+                    var intent = new Intent(this, typeof(PrivateBusiness));
+                    intent.PutExtra("Bsns", send);
+                    intent.PutExtra("LoggedId", _loggedUser.email);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);   
+                }
             }
         }
         private void FilterClick(object sender, EventArgs e) {
             var queryList = request;
             var newQuery = queryList.Replace("[","");
             newQuery = newQuery.Replace("]", "");
-            Button button = (Button) sender;
+            var button = (Button) sender;
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var url = "resources/filterRecommend?array=" + newQuery + "&data=" + button.Text;
@@ -225,7 +237,7 @@ namespace CookTime.Activities {
         }
         private void RefreshClick(object sender, EventArgs e)
         {
-            Intent refresh = new Intent(this, typeof(SearchActivity));
+            var refresh = new Intent(this, typeof(SearchActivity));
             _refToast = Toast.MakeText(this, "recommendations refreshed", ToastLength.Short);
             _refToast.Show();
             refresh.PutExtra("User", JsonConvert.SerializeObject(_loggedUser));

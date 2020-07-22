@@ -11,6 +11,7 @@
                 android:orientation="vertical">
             <TextView
                     android:text="Business"
+                    android:id="@+id/bsnsName"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -52,20 +53,62 @@
                     android:textStyle="bold"
                     android:paddingLeft="5dp"
                     android:textSize="20sp"/>
+            <TextView
+                    android:text="Score"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:id="@+id/scorePView"
+                    android:layout_height="27dp"
+                    android:textColor="#3E4465"
+                    android:background="#BEA8A7"
+                    android:textStyle="bold"
+                    android:paddingLeft="5dp"
+                    android:textSize="20sp"/>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:weightSum="100"
                     android:background="#BEA8A7">
                 <Button
                         android:text="Followers: 500"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="center"
+                        android:layout_width="0dp" 
+                        android:layout_weight="33"
                         android:layout_height="30dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
                         android:background="@drawable/ButtonStyle"
                         android:textColor="#405863"
                         android:textStyle="bold"
                         android:id="@+id/btnPBFollowers"/>
+                <Button
+                        android:text="Follow"
+                        android:layout_width="0dp"
+                        android:layout_weight="33"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:id="@+id/btnPBFollow"/>
+                <Button
+                        android:text="Rate"
+                        android:layout_width="0dp"
+                        android:layout_weight="33"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/ButtonStyle"
+                        android:textColor="#405863"
+                        android:textStyle="bold"
+                        android:id="@+id/btnPBRate"/>
             </LinearLayout>
             <TextView
                     android:text="Menu"
@@ -104,7 +147,7 @@
                 android:textColor="#405863"
                 android:textStyle="bold"
                 android:layout_weight="33"
-                android:id="@+id/btnDate" 
+                android:id="@+id/btnBDate" 
                 android:gravity="center"/>
         <Button
                 android:text="Score"
@@ -117,7 +160,7 @@
                 android:textColor="#405863"
                 android:textStyle="bold"
                 android:layout_weight="33"
-                android:id="@+id/btnScore" 
+                android:id="@+id/btnBScore" 
                 android:gravity="center"/>
         <Button
                 android:text="Difficulty"
@@ -130,11 +173,11 @@
                 android:textColor="#405863"
                 android:textStyle="bold"
                 android:layout_weight="33"
-                android:id="@+id/btnDiff" 
+                android:id="@+id/btnBDiff" 
                 android:gravity="center"/>
     </LinearLayout>
     <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/myMenuListView"/>
+            android:id="@+id/menuListView"/>
 </LinearLayout>

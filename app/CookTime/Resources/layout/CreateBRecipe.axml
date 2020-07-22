@@ -41,6 +41,13 @@
                     android:hint="Duration (in minutes)"
                     android:ems="10"
                     android:id="@+id/editText3"/>
+            <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:hint="Price (in dollars)"
+                    android:ems="10"
+                    android:id="@+id/editText8"/>
             <TextView
                     android:text="Difficulty"
                     android:layout_width="match_parent"
@@ -298,6 +305,30 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="5dp"/>
             </LinearLayout>
+            <TextView
+                    android:text="Visibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#A1E2C8"
+                    android:background="#3E4465"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="20sp"/>
+            <RadioGroup
+                    android:id="@+id/radioGroupVis"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <RadioButton
+                        android:text="Public"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" 
+                        android:id="@+id/radioButton18"/>
+                <RadioButton
+                        android:text="Private"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" 
+                        android:id="@+id/radioButton19"/>
+            </RadioGroup>
             <Button
                     android:text="Post recipe"
                     android:layout_width="100dp"
