@@ -57,7 +57,7 @@ namespace CookTime.DialogFragments
                  value = "-1";
              }
              else {
-                 RadioButton radioButton = View.FindViewById<RadioButton>(_checkedItemId);
+                 var radioButton = View.FindViewById<RadioButton>(_checkedItemId);
                  using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
                  string url;
 

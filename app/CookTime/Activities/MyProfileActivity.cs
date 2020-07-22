@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using Android.App;
 using Android.Content;
@@ -109,7 +108,7 @@ namespace CookTime.Activities {
                 webClient2.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var request = webClient2.DownloadString(url2);
                 
-                Intent intent = new Intent(this, typeof(NewsfeedActivity));
+                var intent = new Intent(this, typeof(NewsfeedActivity));
                 intent.PutExtra("User", request);
                 
                 StartActivity(intent);
@@ -130,7 +129,7 @@ namespace CookTime.Activities {
             
             _btnFollowers.Click += (sender, args) =>
             {
-                Intent intent = new Intent(this, typeof(FollowActivity));
+                var intent = new Intent(this, typeof(FollowActivity));
                 intent.PutExtra("Title", "Followers");
                 intent.PutExtra("LoggedId", _loggedUser.email);
                 intent.PutStringArrayListExtra("FollowList", _loggedUser.followerEmails);
@@ -141,7 +140,7 @@ namespace CookTime.Activities {
             
             _btnFollowing.Click += (sender, args) =>
             {
-                Intent intent = new Intent(this, typeof(FollowActivity));
+                var intent = new Intent(this, typeof(FollowActivity));
                 intent.PutExtra("Title", "Following");
                 intent.PutExtra("LoggedId", _loggedUser.email);
                 intent.PutStringArrayListExtra("FollowList", _loggedUser.followingEmails);
@@ -152,7 +151,7 @@ namespace CookTime.Activities {
             
             _btnNotif.Click += (sender, args) =>
             {
-                Intent intent = new Intent(this, typeof(NotifActivity));
+                var intent = new Intent(this, typeof(NotifActivity));
                 intent.PutStringArrayListExtra("NotifList", _loggedUser.notifications);
                 intent.PutExtra("LoggedId", _loggedUser.email);
 
@@ -180,7 +179,7 @@ namespace CookTime.Activities {
             
             _btnRecipe.Click += (sender, args) =>
             {
-                Intent intent = new Intent(this, typeof(CreateRActivity));
+                var intent = new Intent(this, typeof(CreateRActivity));
                 intent.PutExtra("LoggedId", _loggedUser.email);
 
                 StartActivity(intent);
@@ -190,7 +189,7 @@ namespace CookTime.Activities {
             _btnChef.Click += (sender, args) =>
             {
                 if (_loggedUser.chef) {
-                    Toast toast = Toast.MakeText(this, "You're already a chef", ToastLength.Short);
+                    var toast = Toast.MakeText(this, "You're already a chef", ToastLength.Short);
                     toast.Show();
                 }
                 else {
@@ -207,7 +206,7 @@ namespace CookTime.Activities {
             _btnBusiness.Click += (sender, args) =>
             {
                 if (_loggedUser.business == 0) {
-                    Intent intent = new Intent(this, typeof(CreateBActivity));
+                    var intent = new Intent(this, typeof(CreateBActivity));
                     intent.PutExtra("LoggedId", _loggedUser.email);
 
                     StartActivity(intent);
@@ -219,7 +218,7 @@ namespace CookTime.Activities {
                     webClient3.Headers[HttpRequestHeader.ContentType] = "application/json";
                     var bsnsJson = webClient3.DownloadString(url3);
                     
-                    Intent intent = new Intent(this, typeof(MyBusiness));
+                    var intent = new Intent(this, typeof(MyBusiness));
                     intent.PutExtra("Bsns", bsnsJson);
                     intent.PutExtra("LoggedId", _loggedUser.email);
                     StartActivity(intent);
@@ -252,20 +251,14 @@ namespace CookTime.Activities {
         /// <param name="sender"> Reference to the object that raised the event </param>
         /// <param name="e"> Contains the event data </param>
         private void PassResult(object sender, SendPassEvent e) {
-            string toastText;
-            if (e.Message == "3") {
-                toastText = "Please fill in all of the information";
-            }
-            else if (e.Message == "2") {
-                toastText = "The new passwords do not match";
-            }
-            else if (e.Message == "0") {
-                toastText = "Wrong current password";
-            }
-            else {
-                toastText = "Password changed successfully";
-            }
-        
+            var toastText = e.Message switch
+            {
+                "3" => "Please fill in all of the information",
+                "2" => "The new passwords do not match",
+                "0" => "Wrong current password",
+                _ => "Password changed successfully"
+            };
+
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();
         }
@@ -284,7 +277,7 @@ namespace CookTime.Activities {
             
             var response = e.Message;
             if (response == 0) {
-                Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
+                var recipeIntent = new Intent(this, typeof(RecipeActivity));
                 recipeIntent.PutExtra("Recipe", request);
                 recipeIntent.PutExtra("LoggedId", _loggedUser.email);
                 StartActivity(recipeIntent);
@@ -300,7 +293,7 @@ namespace CookTime.Activities {
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var json = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                var intent = new Intent(this, typeof(MyProfileActivity));
                 intent.PutExtra("User", json);
                 intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
                 StartActivity(intent);
@@ -342,7 +335,7 @@ namespace CookTime.Activities {
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var message = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(MyProfileActivity));
+                var intent = new Intent(this, typeof(MyProfileActivity));
                 intent.PutExtra("User", message);
                 intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
                 StartActivity(intent);

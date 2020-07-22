@@ -98,16 +98,16 @@ namespace CookTime.Activities {
             scoreTimes.Text = "Number of Ratings: " + _recipe.scoreTimes;
             commentsText.Text = _recipe.comments.Count == 0 ? "Comments: none" : "Comments:";
             
-            IngredientAdapter adapter1 = new IngredientAdapter(this, _recipe.ingredientsList);
+            var adapter1 = new IngredientAdapter(this, _recipe.ingredientsList);
             ingredientListView.Adapter = adapter1;
             
-            CompAdapter adapter2 = new CompAdapter(this, _recipe.instructions);
+            var adapter2 = new CompAdapter(this, _recipe.instructions);
             instructionsListView.Adapter = adapter2;
             
-            CompAdapter adapter3 = new CompAdapter(this, _recipe.dishTags);
+            var adapter3 = new CompAdapter(this, _recipe.dishTags);
             dishTagsListView.Adapter = adapter3;
             
-            CommentAdapter adapter4 = new CommentAdapter(this, _recipe.comments);
+            var adapter4 = new CommentAdapter(this, _recipe.comments);
             commentsListView.Adapter = adapter4;
 
             shareButton.Click += (sender, args) =>
@@ -129,13 +129,13 @@ namespace CookTime.Activities {
                     webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                     var userJson = webClient.DownloadString(url);
                     
-                    Intent intent = new Intent(this, typeof(MyProfileActivity));
+                    var intent = new Intent(this, typeof(MyProfileActivity));
                     intent.PutExtra("User", userJson);
                     intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
                     StartActivity(intent);
                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);  
                 }
-                Toast toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                var toast = Toast.MakeText(this, toastText, ToastLength.Short);
                 toast.Show();
             };
             
@@ -245,7 +245,7 @@ namespace CookTime.Activities {
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var userJson = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(NewsfeedActivity));
+                var intent = new Intent(this, typeof(NewsfeedActivity));
                 intent.PutExtra("User", userJson);
                 intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
                 StartActivity(intent);
@@ -263,28 +263,31 @@ namespace CookTime.Activities {
         private void RateResult(object sender, SendRateEvent e) {
             string toastText;
 
-            if (e.Message == "-1") {
-                toastText = "Please choose a rating";
-            }
-
-            else if (e.Message == "1")
+            switch (e.Message)
             {
-                toastText = "You cannot rate this recipe. You either are its owner or you already rated it.";
-            }
-            else {
-                toastText = "Recipe rated! Redirecting to the newsfeed...";
+                case "-1":
+                    toastText = "Please choose a rating";
+                    break;
+                case "1":
+                    toastText = "You cannot rate this recipe. You either are its owner or you already rated it.";
+                    break;
+                default:
+                {
+                    toastText = "Recipe rated! Redirecting to the newsfeed...";
                 
-                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-                var url = "resources/getUser?id=" + _loggedId;
+                    using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                    var url = "resources/getUser?id=" + _loggedId;
                 
-                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var userJson = webClient.DownloadString(url);
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var userJson = webClient.DownloadString(url);
                 
-                Intent intent = new Intent(this, typeof(NewsfeedActivity));
-                intent.PutExtra("User", userJson);
-                intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
-                StartActivity(intent);
-                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                    var intent = new Intent(this, typeof(NewsfeedActivity));
+                    intent.PutExtra("User", userJson);
+                    intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                    break;
+                }
             }
             _toast = Toast.MakeText(this, toastText, ToastLength.Long);
             _toast.Show();

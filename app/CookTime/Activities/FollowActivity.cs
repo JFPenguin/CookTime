@@ -39,7 +39,7 @@ namespace CookTime.Activities {
             _loggedId = Intent.GetStringExtra("LoggedId");
             followList = Intent.GetStringArrayListExtra("FollowList");
             
-            FollowAdapter adapter = new FollowAdapter(this, followList);
+            var adapter = new FollowAdapter(this, followList);
             
             _followListView.Adapter = adapter;
             

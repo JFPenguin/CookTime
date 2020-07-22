@@ -63,6 +63,7 @@
         <Compile Include="Activities\MyProfileActivity.cs" />
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\NotifActivity.cs" />
+        <Compile Include="Activities\PrivateMenuActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
         <Compile Include="Activities\RecipeActivity.cs" />
         <Compile Include="Activities\SearchActivity.cs" />
@@ -125,6 +126,7 @@
         <AndroidResource Include="Resources\layout\Notif.axml" />
         <AndroidResource Include="Resources\layout\PrivateProfile.axml" />
         <AndroidResource Include="Resources\layout\PrivBusiness.axml" />
+        <AndroidResource Include="Resources\layout\PrivMenu.axml" />
         <AndroidResource Include="Resources\layout\Recipe.axml">
           <SubType>Designer</SubType>
           <Generator>MSBuild:UpdateGeneratedFiles</Generator>

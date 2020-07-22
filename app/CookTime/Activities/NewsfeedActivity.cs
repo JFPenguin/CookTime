@@ -51,7 +51,7 @@ namespace CookTime.Activities {
             var response = JsonConvert.DeserializeObject<List<string>>(request);
             _recipes = response;
 
-            RecipeAdapter recipeAdapter = new RecipeAdapter(this, _recipes);
+            var recipeAdapter = new RecipeAdapter(this, _recipes);
             _newsfeedList.Adapter = recipeAdapter;
             _newsfeedList.ItemClick += ListClick;
         }
@@ -65,7 +65,7 @@ namespace CookTime.Activities {
             var request = webClient.DownloadString(url);
             
 
-            Intent profileIntent = new Intent(this, typeof(MyProfileActivity));
+            var profileIntent = new Intent(this, typeof(MyProfileActivity));
             // passing the serialized User object as an intent extra with json string format
             profileIntent.PutExtra("User", request);
 
@@ -89,7 +89,7 @@ namespace CookTime.Activities {
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var request = webClient.DownloadString(url);
             
-            Intent recipeIntent = new Intent(this, typeof(RecipeActivity));
+            var recipeIntent = new Intent(this, typeof(RecipeActivity));
             recipeIntent.PutExtra("Recipe", request);
             recipeIntent.PutExtra("LoggedId", _loggedUser.email);
             StartActivity(recipeIntent);
@@ -98,7 +98,7 @@ namespace CookTime.Activities {
 
         private void SwapClick(object sender, EventArgs e)
         {
-            Intent intent = new Intent(this, typeof(SearchActivity));
+            var intent = new Intent(this, typeof(SearchActivity));
 
             var usJson = JsonConvert.SerializeObject(_loggedUser);
             intent.PutExtra("User", usJson);

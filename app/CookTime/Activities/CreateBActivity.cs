@@ -6,7 +6,6 @@ using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
-using CookTime.Adapters;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
@@ -161,7 +160,7 @@ namespace CookTime.Activities {
                      webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                      var userJson = webClient.DownloadString(url);  
                      
-                     Intent intent = new Intent(this, typeof(MyProfileActivity));
+                     var intent = new Intent(this, typeof(MyProfileActivity));
                      intent.PutExtra("User", userJson);
                      intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
                      StartActivity(intent);
