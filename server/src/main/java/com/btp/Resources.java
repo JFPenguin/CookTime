@@ -105,13 +105,11 @@ public class Resources {
         System.out.println("Starting");
         int i = random.nextInt(999) + 1;
         while (RecipeRepo.checkId(i)){
-            System.out.println(i);
             i = random.nextInt(999) +1;
         }
         recipe.setId(i);
         recipe.setPostTime(System.currentTimeMillis());
         RecipeRepo.addRecipe(recipe);
-        System.out.println(recipe.getAuthorEmail());
         User user = UserRepo.getUser(recipe.getAuthorEmail());
         recipe.setAuthorName(user.fullName());
         user.addRecipe(i);
@@ -124,13 +122,10 @@ public class Resources {
 
         Sorter.insertionSort(recipeList);
 
-        System.out.println(user.getRecipeList().toString());
         recipeList.print();
         SinglyNode tmp = recipeList.getHead();
         user.getRecipeList().clear();
-        System.out.println(user.getRecipeList().toString());
         while (tmp!=null){
-            System.out.println("While 1");
             Recipe recipeTmp = (Recipe) tmp.getData();
             user.addRecipe(recipeTmp.getId());
             tmp =(SinglyNode) tmp.getNext();
@@ -138,7 +133,6 @@ public class Resources {
 
         for(String data:user.getFollowerEmails()){
             String[] email = data.split(";");
-            System.out.println(data + ";" + email + ";" + email[0]);
             User follower = UserRepo.getUser(email[0]);
             follower.addNewsFeed(i);
         }
@@ -161,7 +155,6 @@ public class Resources {
         System.out.println("Starting");
         int i = random.nextInt(999) + 1;
         while (RecipeRepo.checkId(i)){
-            System.out.println(i);
             i = random.nextInt(999) +1;
         }
         recipe.setId(i);
@@ -739,12 +732,12 @@ public class Resources {
         }
 
         if (alreadyFollows) {
-            ownUser.unFollowing(followingEmail+";"+followingUser.fullName());
-            followingUser.unFollower(ownEmail+";"+ownUser.fullName());
+            ownUser.unFollowing(followingEmail+";"+followingUser.fullName()+";user");
+            followingUser.unFollower(ownEmail+";"+ownUser.fullName()+";user");
             response = "0";
         }else{
-            ownUser.addFollowing(followingEmail+";"+followingUser.fullName());
-            followingUser.addFollower(ownEmail+";"+ownUser.fullName());
+            ownUser.addFollowing(followingEmail+";"+followingUser.fullName()+";user");
+            followingUser.addFollower(ownEmail+";"+ownUser.fullName()+";user");
             followingUser.sendMessage(ownUser.fullName()+" is now following you");
             response = "1";
         }
@@ -772,12 +765,12 @@ public class Resources {
         }
 
         if (alreadyFollows) {
-            user.unFollowing(business.getId()+";"+business.getName());
-            business.unFollower(email+";"+user.fullName());
+            user.unFollowing(business.getId()+";"+business.getName()+";business");
+            business.unFollower(email+";"+user.fullName()+";user");
             response = "0";
         } else {
-            user.addFollowing(business.getId()+";"+business.getName());
-            business.addFollower(email+";"+user.fullName());
+            user.addFollowing(business.getId()+";"+business.getName()+";business");
+            business.addFollower(email+";"+user.fullName()+";user");
             response = "1";
         }
         UserRepo.updateTree();
@@ -799,17 +792,13 @@ public class Resources {
     public String editUser(@QueryParam("email") String email, @QueryParam("newPassword") String newPassword,
                            @QueryParam("password") String password) throws NoSuchAlgorithmException {
         String response;
-        System.out.println(email);
         User user = UserRepo.getUser(email);
-        System.out.println(password);
-        System.out.println(newPassword);
         if (user.getPassword().equals(hashPassword(password))) {
             user.setPassword(hashPassword(newPassword));
             response = "1";
         } else {
             response = "0";
         }
-        System.out.println(response);
         UserRepo.updateTree();
         return response;
     }
@@ -1205,7 +1194,6 @@ public class Resources {
     public static void createBusiness(Business business){
     int i = random.nextInt(999) +1001;
     while (BusinessRepo.checkId(i)){
-        System.out.println(i);
         i = random.nextInt(999) +1001;
     }
     business.setId(i);
@@ -1291,10 +1279,10 @@ public class Resources {
     }
 
     /**
-     * 
-     * @param email
-     * @param id
-     * @return
+     * Gets if an user is an employee of a business
+     * @param email String email of the user
+     * @param id int id of the business
+     * @return String "1" if the user is an employee, "0" if not
      */
     @GET
     @Path("isEmployee")
