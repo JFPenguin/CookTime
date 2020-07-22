@@ -175,6 +175,7 @@ namespace CookTime.Activities
             var transaction = SupportFragmentManager.BeginTransaction();
             var dialogChoice = new DialogBChoice();
             dialogChoice.RecipeId = recipeId;
+            dialogChoice.BtnText = "MAKE PRIVATE";
             dialogChoice.Show(transaction, "choice");
             dialogChoice.EventHandlerChoice += ChoiceAction;
         }

@@ -30,16 +30,16 @@ namespace CookTime.Activities {
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
             
-            SetContentView(Resource.Layout.PrivateProfile);
+            SetContentView(Resource.Layout.PrivMenu);
 
-            _menuListView = FindViewById<ListView>(Resource.Id.followList);
+            _menuListView = FindViewById<ListView>(Resource.Id.privMenuList);
             
             _loggedId = Intent.GetStringExtra("LoggedId");
             _bsnsId = Intent.GetIntExtra("BsnsId", 0);
             
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
-            var url = "resources/businessPublic?id=" + _bsnsId + "&filter=date";
+            var url = "resources/businessPrivate?id=" + _bsnsId + "&filter=date";
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             var send = webClient.DownloadString(url);
 
@@ -63,6 +63,7 @@ namespace CookTime.Activities {
             var transaction = SupportFragmentManager.BeginTransaction();
             var dialogChoice = new DialogBChoice();
             dialogChoice.RecipeId = recipeId;
+            dialogChoice.BtnText = "MAKE PUBLIC";
             dialogChoice.Show(transaction, "choice");
             dialogChoice.EventHandlerChoice += ChoiceAction;
         }

@@ -19,12 +19,12 @@
             android:text="Filter by:"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="30dp"
             android:textColor="#A1E2C8"
             android:background="#3E4465"
             android:gravity="center"
             android:textStyle="bold"
-            android:textSize="15sp"/>
+            android:textSize="20sp"/>
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
