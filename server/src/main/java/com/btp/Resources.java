@@ -733,11 +733,11 @@ public class Resources {
 
         if (alreadyFollows) {
             ownUser.unFollowing(followingEmail+";"+followingUser.fullName());
-            followingUser.unFollower(ownEmail+";"+ownUser.fullName());
+            followingUser.unFollower(ownEmail+";"+ownUser.fullName()+";user");
             response = "0";
         }else{
             ownUser.addFollowing(followingEmail+";"+followingUser.fullName());
-            followingUser.addFollower(ownEmail+";"+ownUser.fullName());
+            followingUser.addFollower(ownEmail+";"+ownUser.fullName()+";user");
             followingUser.sendMessage(ownUser.fullName()+" is now following you");
             response = "1";
         }
@@ -766,11 +766,11 @@ public class Resources {
 
         if (alreadyFollows) {
             user.unFollowing(business.getId()+";"+business.getName());
-            business.unFollower(email+";"+user.fullName());
+            business.unFollower(email+";"+user.fullName()+";business");
             response = "0";
         } else {
             user.addFollowing(business.getId()+";"+business.getName());
-            business.addFollower(email+";"+user.fullName());
+            business.addFollower(email+";"+user.fullName()+";business");
             response = "1";
         }
         UserRepo.updateTree();
