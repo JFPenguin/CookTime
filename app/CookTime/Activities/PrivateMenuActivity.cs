@@ -29,9 +29,9 @@ namespace CookTime.Activities {
         /// supplied if the activity is being re-initialized after previously being shut down. </param>
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
-
-            SetContentView(Resource.Layout.Follow);
             
+            SetContentView(Resource.Layout.PrivateProfile);
+
             _menuListView = FindViewById<ListView>(Resource.Id.followList);
             
             _loggedId = Intent.GetStringExtra("LoggedId");
