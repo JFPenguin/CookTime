@@ -344,6 +344,15 @@ public class Resources {
             user.addRecipe(recipeTmp.getId());
             tmp =(SinglyNode) tmp.getNext();
         }
+
+        for(String data:user.getFollowerEmails()){
+            String[] temp = data.split(";");
+            User follower = UserRepo.getUser(temp[0]);
+            if (!follower.getNewsFeed().contains(id)){
+                follower.addNewsFeed(id);
+            }
+        }
+
         UserRepo.updateTree();
 
         return "1";
