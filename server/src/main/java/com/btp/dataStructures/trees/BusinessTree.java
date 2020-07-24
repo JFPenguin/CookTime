@@ -500,8 +500,8 @@ public class BusinessTree {
                     if (Float.valueOf(recipeString[3]) < business.getRating()){
                         int i = businessList.indexOf(businessData);
                         String tmp = businessList.get(i);
-                        int j = businessList.indexOf(business.getId()+";"+business.getName()+";recipe;"+business.getRating());
-                        businessList.set(i, business.getId()+";"+business.getName()+";recipe;"+business.getRating());
+                        int j = businessList.indexOf(business.getId()+";"+business.getName()+";business;"+business.getRating());
+                        businessList.set(i, business.getId()+";"+business.getName()+";business;"+business.getRating());
                         businessList.set(j, tmp);
                     }
                 }
