@@ -84,8 +84,12 @@ namespace CookTime.Activities {
 
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
-            
-            
+
+            if (_loggedUser.photo)
+            {
+                
+            }
+
             if (_loggedUser.chef) {
                 _chefView.Text = "Chef: yes";
                 _scoreText.Text = "Score : " + _loggedUser.chefScore;
@@ -234,6 +238,12 @@ namespace CookTime.Activities {
                     StartActivity(intent);
                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
                 }
+            };
+            _pfp.Click += (sender, args) =>
+            {
+                var transaction = SupportFragmentManager.BeginTransaction();
+                var dialogPicture = new DialogPicture();
+                
             };
         }
         

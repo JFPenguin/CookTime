@@ -18,7 +18,7 @@ namespace CookTime.Activities {
         private string request; //later modified to be the resulting recommendation list prior to deserialization.
         private string _filter;
         private RecomAdapter _recomAdapter;
-        private bool _searched = false;
+        private bool _searched;
         private Toast _refToast;
         
         // axml objects

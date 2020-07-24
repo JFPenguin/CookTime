@@ -81,6 +81,7 @@
         <Compile Include="DialogFragments\DialogChef.cs" />
         <Compile Include="DialogFragments\DialogChoice.cs" />
         <Compile Include="DialogFragments\DialogComment.cs" />
+        <Compile Include="DialogFragments\DialogPicture.cs" />
         <Compile Include="DialogFragments\DialogRate.cs" />
         <Compile Include="DialogFragments\DialogSettings.cs" />
         <Compile Include="DialogFragments\DialogSignIn.cs" />
@@ -114,6 +115,10 @@
         <AndroidResource Include="Resources\layout\DialogChoice.axml" />
         <AndroidResource Include="Resources\layout\DialogComment.axml" />
         <AndroidResource Include="Resources\layout\DialogFilter.axml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+        </AndroidResource>
+        <AndroidResource Include="Resources\layout\DialogPicture.axml">
           <SubType>Designer</SubType>
           <Generator>MSBuild:UpdateGeneratedFiles</Generator>
         </AndroidResource>
