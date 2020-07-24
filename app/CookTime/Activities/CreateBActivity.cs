@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -32,6 +33,7 @@ namespace CookTime.Activities {
         private CheckBox checkbox7;
         private Button sendBsns;
         private bool daysChecked;
+        private bool _locationObtained;
         private string toastText;
         private Toast _toast;
         
@@ -51,7 +53,7 @@ namespace CookTime.Activities {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState); // essentials uses runtime permissions, so it needs to be initialized.
             SetContentView(Resource.Layout.CreateBusiness);
-            
+            GetLocation();
             _loggedId = Intent.GetStringExtra("LoggedId");
 
             bsnsName = FindViewById<EditText>(Resource.Id.editText);
@@ -82,7 +84,7 @@ namespace CookTime.Activities {
                  }
             
                  if (bsnsName.Text.Equals("") || bsnsContact.Text.Equals("") || bsnsFrom.Text.Equals("") || 
-                     bsnsTo.Text.Equals("") || !daysChecked || !isHours(bsnsFrom.Text, bsnsTo.Text))  
+                     bsnsTo.Text.Equals("") || !daysChecked || !isHours(bsnsFrom.Text, bsnsTo.Text) || !_locationObtained)  
                  {
                      toastText = "Please fill in correctly all of the required information";
                  }
@@ -154,7 +156,6 @@ namespace CookTime.Activities {
                              days += "-" + checkbox7.Text;
                          }
                      }
-
                      var employeeList = new List<string>();
                      employeeList.Add(_loggedId);
                      
@@ -211,6 +212,45 @@ namespace CookTime.Activities {
                 Console.WriteLine(e);
             }
             return isHours;
+        }
+
+        private async Task GetLocation() {
+            try
+            {
+                var location = await Geolocation.GetLastKnownLocationAsync();
+                var request = new GeolocationRequest(GeolocationAccuracy.High);
+                location = await Geolocation.GetLocationAsync(request);
+                if (location != null)
+                {
+                    _userLocation = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}";
+                    _locationObtained = true;
+                    _location.Text = _userLocation;
+                }
+            }
+            catch (FeatureNotSupportedException fnsEx)
+            {
+                _userLocation = "No given location";
+            }
+            catch (FeatureNotEnabledException fneEx)
+            {
+                toastText = "you must enable location features to access the location values.";
+                _toast = Toast.MakeText(this, toastText, ToastLength.Long);
+                Finish();
+            }
+            catch (PermissionException pEx)
+            {
+                toastText = "You must allow the service to access location in order to create a business.";
+                _toast = Toast.MakeText(this, toastText, ToastLength.Long);
+                _toast.Show();
+                Finish();
+            }
+            catch (Exception ex)
+            {
+                toastText = "Could not get location. Try creating a business later.";
+                _toast = Toast.MakeText(this, toastText, ToastLength.Long);
+                _toast.Show();
+                Finish();
+            }
         }
     }
 }

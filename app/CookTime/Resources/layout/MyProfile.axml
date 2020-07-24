@@ -34,6 +34,7 @@
             <ImageButton
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:background="#3E4465"
                     android:maxWidth="100dp"
                     android:maxHeight="100dp"
                     android:layout_gravity="center"

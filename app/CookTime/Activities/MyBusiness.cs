@@ -25,6 +25,8 @@ namespace CookTime.Activities
         private TextView _bsnsHoursTV;
         private TextView _bsnsContactTV;
         private TextView scoreView;
+        private TextView _location;
+        private ImageButton _logo;
         private Button _btnMyProfile;
         private Button _btnFollowers;
         private Button _btnSettings;
@@ -65,6 +67,8 @@ namespace CookTime.Activities
             _bsnsHoursTV = FindViewById<TextView>(Resource.Id.businessHoursView);
             _bsnsContactTV = FindViewById<TextView>(Resource.Id.contactView);
             scoreView = FindViewById<TextView>(Resource.Id.scoreView);
+            _location = FindViewById<TextView>(Resource.Id.locationView);
+            _logo = FindViewById<ImageButton>(Resource.Id.businessLogo);
             _btnMyProfile = FindViewById<Button>(Resource.Id.btnMyProfile);
             _btnFollowers = FindViewById<Button>(Resource.Id.btnBFollowers);
             _btnSettings = FindViewById<Button>(Resource.Id.btnBSettings);
@@ -80,6 +84,7 @@ namespace CookTime.Activities
             _bsnsContactTV.Text = "Contact: " + bsns.contact;
             _btnFollowers.Text = "Followers: " + bsns.followers.Count;
             scoreView.Text = "Score: " + bsns.rating;
+            _location.Text = "Location: " + bsns.location;
             
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 

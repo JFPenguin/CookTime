@@ -48,6 +48,7 @@
                     android:maxWidth="100dp"
                     android:maxHeight="100dp"
                     android:layout_gravity="center"
+                    android:background="#3E4465"
                     android:src="@drawable/default_logo"
                     android:id="@+id/businessLogo"/>
             <TextView
@@ -66,6 +67,17 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_width="match_parent"
                     android:id="@+id/contactView"
+                    android:layout_height="wrap_content"
+                    android:textColor="#3E4465"
+                    android:background="#BEA8A7"
+                    android:textStyle="bold"
+                    android:paddingLeft="5dp"
+                    android:textSize="20sp"/>
+            <TextView
+                    android:text="Location"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:id="@+id/locationView"
                     android:layout_height="wrap_content"
                     android:textColor="#3E4465"
                     android:background="#BEA8A7"

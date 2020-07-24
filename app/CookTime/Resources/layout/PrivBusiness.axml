@@ -62,6 +62,17 @@
                     android:paddingLeft="5dp"
                     android:textSize="20sp"/>
             <TextView
+                    android:text="Location"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="match_parent"
+                    android:id="@+id/locationView"
+                    android:layout_height="wrap_content"
+                    android:textColor="#3E4465"
+                    android:background="#BEA8A7"
+                    android:textStyle="bold"
+                    android:paddingLeft="5dp"
+                    android:textSize="20sp"/>
+            <TextView
                     android:text="Score"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_width="match_parent"

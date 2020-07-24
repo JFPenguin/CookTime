@@ -16,7 +16,7 @@ namespace CookTime.Activities {
         private Button _signUpButton;
         private Button _signInButton;
         private Toast _toast;
-        public const string Ipv4 = "192.168.1.8";
+        public const string Ipv4 = "192.168.100.49";
         
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {

@@ -25,6 +25,7 @@
                     android:maxHeight="100dp"
                     android:layout_gravity="center"
                     android:id="@+id/profilePic"
+                    android:background="#3E4465"
                     android:layout_marginVertical="2dp"
                     android:src="@drawable/default_pfp"/>
             <TextView
