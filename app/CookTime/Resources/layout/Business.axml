@@ -42,7 +42,14 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="25sp"/>
-            
+            <ImageButton 
+                    android:layout_width="100dp" 
+                    android:layout_height="100dp"
+                    android:maxWidth="100dp"
+                    android:maxHeight="100dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/default_logo"
+                    android:id="@+id/businessLogo"/>
             <TextView
                     android:text="Business hours"
                     android:textAppearance="?android:attr/textAppearanceMedium"

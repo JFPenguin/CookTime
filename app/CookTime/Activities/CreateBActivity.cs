@@ -7,6 +7,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using Newtonsoft.Json;
+using Xamarin.Essentials;
 
 namespace CookTime.Activities {
     /// <summary>
@@ -16,10 +17,12 @@ namespace CookTime.Activities {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
     public class CreateBActivity : AppCompatActivity {
         private string _loggedId;
+        private string _userLocation = "none";
         private EditText bsnsName;
         private EditText bsnsContact;
         private EditText bsnsTo;
         private EditText bsnsFrom;
+        private TextView _location;
         private CheckBox checkbox1;
         private CheckBox checkbox2;
         private CheckBox checkbox3;
@@ -32,6 +35,12 @@ namespace CookTime.Activities {
         private string toastText;
         private Toast _toast;
         
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
         /// <summary>
         /// This method is called when the activity is starting.
         /// The list of followers/following is displayed here.
@@ -40,7 +49,7 @@ namespace CookTime.Activities {
         /// supplied if the activity is being re-initialized after previously being shut down. </param>
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
-
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState); // essentials uses runtime permissions, so it needs to be initialized.
             SetContentView(Resource.Layout.CreateBusiness);
             
             _loggedId = Intent.GetStringExtra("LoggedId");
@@ -49,6 +58,7 @@ namespace CookTime.Activities {
             bsnsContact = FindViewById<EditText>(Resource.Id.editText2);
             bsnsFrom = FindViewById<EditText>(Resource.Id.editText3);
             bsnsTo = FindViewById<EditText>(Resource.Id.editText4);
+            _location = FindViewById<TextView>(Resource.Id.locationText);
             checkbox1 = FindViewById<CheckBox>(Resource.Id.checkBox);
             checkbox2 = FindViewById<CheckBox>(Resource.Id.checkBox2);
             checkbox3 = FindViewById<CheckBox>(Resource.Id.checkBox3);
@@ -57,7 +67,8 @@ namespace CookTime.Activities {
             checkbox6 = FindViewById<CheckBox>(Resource.Id.checkBox6);
             checkbox7 = FindViewById<CheckBox>(Resource.Id.checkBox7);
             sendBsns = FindViewById<Button>(Resource.Id.btnPost);
-
+            
+            
             
              sendBsns.Click += (sender, args) =>
              {
@@ -148,7 +159,7 @@ namespace CookTime.Activities {
                      employeeList.Add(_loggedId);
                      
                      var bsnsHoursStr = days + " " + hours;
-                     var bsns = new Business(name, contact, bsnsHoursStr, employeeList);
+                     var bsns = new Business(name, contact, bsnsHoursStr, _userLocation, employeeList);
                      var bsnsJson = JsonConvert.SerializeObject(bsns);
 
                      using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};

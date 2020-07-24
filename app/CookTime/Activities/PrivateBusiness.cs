@@ -26,6 +26,7 @@ namespace CookTime.Activities
         private TextView _bsnsHoursTV;
         private TextView _bsnsContactTV;
         private TextView scoreView;
+        private ImageButton _pfp;
         private Button _btnFollowers;
         private Button _btnFollow;
         private Button _btnRate;
@@ -37,6 +38,13 @@ namespace CookTime.Activities
         private IList<string> _menuList;
         private RecipeAdapter _adapter;
 
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        
         /// <summary>
         /// This method is called when the activity is starting.
         /// It contains the logic for the buttons shown in this activity.
@@ -59,6 +67,9 @@ namespace CookTime.Activities
             scoreView = FindViewById<TextView>(Resource.Id.scorePView);
             _btnFollowers = FindViewById<Button>(Resource.Id.btnPBFollowers);
             _btnFollow = FindViewById<Button>(Resource.Id.btnPBFollow);
+            
+            _pfp = FindViewById<ImageButton>(Resource.Id.profilePic);
+            
             _btnRate = FindViewById<Button>(Resource.Id.btnPBRate);
             _btnDate = FindViewById<Button>(Resource.Id.btnBDate);
             _btnScore = FindViewById<Button>(Resource.Id.btnBScore);

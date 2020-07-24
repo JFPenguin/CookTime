@@ -6,7 +6,6 @@ using Android.Support.V7.App;
 using Android.Widget;
 using CookTime.DialogFragments;
 using Newtonsoft.Json;
-using Xamarin.Essentials;
 namespace CookTime.Activities {
     /// <summary>
     /// This class represents the first view seen when the app is opened.
@@ -19,6 +18,12 @@ namespace CookTime.Activities {
         private Toast _toast;
         public const string Ipv4 = "192.168.1.8";
         
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
         /// <summary>
         /// This method is called when the activity is starting.
         /// It contains the logic for the buttons shown in the first view.
@@ -134,13 +139,6 @@ namespace CookTime.Activities {
             }
             _toast = Toast.MakeText(this, toastText, ToastLength.Short);
             _toast.Show();
-        }
-        
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
-        {
-            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
-
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 }

@@ -22,6 +22,12 @@ namespace CookTime.Activities {
         private ListView _newsfeedList;
         private List<string> _recipes;
 
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
         /// <summary>
         /// This method is called when the activity is starting.
         /// It contains the logic for the buttons shown in the first view.
