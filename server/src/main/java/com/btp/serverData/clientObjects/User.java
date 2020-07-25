@@ -25,7 +25,7 @@ public class User implements Comparable<User> {
     private ArrayList<String> notifications = new ArrayList<>();
 
 
-    public String getUserPhotos() {
+    public String getPhoto() {
         return photo;
     }
 

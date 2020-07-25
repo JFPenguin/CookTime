@@ -1175,10 +1175,9 @@ public class Resources {
     @Consumes({MediaType.APPLICATION_JSON})
     public static void addRecipePicture(@QueryParam("id") int id, String photo) {
         System.out.println(photo);
-        String location = System.getProperty("project.folder") + "/dataBase/photos";
+        String location = System.getProperty("project.folder") + "/dataBase/photos/";
         try {
-            byte[] name = Base64.getEncoder().encode(photo.getBytes());
-            byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
+            byte[] decodedString = Base64.getDecoder().decode(photo.getBytes(StandardCharsets.UTF_8));
             RecipeRepo.getRecipe(id).setPhoto(saveToDisk(decodedString,String.valueOf(id),location));
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -1197,10 +1196,10 @@ public class Resources {
     @Consumes(MediaType.APPLICATION_JSON)
     public static void addUserPicture(@QueryParam("id") String id, String photo) {
         System.out.println(photo);
-        String location = System.getProperty("project.folder") + "/dataBase/photos";
+        String location = System.getProperty("project.folder") + "/dataBase/photos/";
         try {
-            byte[] name = Base64.getEncoder().encode(photo.getBytes());
-            byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
+            //byte[] name = Base64.getEncoder().encode(photo.getBytes());
+            byte[] decodedString = Base64.getDecoder().decode(photo.getBytes(StandardCharsets.UTF_8));
             UserRepo.getUser(id).setPhoto(saveToDisk(decodedString,String.valueOf(id),location));
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -1220,10 +1219,9 @@ public class Resources {
     @Consumes(MediaType.APPLICATION_JSON)
     public static void addBusinessPicture(@QueryParam("id") int id, String photo) {
         System.out.println(photo);
-        String location = System.getProperty("project.folder") + "/dataBase/photos";
+        String location = System.getProperty("project.folder") + "/dataBase/photos/";
         try {
-            byte[] name = Base64.getEncoder().encode(photo.getBytes());
-            byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
+            byte[] decodedString = Base64.getDecoder().decode(photo.getBytes(StandardCharsets.UTF_8));
             BusinessRepo.getBusiness(id).setPhoto(saveToDisk(decodedString,String.valueOf(id),location));
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -1242,6 +1240,7 @@ public class Resources {
      * @throws IOException
      */
     private static String saveToDisk(byte[] image, String id, String location) throws IOException {
+
         ByteArrayInputStream bis = new ByteArrayInputStream(image);
         BufferedImage bImage = ImageIO.read(bis);
         ImageIO.write(bImage, "png", new File(location+id+"-picture.png") );
