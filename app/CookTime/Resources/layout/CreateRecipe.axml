@@ -298,6 +298,19 @@
                         android:textStyle="bold"
                         android:layout_marginBottom="5dp"/>
             </LinearLayout>
+            
+            <Button
+                    android:text="Add image"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnImage"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ButtonStyle"
+                    android:textColor="#405863"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"/>
             <Button
                     android:text="Post recipe"
                     android:layout_width="100dp"

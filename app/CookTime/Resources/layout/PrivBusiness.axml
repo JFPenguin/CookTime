@@ -35,6 +35,8 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:id="@+id/businessLogo"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:src="@drawable/default_logo"
                     android:maxHeight="100dp"
                     android:maxWidth="100dp"/>
