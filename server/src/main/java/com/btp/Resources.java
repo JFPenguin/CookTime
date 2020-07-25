@@ -1151,16 +1151,16 @@ public class Resources {
 
     /**
      * Shows a picture to the client
-     * @param pictureName String the identifier of the user/recipe
+     * @param id String the identifier of the user/recipe
      * @return Response the image object
      */
     @GET
     @Path("getPicture")
     @Produces("image/png")
-    public Response getPicture(@QueryParam("name") String pictureName) {
-        File file = new File(System.getProperty("project.folder")+"/dataBase/photos/"+pictureName);
+    public Response getPicture(@QueryParam("id") String id) {
+        File file = new File(System.getProperty("project.folder") + "/dataBase/photos/" + id + ".png");
         Response.ResponseBuilder response = Response.ok(file);
-        response.header("Photo", "attachment:filename=DisplayName-"+pictureName);
+        response.header("Photo", "attachment:filename=DisplayName-" + id + ".png");
         return response.build();
     }
 
