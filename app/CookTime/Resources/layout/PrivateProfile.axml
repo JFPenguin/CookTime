@@ -24,6 +24,8 @@
                     android:maxWidth="100dp"
                     android:maxHeight="100dp"
                     android:layout_gravity="center"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:id="@+id/profilePic"
                     android:background="#3E4465"
                     android:layout_marginVertical="2dp"

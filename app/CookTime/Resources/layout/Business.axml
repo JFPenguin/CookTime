@@ -47,6 +47,8 @@
                     android:layout_height="100dp"
                     android:maxWidth="100dp"
                     android:maxHeight="100dp"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
                     android:layout_gravity="center"
                     android:background="#3E4465"
                     android:src="@drawable/default_logo"

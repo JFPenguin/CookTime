@@ -13,7 +13,7 @@ namespace CookTime.DialogFragments
     public class DialogPicture : DialogFragment {
         private Button _btnView;
         private Button _btnChange;
-        private Byte[] _byteArray;
+        private string _photo;
         public event EventHandler<PicEvent> EventHandlerChoice;
 
         /// <summary>
@@ -34,14 +34,14 @@ namespace CookTime.DialogFragments
             _btnView.Click += (sender, args) =>
             {
                 if (EventHandlerChoice != null)
-                    EventHandlerChoice.Invoke(this, new PicEvent(0, _byteArray));
+                    EventHandlerChoice.Invoke(this, new PicEvent(0, _photo));
                 Dismiss();
             };
 
             _btnChange.Click += (sender, args) =>
             {
                 if (EventHandlerChoice != null)
-                    EventHandlerChoice.Invoke(this, new PicEvent(1, _byteArray));
+                    EventHandlerChoice.Invoke(this, new PicEvent(1, _photo));
                 Dismiss();
             };
 
@@ -61,8 +61,8 @@ namespace CookTime.DialogFragments
         /// <summary>
         /// Property for the _recipeId attribute
         /// </summary>
-        public Byte[] ByteArray {
-            set => _byteArray = value;
+        public string Photo {
+            set => _photo = value;
         }
     }
 
@@ -77,11 +77,11 @@ namespace CookTime.DialogFragments
         /// Constructor for the ChoiceEvent class
         /// </summary>
         /// <param name="message"> String that will indicate the action taken by the user  </param>
-        /// <param name="byteArray"> The byte array that will be set to the image</param>
-        public PicEvent(int message, Byte[] byteArray)
+        /// <param name="photo"> The string to use as a getImage through the API</param>
+        public PicEvent(int message, string photo)
         {
             Message = message;
-            ByteArray = byteArray;
+            Photo = photo;
         }
 
         /// <summary>
@@ -92,6 +92,6 @@ namespace CookTime.DialogFragments
         /// <summary>
         /// Property for the recipeId attribute
         /// </summary>
-        public Byte[] ByteArray { get; }
+        public string Photo { get; }
     }
 }

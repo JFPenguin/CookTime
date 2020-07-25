@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
+using Android.Provider;
 using Android.Support.V7.App;
 using Android.Widget;
 using Newtonsoft.Json;
@@ -15,6 +19,7 @@ namespace CookTime.Activities {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
     public class CreateRActivity : AppCompatActivity {
         private string _loggedId;
+        private string _picture64;
         private EditText recipeNameEditText;
         private EditText recipePortionsEditText;
         private EditText recipeDurationEditText;
@@ -33,8 +38,10 @@ namespace CookTime.Activities {
         private CheckBox checkBox6;
         private Button btnIngredient;
         private Button btnInstruction;
+        private Button btnImage;
         private Button btnPost;
         private bool tagsChecked;
+        private bool imageSelected;
         private Toast _toast;
         private string toastText;
         private List<string> ingredients = new List<string>();
@@ -78,6 +85,7 @@ namespace CookTime.Activities {
             checkBox6 = FindViewById<CheckBox>(Resource.Id.checkBox6);
             btnIngredient = FindViewById<Button>(Resource.Id.btnIngredient);
             btnInstruction = FindViewById<Button>(Resource.Id.btnInstruction);
+            btnImage = FindViewById<Button>(Resource.Id.btnImage);
             btnPost = FindViewById<Button>(Resource.Id.btnPost);
             
             btnIngredient.Click += (sender, args) =>
@@ -115,6 +123,14 @@ namespace CookTime.Activities {
                 _toast = Toast.MakeText(this, toastText, ToastLength.Short);
                 _toast.Show();
             };
+            btnImage.Click += (sender, args) =>
+            {
+                Intent gallery = new Intent();
+                gallery.SetType("image/*");
+                gallery.SetAction(Intent.ActionGetContent);
+                this.StartActivityForResult(Intent.CreateChooser(gallery, "select a photo"),0);
+            };
+            
             
             btnPost.Click += (sender, args) =>
             {
@@ -130,9 +146,12 @@ namespace CookTime.Activities {
                 if (recipeNameEditText.Text.Equals("") || recipePortionsEditText.Text.Equals("") ||
                     recipeDurationEditText.Text.Equals("") || instructions.Count == 0 || ingredients.Count == 0 ||
                     radioGroupDiff.CheckedRadioButtonId == -1 || radioGroupTime.CheckedRadioButtonId == -1 ||
-                    radioGroupType.CheckedRadioButtonId == -1 || !tagsChecked)
+                    radioGroupType.CheckedRadioButtonId == -1 || !tagsChecked || !imageSelected)
                 {
                     toastText = "Please fill in all of the required information";
+                    if (!imageSelected) {
+                        toastText = "You must select an image to continue";
+                    }
                 }
                 else
                 {
@@ -169,7 +188,7 @@ namespace CookTime.Activities {
                         tags.Add(checkBox6.Text);
                     }
                     
-                    var recipe = new Recipe(_loggedId, name, diff, tags, time, type, duration, ingredients,
+                    var recipe = new Recipe(_loggedId, name, diff, _picture64, tags, time, type, duration, ingredients,
                         instructions, portions, 0, 0);
                     var recipeJson = JsonConvert.SerializeObject(recipe);
                     
@@ -191,6 +210,18 @@ namespace CookTime.Activities {
                 _toast = Toast.MakeText(this, toastText, ToastLength.Short);
                 _toast.Show();
             };
+        }
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok) {
+                Stream picStream = ContentResolver.OpenInputStream(data.Data);
+                var bitmap = BitmapFactory.DecodeStream(picStream);
+                var byteArr = bitmap.ToArray<byte>();
+                _picture64 = Convert.ToBase64String(byteArr);
+                imageSelected = true;
+            }
         }
     }
 }
