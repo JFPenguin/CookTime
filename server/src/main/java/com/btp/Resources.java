@@ -1178,11 +1178,13 @@ public class Resources {
         try {
             byte[] name = Base64.getEncoder().encode(photo.getBytes());
             byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
-            RecipeRepo.getRecipe(id).setPhoto(saveToDisk(decodedString,String.valueOf(id),location));
+            RecipeRepo.getRecipe(id).setPhoto(photo);
+            saveToDisk(decodedString,String.valueOf(id),location);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        RecipeRepo.updateTree();
 
 
     }
@@ -1200,11 +1202,13 @@ public class Resources {
         try {
             byte[] name = Base64.getEncoder().encode(photo.getBytes());
             byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
-            UserRepo.getUser(id).setPhoto(saveToDisk(decodedString,String.valueOf(id),location));
+            UserRepo.getUser(id).setPhoto(photo);
+            saveToDisk(decodedString,String.valueOf(id),location);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        UserRepo.updateTree();
 
     }
 
@@ -1221,12 +1225,29 @@ public class Resources {
         try {
             byte[] name = Base64.getEncoder().encode(photo.getBytes());
             byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
-            BusinessRepo.getBusiness(id).setPhoto(saveToDisk(decodedString,String.valueOf(id),location));
+            BusinessRepo.getBusiness(id).setPhoto(photo);
+            saveToDisk(decodedString,String.valueOf(id),location);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        BusinessRepo.updateTree();
 
+    }
+
+    /**
+     *
+     * @param image
+     * @param id
+     * @param location
+     * @return
+     * @throws IOException
+     */
+    private static void saveToDisk(byte[] image, String id, String location) throws IOException {
+        ByteArrayInputStream bis = new ByteArrayInputStream(image);
+        BufferedImage bImage = ImageIO.read(bis);
+        ImageIO.write(bImage, "png", new File(location+id+"-picture.png") );
+        System.out.println("image created");
     }
 
     /**
@@ -1305,23 +1326,6 @@ public class Resources {
             UserRepo.updateTree();
             return "1";
         }
-    }
-
-
-    /**
-     *
-     * @param image
-     * @param id
-     * @param location
-     * @return
-     * @throws IOException
-     */
-    private static String saveToDisk(byte[] image, String id, String location) throws IOException {
-        ByteArrayInputStream bis = new ByteArrayInputStream(image);
-        BufferedImage bImage = ImageIO.read(bis);
-        ImageIO.write(bImage, "png", new File(location+id+"-picture.png") );
-        System.out.println("image created");
-        return location+id+"-picture.png";
     }
 
     /**
