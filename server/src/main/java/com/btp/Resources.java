@@ -14,15 +14,17 @@ import com.btp.utils.Notifier;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.Random;
-import java.util.concurrent.BrokenBarrierException;
 
 import static com.btp.utils.security.HashPassword.hashPassword;
 
@@ -1162,28 +1164,70 @@ public class Resources {
         return response.build();
     }
 
-//    /**
-//     *
-//     * @param id
-//     * @param uploadedInputStream
-//     * @param fileDetail
-//     */
-//    @POST
-//    @Path("addRecipePicture")
-//    @Consumes(MediaType.MULTIPART_FORM_DATA)
-//    public static void addRecipePicture(@QueryParam("id") int id, @FormDataParam("file") InputStream uploadedInputStream, @FormDataParam("file") FormDataContentDisposition fileDetail) {
-//        String location = System.getProperty("project.folder") + "/dataBase/photos/";
-//        RecipeRepo.getRecipe(id).addPhotos(saveToDisk(uploadedInputStream, fileDetail, (String.valueOf(id)), location));
-//    }
 
-//    @POST
-//    @Path("addUserPicture")
-//    @Consumes(MediaType.MULTIPART_FORM_DATA)
-//    public static void addUserPicture(@QueryParam("id") String id, InputStream uploadedInputStream, FormDataContentDisposition fileDetail) {
-//        String location = System.getProperty("project.folder") + "/dataBase/photos";
-//        UserRepo.getUser(id).addPhoto(saveToDisk(uploadedInputStream, fileDetail, id, location));
-//
-//    }
+    /**
+     *
+     * @param id
+     * @param photo
+     */
+    @POST
+    @Path("addRecipePicture")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public static void addRecipePicture(@QueryParam("id") int id, @QueryParam("photo") String photo) {
+        String location = System.getProperty("project.folder") + "/dataBase/photos";
+        try {
+            byte[] name = Base64.getEncoder().encode(photo.getBytes());
+            byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
+            RecipeRepo.getRecipe(id).setPhoto(saveToDisk(decodedString,String.valueOf(id),location));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+    }
+
+    /**
+     *
+     * @param id
+     * @param photo
+     */
+    @POST
+    @Path("addUserPicture")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public static void addUserPicture(@QueryParam("id") String id, @QueryParam("photo") String photo) {
+        String location = System.getProperty("project.folder") + "/dataBase/photos";
+        try {
+            byte[] name = Base64.getEncoder().encode(photo.getBytes());
+            byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
+            UserRepo.getUser(id).setPhoto(saveToDisk(decodedString,String.valueOf(id),location));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
+
+    /**
+     *
+     * @param id
+     * @param photo
+     */
+    @POST
+    @Path("addBusinessPicture")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public static void addBusinessPicture(@QueryParam("id") int id, @QueryParam("photo") String photo) {
+        String location = System.getProperty("project.folder") + "/dataBase/photos";
+        try {
+            byte[] name = Base64.getEncoder().encode(photo.getBytes());
+            byte[] decodedString = Base64.getDecoder().decode(new String(name).getBytes(StandardCharsets.UTF_8));
+            BusinessRepo.getBusiness(id).setPhoto(saveToDisk(decodedString,String.valueOf(id),location));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+    }
 
     /**
      * Sends a request to the server admins to be labeled as chef
@@ -1263,30 +1307,21 @@ public class Resources {
         }
     }
 
-    /**
-     * Saves a file to an specific path
-     * @param uploadedInputStream InputStream the file to be saved.
-     * @param fileDetail FormDataContentDisposition the type of file to be saved (picture, etc)
-     * @param id String the identifier of the file
-     * @param location String path to the folder
-     * @return
-     */
-    private static String saveToDisk(InputStream uploadedInputStream, FormDataContentDisposition fileDetail, String id, String location) {
-        try {
-            OutputStream out = new FileOutputStream(new File(location + id + "-" + fileDetail.getName()));
-            int read = 0;
-            byte[] bytes = new byte[1024];
 
-            out = new FileOutputStream(new File(location + id + "-" + fileDetail.getName()));
-            while ((read = uploadedInputStream.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return id + "-" + fileDetail.getName();
+    /**
+     *
+     * @param image
+     * @param id
+     * @param location
+     * @return
+     * @throws IOException
+     */
+    private static String saveToDisk(byte[] image, String id, String location) throws IOException {
+        ByteArrayInputStream bis = new ByteArrayInputStream(image);
+        BufferedImage bImage = ImageIO.read(bis);
+        ImageIO.write(bImage, "png", new File(location+id+"-picture.png") );
+        System.out.println("image created");
+        return location+id+"-picture.png";
     }
 
     /**

@@ -16,24 +16,25 @@ public class User implements Comparable<User> {
     private ArrayList<String> followingEmails = new ArrayList<>();
     private ArrayList<Integer> recipeList = new ArrayList<>();
     private int business;
-    private ArrayList<String> userPhotos = new ArrayList<>();
+    private String photo;
     private ArrayList<Integer> newsFeed = new ArrayList<>();
     private ArrayList<String> ratedBy = new ArrayList<>();
     private float chefScore = 0;
     private int chefScoreTimes = 0;
     private int age;
-
     private ArrayList<String> notifications = new ArrayList<>();
-    public ArrayList<String> getUserPhotos() {
-        return userPhotos;
+
+
+    public String getUserPhotos() {
+        return photo;
     }
 
     /**
      * This method is used to add a photo to the user's photo list
      * @param photo String name of the photo
      */
-    public void addPhoto(String photo) {
-        this.userPhotos.add(photo);
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     /**
