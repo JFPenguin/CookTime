@@ -100,6 +100,8 @@
     <ItemGroup>
         <AndroidResource Include="Resources\anim\SlideRight.xml" />
         <AndroidResource Include="Resources\anim\SlideUp.xml" />
+        <AndroidResource Include="Resources\Base64Test.txt" />
+        <AndroidResource Include="Resources\ByteTest.txt" />
         <AndroidResource Include="Resources\drawable\ButtonStyle.xml" />
         <AndroidResource Include="Resources\drawable\cooktime_icon.png" />
         <AndroidResource Include="Resources\drawable\ListRowStyle.xml" />

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Net;
 using Android.App;
 using Android.Content;
@@ -301,12 +303,56 @@ namespace CookTime.Activities {
                 //_pfp.SetImageBitmap(DecodeBitmapFromStream(data.Data, 200, 200));
                 // TODO send the image to the server with POST API method.
                 
+                MemoryStream memStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, memStream);
+                byte[] picData = memStream.ToArray();
                 
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var url = $"resource/addUserPicture?id={_loggedUser.email}";
+                Console.WriteLine("soy su finder pa");
+                Console.WriteLine(JsonConvert.SerializeObject(picData));
+                try {
+                    
+                    Console.WriteLine("byte arr len: " + picData.Length);
+                    Console.WriteLine("JSON len: " + JsonConvert.SerializeObject(picData).Length);
+                    Console.WriteLine("raw conversion: " + Convert.ToBase64String(picData).Length);
+                    webClient.UploadString(url, JsonConvert.SerializeObject(picData));
+                    Console.WriteLine("managed to post");
+                }
+                catch (Exception e) {
+                    Console.WriteLine(e);
+                    Console.WriteLine("Could not post");
+                    // post failed, reloading profile
+                    url = $"resources/getUser?id={_loggedUser.email}";
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var json = webClient.DownloadString(url);
                 
-                // using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-                // webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                // var url = $"resource/addUserPicture?id={_loggedUser.email}";
-                // webClient.UploadString(url, photo);
+                    var intent = new Intent(this, typeof(MyProfileActivity));
+                    intent.PutExtra("User", json);
+                    intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                    Finish();
+                
+                    _toast = Toast.MakeText(this, "could not post picture.", ToastLength.Short);
+                    _toast.Show();
+                }
+
+                // if POST did not fail, now we will execute a profile refresh.
+                url = $"resources/getUser?id={_loggedUser.email}";
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var json1 = webClient.DownloadString(url);
+                
+                var intent1 = new Intent(this, typeof(MyProfileActivity));
+                intent1.PutExtra("User", json1);
+                intent1.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                StartActivity(intent1);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Finish();
+                
+                _toast = Toast.MakeText(this, "Profile picture updated. Refreshing MyProfile...", ToastLength.Short);
+                _toast.Show();
             }
         }
 
