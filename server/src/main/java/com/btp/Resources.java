@@ -1173,7 +1173,8 @@ public class Resources {
     @POST
     @Path("addRecipePicture")
     @Consumes({MediaType.APPLICATION_JSON})
-    public static void addRecipePicture(@QueryParam("id") int id, @QueryParam("photo") String photo) {
+    public static void addRecipePicture(@QueryParam("id") int id, String photo) {
+        System.out.println(photo);
         String location = System.getProperty("project.folder") + "/dataBase/photos";
         try {
             byte[] name = Base64.getEncoder().encode(photo.getBytes());
@@ -1184,8 +1185,6 @@ public class Resources {
             e.printStackTrace();
         }
         RecipeRepo.updateTree();
-
-
     }
 
     /**
@@ -1196,7 +1195,8 @@ public class Resources {
     @POST
     @Path("addUserPicture")
     @Consumes(MediaType.APPLICATION_JSON)
-    public static void addUserPicture(@QueryParam("id") String id, @QueryParam("photo") String photo) {
+    public static void addUserPicture(@QueryParam("id") String id, String photo) {
+        System.out.println(photo);
         String location = System.getProperty("project.folder") + "/dataBase/photos";
         try {
             byte[] name = Base64.getEncoder().encode(photo.getBytes());
@@ -1218,7 +1218,8 @@ public class Resources {
     @POST
     @Path("addBusinessPicture")
     @Consumes(MediaType.APPLICATION_JSON)
-    public static void addBusinessPicture(@QueryParam("id") int id, @QueryParam("photo") String photo) {
+    public static void addBusinessPicture(@QueryParam("id") int id, String photo) {
+        System.out.println(photo);
         String location = System.getProperty("project.folder") + "/dataBase/photos";
         try {
             byte[] name = Base64.getEncoder().encode(photo.getBytes());
