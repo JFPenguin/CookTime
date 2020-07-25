@@ -1157,11 +1157,10 @@ public class Resources {
     @GET
     @Path("getPicture")
     @Produces("image/png")
-    public Response getPicture(@QueryParam("id") String id) {
-        File file = new File(System.getProperty("project.folder") + "/dataBase/photos/" + id + ".png");
-        Response.ResponseBuilder response = Response.ok(file);
-        response.header("Photo", "attachment:filename=DisplayName-" + id + ".png");
-        return response.build();
+    public File getPicture(@QueryParam("id") String id) {
+        //        Response.ResponseBuilder response = Response.ok(file);
+//        response.header("Photo", "attachment:filename=DisplayName-" + id + ".png");
+        return new File(System.getProperty("project.folder") + "/dataBase/photos/" + id + ".png");
     }
 
 
