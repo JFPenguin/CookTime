@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using Android.App;
@@ -12,7 +11,6 @@ using Android.Widget;
 using CookTime.Adapters;
 using CookTime.DialogFragments;
 using Newtonsoft.Json;
-using Square.Picasso;
 using Stream = System.IO.Stream;
 
 namespace CookTime.Activities {
@@ -92,8 +90,7 @@ namespace CookTime.Activities {
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
 
-            if (!string.IsNullOrEmpty(_loggedUser.photo))
-            {
+            if (!string.IsNullOrEmpty(_loggedUser.photo)) {
                 Console.WriteLine(_loggedUser.photo);
                 pictureUrl = $"http://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_loggedUser.photo}";
                 Bitmap bitmap = GetImageBitmapFromUrl(pictureUrl);
@@ -310,12 +307,7 @@ namespace CookTime.Activities {
                 Console.WriteLine(JsonConvert.SerializeObject(picData));
                 try
                 {
-                    //byte[] picha = new byte[] { 0xFF, 0xAA, 0XBB };
-                    Console.WriteLine("byte arr len: " + picData.Length);
-                    //Console.WriteLine("JSON len: " + JsonConvert.SerializeObject(picData).Length);
-                    Console.WriteLine("raw conversion: " + Convert.ToBase64String(picData).Length);
                     var base64 = Convert.ToBase64String(picData);
-                    Console.WriteLine("soy su finder pa");
                     webClient.UploadString(url, base64);
                     Console.WriteLine("managed to post");
                 }

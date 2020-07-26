@@ -187,8 +187,8 @@ namespace CookTime.Activities {
                     if (checkBox6.Checked) {
                         tags.Add(checkBox6.Text);
                     }
-                    
-                    var recipe = new Recipe(_loggedId, name, diff, _picture64, tags, time, type, duration, ingredients,
+                    //TODO modify recipe creation to include the image string representation in its parameters.
+                    var recipe = new Recipe(_loggedId, name, diff, tags, time, type, duration, ingredients,
                         instructions, portions, 0, 0);
                     var recipeJson = JsonConvert.SerializeObject(recipe);
                     
@@ -217,9 +217,12 @@ namespace CookTime.Activities {
 
             if (resultCode == Result.Ok) {
                 Stream picStream = ContentResolver.OpenInputStream(data.Data);
-                var bitmap = BitmapFactory.DecodeStream(picStream);
-                var byteArr = bitmap.ToArray<byte>();
-                _picture64 = Convert.ToBase64String(byteArr);
+                Bitmap bitmap = BitmapFactory.DecodeStream(picStream);
+
+                MemoryStream memStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, memStream);
+                byte[] picData = memStream.ToArray();
+                _picture64 = Convert.ToBase64String(picData);
                 imageSelected = true;
             }
         }

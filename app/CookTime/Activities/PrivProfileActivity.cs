@@ -2,6 +2,7 @@
 using System.Net;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Views;
@@ -20,6 +21,7 @@ namespace CookTime.Activities {
     public class PrivProfileActivity : AppCompatActivity {
         private User _user;
         private string _loggedId;
+        private string pictureUrl;
         private TextView _nameView;
         private TextView _ageView;
         private TextView _chefView;
@@ -80,6 +82,12 @@ namespace CookTime.Activities {
             _ageView.Text = "Age: " + _user.age;
 
             // TODO load the user's image when it is a private photo and only allow to view.
+
+            if (!string.IsNullOrEmpty(_user.photo)) {
+                pictureUrl = $"http://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_user.photo}";
+                Bitmap bitmap = GetImageBitmapFromUrl(pictureUrl);
+                _pfp.SetImageBitmap(bitmap);
+            }
             if (_user.chef) {
                 _chefView.Text = "Chef: yes";
                 _scoreView.Text = "Score: " + _user.chefScore;
@@ -189,7 +197,38 @@ namespace CookTime.Activities {
                     
                 dialogRate.EventHandlerRate += RateResult;
             };
+
+            _pfp.Click += (sender, args) =>
+            {
+                if (!string.IsNullOrEmpty(_user.photo)) {
+                    var transaction = SupportFragmentManager.BeginTransaction();
+                    var dialogPShow = new DialogPShow();
+
+                    dialogPShow.Url = pictureUrl;
+                    dialogPShow.TypeText = "Profile Picture";
+                    dialogPShow.Show(transaction, "privPfp");
+                }
+                else {
+                    string toastText = "user has not set a profile picture you can view.";
+                    Toast _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                    _toast.Show();
+                }
+            };
         }
+        private Bitmap GetImageBitmapFromUrl(string url)
+        {
+            Bitmap imageBitmap = null;
+
+            using (var webClient = new WebClient()){
+                var imageBytes = webClient.DownloadData(url);
+                if (imageBytes != null && imageBytes.Length > 0)
+                {
+                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                }
+            }
+            return imageBitmap;
+        }
+        
         
         /// <summary>
         /// This method handles the clicking on a list view item event

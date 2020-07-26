@@ -194,8 +194,8 @@ namespace CookTime.Activities {
                     if (checkBox6.Checked) {
                         tags.Add(checkBox6.Text);
                     }
-                    
-                    var recipe = new Recipe(_loggedId, name, diff, _picture64, tags, time, type, duration, ingredients,
+                    //TODO implement picture in the parameters below to create images when the recipe is created
+                    var recipe = new Recipe(_loggedId, name, diff, tags, time, type, duration, ingredients,
                         instructions, portions, price, _bsnsId);
                     var recipeJson = JsonConvert.SerializeObject(recipe);
                     
