@@ -26,6 +26,8 @@ namespace CookTime.Activities
         private TextView _bsnsHoursTV;
         private TextView _bsnsContactTV;
         private TextView scoreView;
+        private TextView _locationText;
+        private ImageButton _pfp;
         private Button _btnFollowers;
         private Button _btnFollow;
         private Button _btnRate;
@@ -37,6 +39,13 @@ namespace CookTime.Activities
         private IList<string> _menuList;
         private RecipeAdapter _adapter;
 
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        
         /// <summary>
         /// This method is called when the activity is starting.
         /// It contains the logic for the buttons shown in this activity.
@@ -57,8 +66,12 @@ namespace CookTime.Activities
             _bsnsHoursTV = FindViewById<TextView>(Resource.Id.businessHoursPView);
             _bsnsContactTV = FindViewById<TextView>(Resource.Id.contactPView);
             scoreView = FindViewById<TextView>(Resource.Id.scorePView);
+            _locationText = FindViewById<TextView>(Resource.Id.locationView);
             _btnFollowers = FindViewById<Button>(Resource.Id.btnPBFollowers);
             _btnFollow = FindViewById<Button>(Resource.Id.btnPBFollow);
+            
+            _pfp = FindViewById<ImageButton>(Resource.Id.profilePic);
+            
             _btnRate = FindViewById<Button>(Resource.Id.btnPBRate);
             _btnDate = FindViewById<Button>(Resource.Id.btnBDate);
             _btnScore = FindViewById<Button>(Resource.Id.btnBScore);
@@ -70,6 +83,7 @@ namespace CookTime.Activities
             _bsnsContactTV.Text = "Contact: " + bsns.contact;
             _btnFollowers.Text = "Followers: " + bsns.followers.Count;
             scoreView.Text = "Score: " + bsns.rating;
+            _locationText.Text = "Location: " + bsns.location;
 
             
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};

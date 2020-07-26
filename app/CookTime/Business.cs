@@ -27,12 +27,13 @@ namespace CookTime {
         /// <param name="contact"> the email of contact </param>
         /// <param name="businessHours"> the business hours </param>
         /// <param name="employeeList"> list of employees </param>
-        public Business(string name, string contact, string businessHours, List<string> employeeList)
+        public Business(string name, string contact, string businessHours, string location, List<string> employeeList)
         {
             this.name = name;
             this.contact = contact;
             this.businessHours = businessHours;
             this.employeeList = employeeList;
+            this.location = location;
         }
     }
 }

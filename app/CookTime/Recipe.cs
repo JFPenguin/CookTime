@@ -19,7 +19,7 @@ namespace CookTime {
         public List<string> ingredientsList;
         public List<string> instructions;
         public string name;
-        public string photos;
+        public string photo;
         public int portions;
         public string postTimeString;
         public float price;
@@ -41,9 +41,9 @@ namespace CookTime {
         /// <param name="port"> The recipe's portions </param>
         /// <param name="bsns"> Business id </param>
         /// <param name="cost"> The recipe's price </param>
+        //TODO implement the photo parameter in the constructor so images can be built from that parameter.
         public Recipe(string email, string recipeName, int diff, List<string> tags, string time, string type, int durat, 
-            List<string> ingredients, List<string> instruct, int port, float cost, int bsns)
-        {
+            List<string> ingredients, List<string> instruct, int port, float cost, int bsns) {
             authorEmail = email;
             name = recipeName;
             difficulty = diff;

@@ -2,6 +2,7 @@
 using System.Net;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
@@ -17,14 +18,15 @@ namespace CookTime.Activities {
     public class RecipeActivity : AppCompatActivity {
         private Recipe _recipe;
         private string _loggedId;
-
+        private string picUrl;
         private Toast _toast;
         
         private Button authorButton;
         private Button rateButton;
         private Button commentButton;
         private Button shareButton;
-        
+
+        private ImageView _recipePic;
         private TextView recipeNameText;
         private TextView authorText;
         private TextView dateText;
@@ -43,6 +45,13 @@ namespace CookTime.Activities {
         private ListView dishTagsListView;
         private ListView commentsListView;
 
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        
         /// <summary>
         /// This method is called when the activity is starting.
         /// All of the recipe info is shown here.
@@ -65,7 +74,8 @@ namespace CookTime.Activities {
             rateButton = FindViewById<Button>(Resource.Id.rateButton);
             commentButton = FindViewById<Button>(Resource.Id.commentButton);
             shareButton = FindViewById<Button>(Resource.Id.shareButton);
-            
+
+            _recipePic = FindViewById<ImageView>(Resource.Id.recipePicture);
             recipeNameText = FindViewById<TextView>(Resource.Id.recipeNameText);
             authorText = FindViewById<TextView>(Resource.Id.authorText);
             dateText = FindViewById<TextView>(Resource.Id.dateText);
@@ -98,7 +108,14 @@ namespace CookTime.Activities {
             scoreText.Text = "Score: " + _recipe.score;
             scoreTimes.Text = "Number of Ratings: " + _recipe.scoreTimes;
             commentsText.Text = _recipe.comments.Count == 0 ? "Comments: none" : "Comments:";
-            
+
+            if (!string.IsNullOrEmpty(_recipe.photo))
+            {
+                picUrl = $"https://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_recipe.photo}";
+                Bitmap bitmap = GetImageBitmapFromUrl(picUrl);
+                _recipePic.SetImageBitmap(bitmap);   
+            }
+
             var adapter1 = new IngredientAdapter(this, _recipe.ingredientsList);
             ingredientListView.Adapter = adapter1;
             
@@ -110,6 +127,18 @@ namespace CookTime.Activities {
             
             var adapter4 = new CommentAdapter(this, _recipe.comments);
             commentsListView.Adapter = adapter4;
+
+            _recipePic.Click += (sender, args) =>
+            {
+                if (!string.IsNullOrEmpty(_recipe.photo)) {
+                    var transaction = SupportFragmentManager.BeginTransaction();
+                    var dialogPShow = new DialogPShow();
+
+                    dialogPShow.Url = picUrl;
+                    dialogPShow.TypeText = "Recipe photo";
+                    dialogPShow.Show(transaction, "reciPic");
+                }
+            };
 
             shareButton.Click += (sender, args) =>
             {
@@ -222,6 +251,20 @@ namespace CookTime.Activities {
                     }
                 }
             };
+        }
+        
+        private Bitmap GetImageBitmapFromUrl(string url)
+        {
+            Bitmap imageBitmap = null;
+
+            using (var webClient = new WebClient()){
+                var imageBytes = webClient.DownloadData(url);
+                if (imageBytes != null && imageBytes.Length > 0)
+                {
+                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                }
+            }
+            return imageBitmap;
         }
         
         /// <summary>

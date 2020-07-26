@@ -13,6 +13,7 @@ namespace CookTime {
         public List<string> followingEmails;
         public string lastName;
         public string password;
+        public string photo;
         public List<string> notifications;
         public bool chef;
         public float chefScore;
@@ -24,6 +25,7 @@ namespace CookTime {
         /// <param name="age"> The user's age </param>
         /// <param name="email"> The user's email </param>
         /// <param name="firstName"> The user's first name </param>
+        /// <param name="photo">the user's phooto reference</param>
         /// <param name="lastName"> The user's last name </param>
         /// <param name="password"> The user's password </param>
         public User(int age, string email, string firstName, string lastName, string password) {

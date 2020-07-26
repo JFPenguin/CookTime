@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
 using CookTime.Adapters;
 using CookTime.DialogFragments;
 using Newtonsoft.Json;
+using Stream = System.IO.Stream;
 
 namespace CookTime.Activities {
     /// <summary>
@@ -18,10 +22,12 @@ namespace CookTime.Activities {
     public class MyProfileActivity : AppCompatActivity {
         private User _loggedUser;
         private string userJson;
+        private string pictureUrl;
         private TextView _nameView;
         private TextView _ageView;
         private TextView _chefView;
         private TextView _scoreText;
+        private ImageView _pfp;
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnSettings;
@@ -39,6 +45,13 @@ namespace CookTime.Activities {
         private Toast _toast;
         private RecipeAdapter _adapter;
 
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        
         /// <summary>
         /// This method is called when the activity is starting.
         /// It contains the logic for the buttons shown in this activity.
@@ -57,6 +70,8 @@ namespace CookTime.Activities {
             _ageView = FindViewById<TextView>(Resource.Id.myAgeView);
             _chefView = FindViewById<TextView>(Resource.Id.chefText);
             _scoreText = FindViewById<TextView>(Resource.Id.scoreText);
+
+            _pfp = FindViewById<ImageView>(Resource.Id.profilePic);
             
             _btnFollowers = FindViewById<Button>(Resource.Id.btnMyFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnMyFollowing);
@@ -74,8 +89,14 @@ namespace CookTime.Activities {
 
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
-            
-            
+
+            if (!string.IsNullOrEmpty(_loggedUser.photo)) {
+                Console.WriteLine(_loggedUser.photo);
+                pictureUrl = $"http://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_loggedUser.photo}";
+                Bitmap bitmap = GetImageBitmapFromUrl(pictureUrl);
+                _pfp.SetImageBitmap(bitmap);
+            }
+
             if (_loggedUser.chef) {
                 _chefView.Text = "Chef: yes";
                 _scoreText.Text = "Score : " + _loggedUser.chefScore;
@@ -225,9 +246,159 @@ namespace CookTime.Activities {
                     OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
                 }
             };
+            _pfp.Click += (sender, args) =>
+            {
+                var transaction = SupportFragmentManager.BeginTransaction();
+                var dialogPicture = new DialogPicture();
+                dialogPicture.Photo = _loggedUser.photo;
+                dialogPicture.Show(transaction, "choice");
+                dialogPicture.EventHandlerChoice += PictureAction;
+            };
+        }
+
+        private void PictureAction(object sender, PicEvent e)
+        {
+            using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+            var response = e.Message;
+            if (response == 0) {
+                // do this code when the user chose to see the image
+                if (!string.IsNullOrEmpty(_loggedUser.photo)) {
+                    var transaction = SupportFragmentManager.BeginTransaction();
+                    var dialogPShow = new DialogPShow();
+                    
+                    dialogPShow.Url = pictureUrl;
+                    dialogPShow.TypeText = "Profile Picture";
+                    dialogPShow.Show(transaction, "pfp");
+                }
+                else {
+                    // happens when the user has no image so we must display default.
+                    string toastText = "you have not set a picture yet. To view one, you must first set it up.";
+                    _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                    _toast.Show();
+                }
+            }
+            else {
+                // do this code when the user chose to change their image.
+                Intent gallery = new Intent();
+                gallery.SetType("image/*");
+                gallery.SetAction(Intent.ActionGetContent);
+                StartActivityForResult(Intent.CreateChooser(gallery, "select a photo"),0);
+            }
+        }
+
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok)
+            {
+                Stream picStream = ContentResolver.OpenInputStream(data.Data);
+                Bitmap bitmap = BitmapFactory.DecodeStream(picStream);
+                _pfp.SetImageBitmap(bitmap);
+                //_pfp.SetImageBitmap(DecodeBitmapFromStream(data.Data, 200, 200));
+                
+                MemoryStream memStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, memStream);
+                byte[] picData = memStream.ToArray();
+                
+                using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var url = $"resources/addUserPicture?id={_loggedUser.email}";
+                Console.WriteLine(JsonConvert.SerializeObject(picData));
+                try
+                {
+                    var base64 = Convert.ToBase64String(picData);
+                    webClient.UploadString(url, base64);
+                    Console.WriteLine("managed to post");
+                }
+                catch (Exception e) {
+                    Console.WriteLine(e);
+                    Console.WriteLine("Could not post");
+                    // post failed, reloading profile
+                    url = $"resources/getUser?id={_loggedUser.email}";
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                    var json = webClient.DownloadString(url);
+                
+                    var intent = new Intent(this, typeof(MyProfileActivity));
+                    intent.PutExtra("User", json);
+                    intent.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                    StartActivity(intent);
+                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                    Finish();
+                
+                    _toast = Toast.MakeText(this, "could not post picture.", ToastLength.Short);
+                    _toast.Show();
+                    throw;
+                }
+
+                // if POST did not fail, now we will execute a profile refresh.
+                url = $"resources/getUser?id={_loggedUser.email}";
+                webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                var json1 = webClient.DownloadString(url);
+                
+                var intent1 = new Intent(this, typeof(MyProfileActivity));
+                intent1.PutExtra("User", json1);
+                intent1.SetFlags(ActivityFlags.NewTask | ActivityFlags.ClearTask);
+                StartActivity(intent1);
+                OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                Finish();
+                
+                _toast = Toast.MakeText(this, "Profile picture updated. Refreshing MyProfile...", ToastLength.Short);
+                _toast.Show();
+            }
         }
         
-        
+        private Bitmap GetImageBitmapFromUrl(string url)
+        {
+            Bitmap imageBitmap = null;
+
+            using (var webClient = new WebClient()){
+                var imageBytes = webClient.DownloadData(url);
+                if (imageBytes != null && imageBytes.Length > 0)
+                {
+                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                }
+            }
+            return imageBitmap;
+        }
+
+        private Bitmap DecodeBitmapFromStream(Android.Net.Uri data, int requestedWidth, int requestedHeight)
+        {
+            //Decode with inJustDecodeBounds = true to check dimensions
+            Stream stream = ContentResolver.OpenInputStream(data);
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.InJustDecodeBounds = true;
+            BitmapFactory.DecodeStream(stream, null, options);
+            
+            //Calculate inSampleSize
+            options.InSampleSize = CalculateInSampleSize(options, requestedWidth, requestedHeight);
+            Console.WriteLine("inSampleSize: " + CalculateInSampleSize(options, requestedWidth, requestedHeight));
+            Console.WriteLine("outW: " + options.OutHeight);
+            Console.WriteLine("outH" + options.OutWidth);
+            Bitmap bitmap = BitmapFactory.DecodeStream(stream, null, options);
+            return bitmap;
+        }
+
+        private int CalculateInSampleSize(BitmapFactory.Options options, int requestedWidth, int requestedHeight)
+        {
+            //raw height and width of image
+            int height = options.OutHeight;
+            int width = options.OutWidth;
+            int inSampleSize = 1;
+
+            if (height > requestedHeight || width > requestedWidth)
+            {
+                //here the image is bigger than we need it to be
+                int halfHeight = height / 2;
+                int halfWidth = width / 2;
+                while ((halfHeight / inSampleSize) > requestedHeight && (halfWidth / inSampleSize) > requestedWidth)
+                {
+                    inSampleSize *= 2;
+                }
+            }
+            return inSampleSize;
+        }
+
         /// <summary>
         /// This method is in charge of retrieving of showing recipes when clicking on them
         /// </summary>

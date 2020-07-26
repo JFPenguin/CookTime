@@ -18,7 +18,7 @@ namespace CookTime.Activities {
         private string request; //later modified to be the resulting recommendation list prior to deserialization.
         private string _filter;
         private RecomAdapter _recomAdapter;
-        private bool _searched = false;
+        private bool _searched;
         private Toast _refToast;
         
         // axml objects
@@ -50,6 +50,13 @@ namespace CookTime.Activities {
         private Button _cold;
         private Button _hot;
         private Button _dessert;
+        
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.SearchView);
