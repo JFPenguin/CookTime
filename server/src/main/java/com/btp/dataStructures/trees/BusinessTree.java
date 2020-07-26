@@ -494,10 +494,10 @@ public class BusinessTree {
         if (root != null){
             Business business = root.getElement();
             if (business.getRaters().size() != 0){
-                businessList.add(business.getId()+";"+business.getName()+";recipe;"+business.getRating());
+                businessList.add(business.getId()+";"+business.getName()+";business;"+business.getRating());
                 for (String businessData:businessList){
-                    String[] recipeString = businessData.split(";");
-                    if (Float.valueOf(recipeString[3]) < business.getRating()){
+                    String[] businessString = businessData.split(";");
+                    if (Float.valueOf(businessString[3]) < business.getRating()){
                         int i = businessList.indexOf(businessData);
                         String tmp = businessList.get(i);
                         int j = businessList.indexOf(business.getId()+";"+business.getName()+";business;"+business.getRating());
