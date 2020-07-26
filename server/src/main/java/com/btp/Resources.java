@@ -1165,9 +1165,9 @@ public class Resources {
 
 
     /**
-     *
-     * @param id
-     * @param photo
+     * this method takes an id and a String in base64 and takes that image, decodes it into a byte array and sends it to a method to save on disk
+     * @param id int id of the recipe
+     * @param photo String in base64 of the photo
      */
     @POST
     @Path("addRecipePicture")
@@ -1186,9 +1186,9 @@ public class Resources {
     }
 
     /**
-     *
-     * @param id
-     * @param photo
+     * this method takes an id and a String in base64 and takes that image, decodes it into a byte array and sends it to a method to save on disk
+     * @param id String id of the user's picture
+     * @param photo String in base64 of the photo
      */
     @POST
     @Path("addUserPicture")
@@ -1209,9 +1209,9 @@ public class Resources {
     }
 
     /**
-     *
-     * @param id
-     * @param photo
+     * this method takes an id and a String in base64 and takes that image, decodes it into a byte array and sends it to a method to save on disk
+     * @param id int id of the business's picture
+     * @param photo String in base64 of the photo
      */
     @POST
     @Path("addBusinessPicture")
@@ -1231,15 +1231,14 @@ public class Resources {
     }
 
     /**
-     *
-     * @param image
-     * @param id
-     * @param location
-     * @return
-     * @throws IOException
+     * This method takes a byte array, and converts it to a saved .png image on file
+     * @param image byte array of the image that wants to be saved on disk
+     * @param id id to be used in the name of the new image file
+     * @param location where the image is going to be saved
+     * @return a String that represents the name of the file, to be saved as a reference on each object
+     * @throws IOException exception
      */
     private static String saveToDisk(byte[] image, String id, String location) throws IOException {
-
         ByteArrayInputStream bis = new ByteArrayInputStream(image);
         BufferedImage bImage = ImageIO.read(bis);
         ImageIO.write(bImage, "png", new File(location+id+"-picture.png") );
