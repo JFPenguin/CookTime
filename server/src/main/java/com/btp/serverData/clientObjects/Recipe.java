@@ -18,7 +18,7 @@ public class Recipe implements Comparable<Recipe> {
     private DishType dishType;
     private int difficulty;
     private ArrayList<DishTag> dishTags;
-    private String photos;
+    private String photo;
     private ArrayList<String> ingredientsList;
     private ArrayList<String> instructions;
     private float price;
@@ -51,7 +51,7 @@ public class Recipe implements Comparable<Recipe> {
      * @param name string id of the photo
      */
     public void setPhoto(String name) {
-        this.photos = name;
+        this.photo = name;
     }
 
     /**
@@ -253,8 +253,8 @@ public class Recipe implements Comparable<Recipe> {
         this.price = price;
     }
 
-    public String getPhotos() {
-        return photos;
+    public String getPhoto() {
+        return photo;
     }
 
     /**

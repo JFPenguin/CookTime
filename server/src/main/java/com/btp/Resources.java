@@ -13,7 +13,6 @@ import com.btp.serverData.repos.UserRepo;
 import com.btp.utils.Notifier;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
 
 
 import javax.imageio.ImageIO;
@@ -144,6 +143,7 @@ public class Resources {
             Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
         }
         UserRepo.updateTree();
+        addRecipePicture(i, recipe.getPhoto());
         RecipeRepo.updateTree();
     }
 
@@ -171,6 +171,7 @@ public class Resources {
             Initializer.getServerGUI().printLn("new recipe id: "+recipe.getId());
         }
         BusinessRepo.updateTree();
+        addRecipePicture(i, recipe.getPhoto());
         RecipeRepo.updateTree();
     }
 
