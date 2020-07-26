@@ -24,12 +24,12 @@ namespace CookTime.Activities {
     public class MyProfileActivity : AppCompatActivity {
         private User _loggedUser;
         private string userJson;
-        private string picassoUrl;
+        private string pictureUrl;
         private TextView _nameView;
         private TextView _ageView;
         private TextView _chefView;
         private TextView _scoreText;
-        private ImageButton _pfp;
+        private ImageView _pfp;
         private Button _btnFollowers;
         private Button _btnFollowing;
         private Button _btnSettings;
@@ -73,7 +73,7 @@ namespace CookTime.Activities {
             _chefView = FindViewById<TextView>(Resource.Id.chefText);
             _scoreText = FindViewById<TextView>(Resource.Id.scoreText);
 
-            _pfp = FindViewById<ImageButton>(Resource.Id.profilePic);
+            _pfp = FindViewById<ImageView>(Resource.Id.profilePic);
             
             _btnFollowers = FindViewById<Button>(Resource.Id.btnMyFollowers);
             _btnFollowing = FindViewById<Button>(Resource.Id.btnMyFollowing);
@@ -92,10 +92,12 @@ namespace CookTime.Activities {
             _nameView.Text = "Name: " + _loggedUser.firstName + " " + _loggedUser.lastName;
             _ageView.Text = "Age: " + _loggedUser.age;
 
-            if (!string.IsNullOrEmpty(_loggedUser.userPhotos))
+            if (!string.IsNullOrEmpty(_loggedUser.photo))
             {
-                picassoUrl = $"http://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_loggedUser.userPhotos}";
-                Picasso.Get().Load(picassoUrl).Into(_pfp);
+                Console.WriteLine(_loggedUser.photo);
+                pictureUrl = $"http://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_loggedUser.photo}";
+                Bitmap bitmap = GetImageBitmapFromUrl(pictureUrl);
+                _pfp.SetImageBitmap(bitmap);
             }
 
             if (_loggedUser.chef) {
@@ -251,7 +253,7 @@ namespace CookTime.Activities {
             {
                 var transaction = SupportFragmentManager.BeginTransaction();
                 var dialogPicture = new DialogPicture();
-                dialogPicture.Photo = _loggedUser.userPhotos;
+                dialogPicture.Photo = _loggedUser.photo;
                 dialogPicture.Show(transaction, "choice");
                 dialogPicture.EventHandlerChoice += PictureAction;
             };
@@ -260,18 +262,16 @@ namespace CookTime.Activities {
         private void PictureAction(object sender, PicEvent e)
         {
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
-            // var url = "resources/getImage?user=" + _loggedUser.email;
-            // webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-            // var request = webClient.DownloadString(url);
             var response = e.Message;
             if (response == 0) {
                 // do this code when the user chose to see the image
-                if (!string.IsNullOrEmpty(_loggedUser.userPhotos)) {
-                    Intent seePicIntent = new Intent(this, typeof(PictureActivity));
-                    seePicIntent.PutExtra("type", "user");
-                    seePicIntent.PutExtra("photo", picassoUrl);
-                    StartActivity(seePicIntent);
-                    OverridePendingTransition(Android.Resource.Animation.SlideInLeft,Android.Resource.Animation.SlideOutRight);
+                if (!string.IsNullOrEmpty(_loggedUser.photo)) {
+                    var transaction = SupportFragmentManager.BeginTransaction();
+                    var dialogPShow = new DialogPShow();
+                    
+                    dialogPShow.Url = pictureUrl;
+                    dialogPShow.TypeText = "Profile Picture";
+                    dialogPShow.Show(transaction, "pfp");
                 }
                 else {
                     // happens when the user has no image so we must display default.
@@ -282,12 +282,10 @@ namespace CookTime.Activities {
             }
             else {
                 // do this code when the user chose to change their image.
-                //TODO put the code that shows how to access gallery and assign the new byte array.
                 Intent gallery = new Intent();
                 gallery.SetType("image/*");
                 gallery.SetAction(Intent.ActionGetContent);
                 StartActivityForResult(Intent.CreateChooser(gallery, "select a photo"),0);
-                //string byte64 = Convert.ToBase64String(_loggedUser.photo, 0, _loggedUser.photo.Length);
             }
         }
 
@@ -301,23 +299,24 @@ namespace CookTime.Activities {
                 Bitmap bitmap = BitmapFactory.DecodeStream(picStream);
                 _pfp.SetImageBitmap(bitmap);
                 //_pfp.SetImageBitmap(DecodeBitmapFromStream(data.Data, 200, 200));
-                // TODO send the image to the server with POST API method.
                 
                 MemoryStream memStream = new MemoryStream();
-                bitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, memStream);
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, memStream);
                 byte[] picData = memStream.ToArray();
                 
                 using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-                var url = $"resource/addUserPicture?id={_loggedUser.email}";
-                Console.WriteLine("soy su finder pa");
+                var url = $"resources/addUserPicture?id={_loggedUser.email}";
                 Console.WriteLine(JsonConvert.SerializeObject(picData));
-                try {
-                    
+                try
+                {
+                    //byte[] picha = new byte[] { 0xFF, 0xAA, 0XBB };
                     Console.WriteLine("byte arr len: " + picData.Length);
-                    Console.WriteLine("JSON len: " + JsonConvert.SerializeObject(picData).Length);
+                    //Console.WriteLine("JSON len: " + JsonConvert.SerializeObject(picData).Length);
                     Console.WriteLine("raw conversion: " + Convert.ToBase64String(picData).Length);
-                    webClient.UploadString(url, JsonConvert.SerializeObject(picData));
+                    var base64 = Convert.ToBase64String(picData);
+                    Console.WriteLine("soy su finder pa");
+                    webClient.UploadString(url, base64);
                     Console.WriteLine("managed to post");
                 }
                 catch (Exception e) {
@@ -337,6 +336,7 @@ namespace CookTime.Activities {
                 
                     _toast = Toast.MakeText(this, "could not post picture.", ToastLength.Short);
                     _toast.Show();
+                    throw;
                 }
 
                 // if POST did not fail, now we will execute a profile refresh.
@@ -354,6 +354,20 @@ namespace CookTime.Activities {
                 _toast = Toast.MakeText(this, "Profile picture updated. Refreshing MyProfile...", ToastLength.Short);
                 _toast.Show();
             }
+        }
+        
+        private Bitmap GetImageBitmapFromUrl(string url)
+        {
+            Bitmap imageBitmap = null;
+
+            using (var webClient = new WebClient()){
+                var imageBytes = webClient.DownloadData(url);
+                if (imageBytes != null && imageBytes.Length > 0)
+                {
+                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                }
+            }
+            return imageBitmap;
         }
 
         private Bitmap DecodeBitmapFromStream(Android.Net.Uri data, int requestedWidth, int requestedHeight)

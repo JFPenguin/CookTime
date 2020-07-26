@@ -64,7 +64,6 @@
         <Compile Include="Activities\MyProfileActivity.cs" />
         <Compile Include="Activities\NewsfeedActivity.cs" />
         <Compile Include="Activities\NotifActivity.cs" />
-        <Compile Include="Activities\PictureActivity.cs" />
         <Compile Include="Activities\PrivateBusiness.cs" />
         <Compile Include="Activities\PrivateMenuActivity.cs" />
         <Compile Include="Activities\PrivProfileActivity.cs" />
@@ -83,6 +82,7 @@
         <Compile Include="DialogFragments\DialogChoice.cs" />
         <Compile Include="DialogFragments\DialogComment.cs" />
         <Compile Include="DialogFragments\DialogPicture.cs" />
+        <Compile Include="DialogFragments\DialogPShow.cs" />
         <Compile Include="DialogFragments\DialogRate.cs" />
         <Compile Include="DialogFragments\DialogSettings.cs" />
         <Compile Include="DialogFragments\DialogSignIn.cs" />
@@ -100,8 +100,6 @@
     <ItemGroup>
         <AndroidResource Include="Resources\anim\SlideRight.xml" />
         <AndroidResource Include="Resources\anim\SlideUp.xml" />
-        <AndroidResource Include="Resources\Base64Test.txt" />
-        <AndroidResource Include="Resources\ByteTest.txt" />
         <AndroidResource Include="Resources\drawable\ButtonStyle.xml" />
         <AndroidResource Include="Resources\drawable\cooktime_icon.png" />
         <AndroidResource Include="Resources\drawable\ListRowStyle.xml" />

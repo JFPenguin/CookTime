@@ -13,7 +13,7 @@ namespace CookTime {
         public List<string> followingEmails;
         public string lastName;
         public string password;
-        public string userPhotos;
+        public string photo;
         public List<string> notifications;
         public bool chef;
         public float chefScore;

@@ -55,7 +55,7 @@ namespace CookTime.Activities {
             SetContentView(Resource.Layout.CreateBusiness);
             GetLocation();
             _loggedId = Intent.GetStringExtra("LoggedId");
-
+            // TODO set the business logo as mandatory on creation.
             bsnsName = FindViewById<EditText>(Resource.Id.editText);
             bsnsContact = FindViewById<EditText>(Resource.Id.editText2);
             bsnsFrom = FindViewById<EditText>(Resource.Id.editText3);

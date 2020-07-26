@@ -31,7 +31,7 @@
                     android:gravity="center"
                     android:textStyle="bold"
                     android:textSize="30sp"/>
-            <ImageButton
+            <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="#3E4465"

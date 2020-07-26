@@ -79,6 +79,7 @@ namespace CookTime.Activities {
             _nameView.Text = "Name: " + _user.firstName + " " + _user.lastName;
             _ageView.Text = "Age: " + _user.age;
 
+            // TODO load the user's image when it is a private photo and only allow to view.
             if (_user.chef) {
                 _chefView.Text = "Chef: yes";
                 _scoreView.Text = "Score: " + _user.chefScore;
