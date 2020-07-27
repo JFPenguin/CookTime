@@ -80,8 +80,7 @@ namespace CookTime.Activities {
 
             _nameView.Text = "Name: " + _user.firstName + " " + _user.lastName;
             _ageView.Text = "Age: " + _user.age;
-
-            // TODO load the user's image when it is a private photo and only allow to view.
+            
 
             if (!string.IsNullOrEmpty(_user.photo)) {
                 pictureUrl = $"http://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_user.photo}";

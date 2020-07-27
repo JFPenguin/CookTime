@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
@@ -19,6 +21,7 @@ namespace CookTime.Activities {
     public class CreateBActivity : AppCompatActivity {
         private string _loggedId;
         private string _userLocation = "none";
+        private string _picture64;
         private EditText bsnsName;
         private EditText bsnsContact;
         private EditText bsnsTo;
@@ -31,9 +34,11 @@ namespace CookTime.Activities {
         private CheckBox checkbox5;
         private CheckBox checkbox6;
         private CheckBox checkbox7;
+        private Button addLogo;
         private Button sendBsns;
         private bool daysChecked;
         private bool _locationObtained;
+        private bool setLogo;
         private string toastText;
         private Toast _toast;
         
@@ -55,7 +60,6 @@ namespace CookTime.Activities {
             SetContentView(Resource.Layout.CreateBusiness);
             GetLocation();
             _loggedId = Intent.GetStringExtra("LoggedId");
-            // TODO set the business logo as mandatory on creation.
             bsnsName = FindViewById<EditText>(Resource.Id.editText);
             bsnsContact = FindViewById<EditText>(Resource.Id.editText2);
             bsnsFrom = FindViewById<EditText>(Resource.Id.editText3);
@@ -68,9 +72,8 @@ namespace CookTime.Activities {
             checkbox5 = FindViewById<CheckBox>(Resource.Id.checkBox5);
             checkbox6 = FindViewById<CheckBox>(Resource.Id.checkBox6);
             checkbox7 = FindViewById<CheckBox>(Resource.Id.checkBox7);
+            addLogo = FindViewById<Button>(Resource.Id.btnImage);
             sendBsns = FindViewById<Button>(Resource.Id.btnPost);
-            
-            
             
              sendBsns.Click += (sender, args) =>
              {
@@ -84,9 +87,13 @@ namespace CookTime.Activities {
                  }
             
                  if (bsnsName.Text.Equals("") || bsnsContact.Text.Equals("") || bsnsFrom.Text.Equals("") || 
-                     bsnsTo.Text.Equals("") || !daysChecked || !isHours(bsnsFrom.Text, bsnsTo.Text) || !_locationObtained)  
+                     bsnsTo.Text.Equals("") || !daysChecked || !isHours(bsnsFrom.Text, bsnsTo.Text) || !_locationObtained || !setLogo)  
                  {
                      toastText = "Please fill in correctly all of the required information";
+                     if (!setLogo)
+                     {
+                         toastText = "You must select a logo to continue";
+                     }
                  }
                  else 
                  {
@@ -160,7 +167,7 @@ namespace CookTime.Activities {
                      employeeList.Add(_loggedId);
                      
                      var bsnsHoursStr = days + " " + hours;
-                     var bsns = new Business(name, contact, bsnsHoursStr, _userLocation, employeeList);
+                     var bsns = new Business(name, contact, _picture64, bsnsHoursStr, _userLocation, employeeList);
                      var bsnsJson = JsonConvert.SerializeObject(bsns);
 
                      using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
@@ -181,6 +188,14 @@ namespace CookTime.Activities {
                  _toast = Toast.MakeText(this, toastText, ToastLength.Short);
                  _toast.Show();
             };
+             
+             addLogo.Click += (sender, args) =>
+             {
+                 Intent gallery = new Intent();
+                 gallery.SetType("image/*");
+                 gallery.SetAction(Intent.ActionGetContent);
+                 this.StartActivityForResult(Intent.CreateChooser(gallery, "select a photo"), 0);
+             };
         }
 
         private bool isHours(string from, string to) {
@@ -229,7 +244,9 @@ namespace CookTime.Activities {
             }
             catch (FeatureNotSupportedException fnsEx)
             {
-                _userLocation = "No given location";
+                toastText = "you must enable location features to access the location values.";
+                _toast = Toast.MakeText(this, toastText, ToastLength.Long);
+                Finish();
             }
             catch (FeatureNotEnabledException fneEx)
             {
@@ -250,6 +267,25 @@ namespace CookTime.Activities {
                 _toast = Toast.MakeText(this, toastText, ToastLength.Long);
                 _toast.Show();
                 Finish();
+            }
+        }
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+
+            if (resultCode == Result.Ok) {
+                Stream picStream = ContentResolver.OpenInputStream(data.Data);
+                Bitmap bitmap = BitmapFactory.DecodeStream(picStream);
+
+                MemoryStream memStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, memStream);
+                byte[] picData = memStream.ToArray();
+                _picture64 = Convert.ToBase64String(picData);
+                setLogo = true;
+
+                toastText = "logo selected";
+                _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                _toast.Show();
             }
         }
     }

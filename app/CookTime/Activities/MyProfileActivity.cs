@@ -295,7 +295,6 @@ namespace CookTime.Activities {
                 Stream picStream = ContentResolver.OpenInputStream(data.Data);
                 Bitmap bitmap = BitmapFactory.DecodeStream(picStream);
                 _pfp.SetImageBitmap(bitmap);
-                //_pfp.SetImageBitmap(DecodeBitmapFromStream(data.Data, 200, 200));
                 
                 MemoryStream memStream = new MemoryStream();
                 bitmap.Compress(Bitmap.CompressFormat.Png, 100, memStream);
@@ -304,7 +303,6 @@ namespace CookTime.Activities {
                 using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var url = $"resources/addUserPicture?id={_loggedUser.email}";
-                Console.WriteLine(JsonConvert.SerializeObject(picData));
                 try
                 {
                     var base64 = Convert.ToBase64String(picData);
