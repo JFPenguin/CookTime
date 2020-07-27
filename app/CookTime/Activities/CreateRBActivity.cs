@@ -151,9 +151,13 @@ namespace CookTime.Activities {
                     recipeDurationEditText.Text.Equals("") || recipePriceEditText.Text.Equals("") || 
                     instructions.Count == 0 || ingredients.Count == 0 || radioGroupDiff.CheckedRadioButtonId == -1 || 
                     radioGroupTime.CheckedRadioButtonId == -1 || radioGroupType.CheckedRadioButtonId == -1 || 
-                    radioGroupVis.CheckedRadioButtonId == -1 || !tagsChecked)
+                    radioGroupVis.CheckedRadioButtonId == -1 || !tagsChecked || !_imageSelected)
                 {
                     toastText = "Please fill in all of the required information";
+                    if (!_imageSelected)
+                    {
+                        toastText = "you must select an image to continue";
+                    }
                 }
                 else
                 {
@@ -194,8 +198,8 @@ namespace CookTime.Activities {
                     if (checkBox6.Checked) {
                         tags.Add(checkBox6.Text);
                     }
-                    //TODO implement picture in the parameters below to create images when the recipe is created
-                    var recipe = new Recipe(_loggedId, name, diff, tags, time, type, duration, ingredients,
+                    
+                    var recipe = new Recipe(_loggedId, name, _picture64, diff, tags, time, type, duration, ingredients,
                         instructions, portions, price, _bsnsId);
                     var recipeJson = JsonConvert.SerializeObject(recipe);
                     
@@ -224,10 +228,16 @@ namespace CookTime.Activities {
 
             if (resultCode == Result.Ok) {
                 Stream picStream = ContentResolver.OpenInputStream(data.Data);
-                var bitmap = BitmapFactory.DecodeStream(picStream);
-                var byteArr = bitmap.ToArray<byte>();
-                _picture64 = Convert.ToBase64String(byteArr);
+                Bitmap bitmap = BitmapFactory.DecodeStream(picStream);
+
+                MemoryStream memStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, memStream);
+                byte[] picData = memStream.ToArray();
+                _picture64 = Convert.ToBase64String(picData);
                 _imageSelected = true;
+                toastText = "recipe image selected";
+                _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                _toast.Show();
             }
         }
     }

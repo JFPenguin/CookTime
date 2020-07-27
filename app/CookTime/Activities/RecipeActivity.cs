@@ -63,7 +63,6 @@ namespace CookTime.Activities {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Recipe);
             
-            //TODO set the recipe image
 
             var recipe = Intent.GetStringExtra("Recipe");
             _recipe = JsonConvert.DeserializeObject<Recipe>(recipe);
@@ -111,7 +110,7 @@ namespace CookTime.Activities {
 
             if (!string.IsNullOrEmpty(_recipe.photo))
             {
-                picUrl = $"https://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_recipe.photo}";
+                picUrl = $"http://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_recipe.photo}";
                 Bitmap bitmap = GetImageBitmapFromUrl(picUrl);
                 _recipePic.SetImageBitmap(bitmap);   
             }
@@ -133,10 +132,9 @@ namespace CookTime.Activities {
                 if (!string.IsNullOrEmpty(_recipe.photo)) {
                     var transaction = SupportFragmentManager.BeginTransaction();
                     var dialogPShow = new DialogPShow();
-
                     dialogPShow.Url = picUrl;
                     dialogPShow.TypeText = "Recipe photo";
-                    dialogPShow.Show(transaction, "reciPic");
+                    dialogPShow.Show(transaction, "recipe");
                 }
             };
 
