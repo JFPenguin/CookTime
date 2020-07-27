@@ -14,7 +14,7 @@ using Xamarin.Essentials;
 
 namespace CookTime.Activities {
     /// <summary>
-    /// This class represents the Following/Followers view.
+    /// This class represents the Business creation form view.
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
@@ -42,12 +42,19 @@ namespace CookTime.Activities {
         private string toastText;
         private Toast _toast;
         
+        /// <summary>
+        /// This method is implemented to prompt the user with location permissions request.
+        /// </summary>
+        /// <param name="requestCode">the return code from the request</param>
+        /// <param name="permissions">the permissions requested to the user</param>
+        /// <param name="grantResults">communication to system with the permission requests</param>
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+        
         /// <summary>
         /// This method is called when the activity is starting.
         /// The list of followers/following is displayed here.
@@ -198,6 +205,12 @@ namespace CookTime.Activities {
              };
         }
 
+        /// <summary>
+        /// this method validates the format of the business hours that any user inputs when creating a business
+        /// </summary>
+        /// <param name="from">the opening hours from the user input</param>
+        /// <param name="to">the closing hours from the user input</param>
+        /// <returns></returns>
         private bool isHours(string from, string to) {
             var isHours = false;
             try {
@@ -228,7 +241,10 @@ namespace CookTime.Activities {
             }
             return isHours;
         }
-
+        /// <summary>
+        /// this method is executed in another thread while the user creates a business.
+        /// </summary>
+        /// <returns>the location value from the user</returns>
         private async Task GetLocation() {
             try
             {
@@ -269,6 +285,12 @@ namespace CookTime.Activities {
                 Finish();
             }
         }
+        /// <summary>
+        /// needed method that handles the result from the gallery activity
+        /// </summary>
+        /// <param name="requestCode">system parameter for the requested to launch activity</param>
+        /// <param name="resultCode">the result from the launched activity</param>
+        /// <param name="data">the obtained data from the activity, in this case, an image</param>
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);

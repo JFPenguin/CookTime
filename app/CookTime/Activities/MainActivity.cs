@@ -18,6 +18,12 @@ namespace CookTime.Activities {
         private Toast _toast;
         public const string Ipv4 = "192.168.100.49";
         
+        /// <summary>
+        /// This method is implemented to prompt the user with location permissions request.
+        /// </summary>
+        /// <param name="requestCode">the return code from the request</param>
+        /// <param name="permissions">the permissions requested to the user</param>
+        /// <param name="grantResults">communication to system with the permission requests</param>
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
