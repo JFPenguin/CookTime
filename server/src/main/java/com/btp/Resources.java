@@ -1295,6 +1295,7 @@ public class Resources {
     business.setId(i);
     UserRepo.getUser(business.getEmployeeList().get(0)).setBusiness(business.getId());
     BusinessRepo.addBusiness(business);
+    addBusinessPicture(i,business.getPhoto());
     UserRepo.updateTree();
     }
 
