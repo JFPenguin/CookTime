@@ -125,6 +125,10 @@ public class Sorter {
         }
     }
 
+    /**
+     * Radixsort method, calls the respective method according to its class
+     * @param list a SinglyList with any type (Only sorts Integers and Recipes)
+     */
     public static void radixSort(SinglyList list){
         if (list.getHead().getData().getClass() == Integer.class) {
             radixSortInteger(list);
@@ -276,6 +280,13 @@ public class Sorter {
         return mx;
     }
 
+    /**
+     * this method is used to get the highest value in a singly-linked list.
+     * can be modified to use a different data structure by declaring a different type in the parameters.
+     * @param recipeList the specific singly-linked instance that the user desires to check.
+     * @param n the number of elements (nodes) in the structure at the moment of calling the method. Also known as length.
+     * @return integer value obtained from the list, corresponding to the largest number in it.
+     */
     private static int getMaxRecipe(SinglyList<Recipe> recipeList, int n){
         int mx = recipeList.getHead().getData().getDifficulty();
         for (int i = 1; i < n; i++) {

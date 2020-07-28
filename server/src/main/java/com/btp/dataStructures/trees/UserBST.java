@@ -294,7 +294,7 @@ public class UserBST {
             }
             if (!followed && !email.equals(recommendedEmail)){
                 String x;
-                if (getElementByEmail(email).isChef()){
+                if (getElementByEmail(recommendedEmail).isChef()){
                     x = "chef";
                 } else {
                     x = "user";

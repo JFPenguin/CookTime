@@ -365,10 +365,10 @@ public class RecipeTree{
                 for (String recipeData:recipeList){
                     String[] recipeString = recipeData.split(";");
                     if (Float.valueOf(recipeString[3]) < recipe.getScore()){
-                        int i = recipeList.indexOf(recipeData);
+                        int i = recipeList.indexOf(recipe.getId()+";"+recipe.getName()+";recipe;"+recipe.getScore());
                         String tmp = recipeList.get(i);
-                        int j = recipeList.indexOf(recipe.getId()+";"+recipe.getName()+";recipe;"+recipe.getScore());
-                        recipeList.set(i, recipe.getId()+";"+recipe.getName()+";recipe;"+recipe.getScore());
+                        int j = recipeList.indexOf(recipeData);
+                        recipeList.set(i, recipeData);
                         recipeList.set(j, tmp);
                     }
                 }
