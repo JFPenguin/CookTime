@@ -784,6 +784,12 @@ public class Resources {
         return response;
     }
 
+    /**
+     * Makes an user follow a business
+     * @param email String email of the user sending the request
+     * @param id int id of the business who is being followed
+     * @return String "0" if it already follows the user, "1" if the request was successful
+     */
     @GET
     @Path("followBusiness")
     @Produces(MediaType.APPLICATION_JSON)

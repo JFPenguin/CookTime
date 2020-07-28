@@ -90,8 +90,6 @@ public class SplayTree<T extends Comparable<T>> {
         parent.setParent(child);
         parent.setLeft(child.getRight());
         child.setRight(parent);
-        //zig zag memory go brrr
-        //TODO: actually understand what is going on
     }
 
     /**
