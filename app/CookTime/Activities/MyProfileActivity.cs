@@ -45,6 +45,12 @@ namespace CookTime.Activities {
         private Toast _toast;
         private RecipeAdapter _adapter;
 
+        /// <summary>
+        /// This method is implemented to prompt the user with location permissions request.
+        /// </summary>
+        /// <param name="requestCode">the return code from the request</param>
+        /// <param name="permissions">the permissions requested to the user</param>
+        /// <param name="grantResults">communication to system with the permission requests</param>
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -295,7 +301,6 @@ namespace CookTime.Activities {
                 Stream picStream = ContentResolver.OpenInputStream(data.Data);
                 Bitmap bitmap = BitmapFactory.DecodeStream(picStream);
                 _pfp.SetImageBitmap(bitmap);
-                //_pfp.SetImageBitmap(DecodeBitmapFromStream(data.Data, 200, 200));
                 
                 MemoryStream memStream = new MemoryStream();
                 bitmap.Compress(Bitmap.CompressFormat.Png, 100, memStream);
@@ -304,7 +309,6 @@ namespace CookTime.Activities {
                 using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
                 webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
                 var url = $"resources/addUserPicture?id={_loggedUser.email}";
-                Console.WriteLine(JsonConvert.SerializeObject(picData));
                 try
                 {
                     var base64 = Convert.ToBase64String(picData);
@@ -348,6 +352,11 @@ namespace CookTime.Activities {
             }
         }
         
+        /// <summary>
+        /// this method is used to obtain an image bitmap from a url.
+        /// </summary>
+        /// <param name="url">the string url that displays the image.</param>
+        /// <returns>a Bitmap type object representing the image to cache it into memory</returns>
         private Bitmap GetImageBitmapFromUrl(string url)
         {
             Bitmap imageBitmap = null;
@@ -362,42 +371,6 @@ namespace CookTime.Activities {
             return imageBitmap;
         }
 
-        private Bitmap DecodeBitmapFromStream(Android.Net.Uri data, int requestedWidth, int requestedHeight)
-        {
-            //Decode with inJustDecodeBounds = true to check dimensions
-            Stream stream = ContentResolver.OpenInputStream(data);
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.InJustDecodeBounds = true;
-            BitmapFactory.DecodeStream(stream, null, options);
-            
-            //Calculate inSampleSize
-            options.InSampleSize = CalculateInSampleSize(options, requestedWidth, requestedHeight);
-            Console.WriteLine("inSampleSize: " + CalculateInSampleSize(options, requestedWidth, requestedHeight));
-            Console.WriteLine("outW: " + options.OutHeight);
-            Console.WriteLine("outH" + options.OutWidth);
-            Bitmap bitmap = BitmapFactory.DecodeStream(stream, null, options);
-            return bitmap;
-        }
-
-        private int CalculateInSampleSize(BitmapFactory.Options options, int requestedWidth, int requestedHeight)
-        {
-            //raw height and width of image
-            int height = options.OutHeight;
-            int width = options.OutWidth;
-            int inSampleSize = 1;
-
-            if (height > requestedHeight || width > requestedWidth)
-            {
-                //here the image is bigger than we need it to be
-                int halfHeight = height / 2;
-                int halfWidth = width / 2;
-                while ((halfHeight / inSampleSize) > requestedHeight && (halfWidth / inSampleSize) > requestedWidth)
-                {
-                    inSampleSize *= 2;
-                }
-            }
-            return inSampleSize;
-        }
 
         /// <summary>
         /// This method is in charge of retrieving of showing recipes when clicking on them

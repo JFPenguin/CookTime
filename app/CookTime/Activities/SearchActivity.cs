@@ -51,12 +51,25 @@ namespace CookTime.Activities {
         private Button _hot;
         private Button _dessert;
         
+        /// <summary>
+        /// This method is implemented to prompt the user with location permissions request.
+        /// </summary>
+        /// <param name="requestCode">the return code from the request</param>
+        /// <param name="permissions">the permissions requested to the user</param>
+        /// <param name="grantResults">communication to system with the permission requests</param>
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+        
+        /// <summary>
+        /// This method is called when the activity is starting.
+        /// All of the recipe info is shown here.
+        /// </summary>
+        /// <param name="savedInstanceState"> a Bundle that contains the data the activity most recently
+        /// supplied if the activity is being re-initialized after previously being shut down. </param>
         protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.SearchView);
@@ -124,6 +137,12 @@ namespace CookTime.Activities {
             _resultView.ItemClick += RecomClick;
         }
 
+        /// <summary>
+        /// This method is invoked when the user clicks on a result inside the recommended profiles.
+        /// It handles the type of activity that has to be opened, based on the provided information.
+        /// </summary>
+        /// <param name="sender">the view in which the event happened.</param>
+        /// <param name="e">the item in the list that was clicked by the user.</param>
         private void RecomClick(object sender, AdapterView.ItemClickEventArgs e) {
             var profileId = _recommendations[e.Position].Split(';')[0];
             var profileType = _recommendations[e.Position].Split(';')[2];
@@ -188,6 +207,13 @@ namespace CookTime.Activities {
                 }
             }
         }
+        
+        /// <summary>
+        /// This method is invoked when the user clicks a filter button.
+        /// It applies the filter on the existing results
+        /// </summary>
+        /// <param name="sender">the button in which the event occurred.</param>
+        /// <param name="e">arguments from the event</param>
         private void FilterClick(object sender, EventArgs e) {
             var queryList = request;
             var newQuery = queryList.Replace("[","");
@@ -212,6 +238,11 @@ namespace CookTime.Activities {
             _refToast.Show();
         }
         
+        /// <summary>
+        /// This method handles the logic implemented when the user clicks on the "search" button.
+        /// </summary>
+        /// <param name="sender">the object in which the event occurred, the search button.</param>
+        /// <param name="e"> event arguments</param>
         private void SearchClick(object sender, EventArgs e) {
             if (_searchTxt.Text == "") {
                 _refToast = Toast.MakeText(this, "please write a search query", ToastLength.Short);
@@ -242,6 +273,13 @@ namespace CookTime.Activities {
             _refToast = Toast.MakeText(this, toastText, ToastLength.Short);
             _refToast.Show();
         }
+        
+        /// <summary>
+        /// This method is used to refresh the "Search/recommendations" view.
+        /// It reloads the window and obtains a new set of recommendations from the server.
+        /// </summary>
+        /// <param name="sender">the object in which the event occurred.</param>
+        /// <param name="e"> arguments coming from the event</param>
         private void RefreshClick(object sender, EventArgs e)
         {
             var refresh = new Intent(this, typeof(SearchActivity));
@@ -253,6 +291,11 @@ namespace CookTime.Activities {
             Finish();
         }
 
+        /// <summary>
+        /// This method is used to show results by rating when the user pushes the Rating button.
+        /// </summary>
+        /// <param name="sender">the button that caused the event</param>
+        /// <param name="e">the arguments from the event</param>
         private void RatingClick(object sender, EventArgs e) {
             _resultType.Text = "best rated results";
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};

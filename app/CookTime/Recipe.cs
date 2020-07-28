@@ -31,6 +31,7 @@ namespace CookTime {
         /// </summary>
         /// <param name="email"> The email of the user that created the recipe </param>
         /// <param name="recipeName"> The recipe's name </param>
+        /// <param name="phot">the selected picture in base64 string format</param>
         /// <param name="diff"> The recipe's difficulty </param>
         /// <param name="tags"> The recipe's tags </param>
         /// <param name="time">The recipe's dishTime </param>
@@ -41,12 +42,13 @@ namespace CookTime {
         /// <param name="port"> The recipe's portions </param>
         /// <param name="bsns"> Business id </param>
         /// <param name="cost"> The recipe's price </param>
-        //TODO implement the photo parameter in the constructor so images can be built from that parameter.
-        public Recipe(string email, string recipeName, int diff, List<string> tags, string time, string type, int durat, 
+        
+        public Recipe(string email, string recipeName,string phot, int diff, List<string> tags, string time, string type, int durat, 
             List<string> ingredients, List<string> instruct, int port, float cost, int bsns) {
             authorEmail = email;
             name = recipeName;
             difficulty = diff;
+            photo = phot;
             dishTags = tags;
             dishTime = time;
             dishType = type;

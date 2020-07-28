@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace CookTime.Activities {
     /// <summary>
-    /// This class represents the Following/Followers view.
+    /// This class represents the form that businesses use to create a recipe.
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
@@ -50,6 +50,12 @@ namespace CookTime.Activities {
         private List<string> instructions = new List<string>();
         private List<string> tags = new List<string>();
         
+        /// <summary>
+        /// This method is implemented to prompt the user with location permissions request.
+        /// </summary>
+        /// <param name="requestCode">the return code from the request</param>
+        /// <param name="permissions">the permissions requested to the user</param>
+        /// <param name="grantResults">communication to system with the permission requests</param>
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -151,9 +157,13 @@ namespace CookTime.Activities {
                     recipeDurationEditText.Text.Equals("") || recipePriceEditText.Text.Equals("") || 
                     instructions.Count == 0 || ingredients.Count == 0 || radioGroupDiff.CheckedRadioButtonId == -1 || 
                     radioGroupTime.CheckedRadioButtonId == -1 || radioGroupType.CheckedRadioButtonId == -1 || 
-                    radioGroupVis.CheckedRadioButtonId == -1 || !tagsChecked)
+                    radioGroupVis.CheckedRadioButtonId == -1 || !tagsChecked || !_imageSelected)
                 {
                     toastText = "Please fill in all of the required information";
+                    if (!_imageSelected)
+                    {
+                        toastText = "you must select an image to continue";
+                    }
                 }
                 else
                 {
@@ -194,8 +204,8 @@ namespace CookTime.Activities {
                     if (checkBox6.Checked) {
                         tags.Add(checkBox6.Text);
                     }
-                    //TODO implement picture in the parameters below to create images when the recipe is created
-                    var recipe = new Recipe(_loggedId, name, diff, tags, time, type, duration, ingredients,
+                    
+                    var recipe = new Recipe(_loggedId, name, _picture64, diff, tags, time, type, duration, ingredients,
                         instructions, portions, price, _bsnsId);
                     var recipeJson = JsonConvert.SerializeObject(recipe);
                     
@@ -218,16 +228,29 @@ namespace CookTime.Activities {
                 _toast.Show();
             };
         }
+        
+        /// <summary>
+        /// needed method that handles the result from the gallery activity
+        /// </summary>
+        /// <param name="requestCode">system parameter for the requested to launch activity</param>
+        /// <param name="resultCode">the result from the launched activity</param>
+        /// <param name="data">the obtained data from the activity, in this case, an image</param>
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
 
             if (resultCode == Result.Ok) {
                 Stream picStream = ContentResolver.OpenInputStream(data.Data);
-                var bitmap = BitmapFactory.DecodeStream(picStream);
-                var byteArr = bitmap.ToArray<byte>();
-                _picture64 = Convert.ToBase64String(byteArr);
+                Bitmap bitmap = BitmapFactory.DecodeStream(picStream);
+
+                MemoryStream memStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, memStream);
+                byte[] picData = memStream.ToArray();
+                _picture64 = Convert.ToBase64String(picData);
                 _imageSelected = true;
+                toastText = "recipe image selected";
+                _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                _toast.Show();
             }
         }
     }
