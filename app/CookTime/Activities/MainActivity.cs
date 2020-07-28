@@ -16,7 +16,7 @@ namespace CookTime.Activities {
         private Button _signUpButton;
         private Button _signInButton;
         private Toast _toast;
-        public const string Ipv4 = "192.168.100.49";
+        public const string Ipv4 = "192.168.1.2";
         
         /// <summary>
         /// This method is implemented to prompt the user with location permissions request.
