@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Widget;
@@ -21,13 +21,14 @@ namespace CookTime.Activities
     {
         private string bsnsJson;
         private string loggedId;
+        private string logoUrl;
         private Business bsns;
         private TextView bsnsNameTV;
         private TextView _bsnsHoursTV;
         private TextView _bsnsContactTV;
         private TextView scoreView;
         private TextView _locationText;
-        private ImageButton _pfp;
+        private ImageView _logo;
         private Button _btnFollowers;
         private Button _btnFollow;
         private Button _btnRate;
@@ -39,6 +40,12 @@ namespace CookTime.Activities
         private IList<string> _menuList;
         private RecipeAdapter _adapter;
 
+        /// <summary>
+        /// This method is implemented to prompt the user with location permissions request.
+        /// </summary>
+        /// <param name="requestCode">the return code from the request</param>
+        /// <param name="permissions">the permissions requested to the user</param>
+        /// <param name="grantResults">communication to system with the permission requests</param>
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -70,7 +77,7 @@ namespace CookTime.Activities
             _btnFollowers = FindViewById<Button>(Resource.Id.btnPBFollowers);
             _btnFollow = FindViewById<Button>(Resource.Id.btnPBFollow);
             
-            _pfp = FindViewById<ImageButton>(Resource.Id.profilePic);
+            _logo = FindViewById<ImageView>(Resource.Id.businessLogo);
             
             _btnRate = FindViewById<Button>(Resource.Id.btnPBRate);
             _btnDate = FindViewById<Button>(Resource.Id.btnBDate);
@@ -85,6 +92,13 @@ namespace CookTime.Activities
             scoreView.Text = "Score: " + bsns.rating;
             _locationText.Text = "Location: " + bsns.location;
 
+            // sets the business logo to the imageView
+            if (!string.IsNullOrEmpty(bsns.photo))
+            {
+                logoUrl = $"http://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={bsns.photo}";
+                Bitmap bitmap = GetImageBitmapFromUrl(logoUrl);
+                _logo.SetImageBitmap(bitmap);
+            }
             
             using var webClient = new WebClient {BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
 
@@ -171,7 +185,26 @@ namespace CookTime.Activities
                     
                 dialogRate.EventHandlerRate += RateResult;
             };
-            
+
+            _logo.Click += (sender, args) =>
+            {
+                if (!string.IsNullOrEmpty(bsns.photo))
+                {
+                    var transaction = SupportFragmentManager.BeginTransaction();
+                    var dialogPShow = new DialogPShow();
+
+                    dialogPShow.Url = logoUrl;
+                    dialogPShow.TypeText = "Business logo";
+                    dialogPShow.Show(transaction, "privBsns");
+                }
+                else
+                {
+                    string toastText = "Business has set no logo you can view.";
+                    Toast _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                    _toast.Show();
+                }
+            };
+
         }
 
         /// <summary>
@@ -246,6 +279,24 @@ namespace CookTime.Activities
             }
             var toast = Toast.MakeText(this, toastText, ToastLength.Long);
             toast.Show();
+        }
+        
+        /// <summary>
+        /// this method is used to obtain an image bitmap from a url.
+        /// </summary>
+        /// <param name="url">the string url that displays the image.</param>
+        /// <returns>a Bitmap type object representing the image to cache it into memory</returns>
+        private Bitmap GetImageBitmapFromUrl(string url) {
+            Bitmap imageBitmap = null;
+
+            using (var webClient = new WebClient()){
+                var imageBytes = webClient.DownloadData(url);
+                if (imageBytes != null && imageBytes.Length > 0)
+                {
+                    imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+                }
+            }
+            return imageBitmap;
         }
     }
 }

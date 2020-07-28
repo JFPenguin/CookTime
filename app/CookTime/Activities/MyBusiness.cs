@@ -45,20 +45,25 @@ namespace CookTime.Activities
         private Toast _toast;
         private RecipeAdapter _adapter;
 
-        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
-        {
+        /// <summary>
+        /// This method is implemented to prompt the user with location permissions request.
+        /// </summary>
+        /// <param name="requestCode">the return code from the request</param>
+        /// <param name="permissions">the permissions requested to the user</param>
+        /// <param name="grantResults">communication to system with the permission requests</param>
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults) {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+        
         /// <summary>
         /// This method is called when the activity is starting.
         /// It contains the logic for the buttons shown in this activity.
         /// </summary>
         /// <param name="savedInstanceState"> a Bundle that contains the data the activity most recently
         /// supplied if the activity is being re-initialized after previously being shut down. </param>
-        protected override void OnCreate(Bundle savedInstanceState)
-        {
+        protected override void OnCreate(Bundle savedInstanceState) {
             base.OnCreate(savedInstanceState);
 
             SetContentView(Resource.Layout.Business);
@@ -193,6 +198,11 @@ namespace CookTime.Activities
             };
         }
         
+        /// <summary>
+        /// This method is in charge of retrieving the result of the Picture dialog fragment.
+        /// </summary>
+        /// <param name="sender"> Reference to the object that raised the event </param>
+        /// <param name="e"> Contains the event data </param>
         private void PictureAction(object sender, PicEvent e)
         {
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
@@ -209,7 +219,7 @@ namespace CookTime.Activities
                 }
                 else {
                     // happens when the user has no image so we must display default.
-                    string toastText = "you have not set a picture yet. To view one, you must first set it up.";
+                    string toastText = "you have not set a logo yet. To view one, you must first set it up.";
                     _toast = Toast.MakeText(this, toastText, ToastLength.Short);
                     _toast.Show();
                 }
@@ -396,6 +406,12 @@ namespace CookTime.Activities
             _adapter.RecipeItems = _menuList;
             _menuListView.Adapter = _adapter;
         }
+        
+        /// <summary>
+        /// this method is used to obtain an image bitmap from a url.
+        /// </summary>
+        /// <param name="url">the string url that displays the image.</param>
+        /// <returns>a Bitmap type object representing the image to cache it into memory</returns>
         private Bitmap GetImageBitmapFromUrl(string url)
         {
             Bitmap imageBitmap = null;

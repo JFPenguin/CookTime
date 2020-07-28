@@ -6,14 +6,13 @@ using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.OS;
-using Android.Provider;
 using Android.Support.V7.App;
 using Android.Widget;
 using Newtonsoft.Json;
 
 namespace CookTime.Activities {
     /// <summary>
-    /// This class represents the Following/Followers view.
+    /// This class represents the form to create a recipe
     /// It inherits from the base class for Android activities
     /// </summary>
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = false)]
@@ -48,6 +47,12 @@ namespace CookTime.Activities {
         private List<string> instructions = new List<string>();
         private List<string> tags = new List<string>();
         
+        /// <summary>
+        /// This method is implemented to prompt the user with location permissions request.
+        /// </summary>
+        /// <param name="requestCode">the return code from the request</param>
+        /// <param name="permissions">the permissions requested to the user</param>
+        /// <param name="grantResults">communication to system with the permission requests</param>
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -211,6 +216,13 @@ namespace CookTime.Activities {
                 _toast.Show();
             };
         }
+        
+        /// <summary>
+        /// needed method that handles the result from the gallery activity
+        /// </summary>
+        /// <param name="requestCode">system parameter for the requested to launch activity</param>
+        /// <param name="resultCode">the result from the launched activity</param>
+        /// <param name="data">the obtained data from the activity, in this case, an image</param>
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);

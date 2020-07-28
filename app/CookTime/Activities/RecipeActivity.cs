@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -45,6 +44,12 @@ namespace CookTime.Activities {
         private ListView dishTagsListView;
         private ListView commentsListView;
 
+        /// <summary>
+        /// This method is implemented to prompt the user with location permissions request.
+        /// </summary>
+        /// <param name="requestCode">the return code from the request</param>
+        /// <param name="permissions">the permissions requested to the user</param>
+        /// <param name="grantResults">communication to system with the permission requests</param>
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -251,6 +256,11 @@ namespace CookTime.Activities {
             };
         }
         
+        /// <summary>
+        /// this method is used to obtain an image bitmap from a url.
+        /// </summary>
+        /// <param name="url">the string url that displays the image.</param>
+        /// <returns>a Bitmap type object representing the image to cache it into memory</returns>
         private Bitmap GetImageBitmapFromUrl(string url)
         {
             Bitmap imageBitmap = null;

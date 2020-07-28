@@ -8,7 +8,7 @@ using Android.Widget;
 namespace CookTime.DialogFragments
 {
     /// <summary>
-    /// This class represents the dialog fragment that shows when the user wants to comment a recipe
+    /// This class represents the dialog fragment that shows when the user wants to see a picture
     /// </summary>
     public class DialogPShow : DialogFragment
     {
@@ -36,6 +36,11 @@ namespace CookTime.DialogFragments
             return view;
         }
         
+        /// <summary>
+        /// This method is used to load an image from a url into memory in the form of a bitmap.
+        /// </summary>
+        /// <param name="url">the string url that leads to the picture</param>
+        /// <returns>the bitmap representation of the image loaded from the url</returns>
         private Bitmap GetImageBitmapFromUrl(string url)
         {
             Bitmap imageBitmap = null;
