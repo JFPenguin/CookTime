@@ -77,7 +77,7 @@ namespace CookTime.Activities
             _btnFollowers = FindViewById<Button>(Resource.Id.btnPBFollowers);
             _btnFollow = FindViewById<Button>(Resource.Id.btnPBFollow);
             
-            _logo = FindViewById<ImageView>(Resource.Id.profilePic);
+            _logo = FindViewById<ImageView>(Resource.Id.businessLogo);
             
             _btnRate = FindViewById<Button>(Resource.Id.btnPBRate);
             _btnDate = FindViewById<Button>(Resource.Id.btnBDate);
@@ -185,7 +185,26 @@ namespace CookTime.Activities
                     
                 dialogRate.EventHandlerRate += RateResult;
             };
-            
+
+            _logo.Click += (sender, args) =>
+            {
+                if (!string.IsNullOrEmpty(bsns.photo))
+                {
+                    var transaction = SupportFragmentManager.BeginTransaction();
+                    var dialogPShow = new DialogPShow();
+
+                    dialogPShow.Url = logoUrl;
+                    dialogPShow.TypeText = "Business logo";
+                    dialogPShow.Show(transaction, "privBsns");
+                }
+                else
+                {
+                    string toastText = "Business has set no logo you can view.";
+                    Toast _toast = Toast.MakeText(this, toastText, ToastLength.Short);
+                    _toast.Show();
+                }
+            };
+
         }
 
         /// <summary>
