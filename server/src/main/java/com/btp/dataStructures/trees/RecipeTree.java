@@ -305,7 +305,7 @@ public class RecipeTree{
     /**
      * Recommends recipes to an user. Calls the private method recommend
      * @param email String email of the user to recommend recipes to
-     * @return ArrayList<String> Recipes to be recommended
+     * @return String ArrayList Recipes to be recommended
      */
     public ArrayList<String> recommend(String email){
         this.recipeList.clear();
@@ -316,7 +316,7 @@ public class RecipeTree{
      * Adds recipes to the list that the user doesn't have in his myMenu. Calls itself recursively
      * @param email String email of the user to recommend recipes to
      * @param root RecipeNode current node being checked
-     * @return ArrayList<String> Recipes that match the criteria
+     * @return String ArrayList Recipes that match the criteria
      */
     private ArrayList<String> recommend(String email, RecipeNode root){
         if (root != null) {
@@ -345,7 +345,7 @@ public class RecipeTree{
 
     /**
      * Gets the five highest rated recipes. Calls the private method rating
-     * @return ArrayList<String> of the five highest rated recipes
+     * @return String ArrayList of the five highest rated recipes
      */
     public ArrayList<String> rating(){
         this.recipeList.clear();
@@ -355,7 +355,7 @@ public class RecipeTree{
     /**
      * Gets the five highest rated recipes. Calls itself recursively
      * @param root RecipeNode current node
-     * @return ArrayList<String> of the five highest rated recipes
+     * @return String ArrayList of the five highest rated recipes
      */
     private ArrayList<String> rating(RecipeNode root){
         if (root != null){
@@ -385,7 +385,7 @@ public class RecipeTree{
     /**
      * Searches using the dishType attribute. Calls the private method searchByType
      * @param data String data to be searched
-     * @return ArrayList<String> All the recipes that match the search
+     * @return String ArrayList All the recipes that match the search
      */
     public ArrayList<String> searchByType(String data) {
         this.recipeList.clear();
@@ -397,7 +397,7 @@ public class RecipeTree{
      * Searches using the dishType attribute. Calls itself recursively
      * @param data String data to be searched
      * @param root RecipeNode current node is searching
-     * @return ArrayList<String> All the recipes that match the search
+     * @return String ArrayList All the recipes that match the search
      */
     private ArrayList<String> searchByType(String data, RecipeNode root){
         if (root != null && this.recipeList.size() < 15) {
@@ -421,7 +421,7 @@ public class RecipeTree{
     /**
      * Searches using the dishTime attribute. Calls the private method searchByTime
      * @param data String data to be searched
-     * @return ArrayList<String> All the recipes that match the search
+     * @return String ArrayList All the recipes that match the search
      */
     public ArrayList<String> searchByTime(String data){
         this.recipeList.clear();
@@ -432,7 +432,7 @@ public class RecipeTree{
      * Searches using the dishTime attribute. Calls itself recursively
      * @param data String data to be searched
      * @param root RecipeNode current node is searching
-     * @return ArrayList<String> All the recipes that match the search
+     * @return String ArrayList All the recipes that match the search
      */
     private ArrayList<String> searchByTime(String data, RecipeNode root){
         if (root != null && this.recipeList.size() < 15) {
@@ -456,7 +456,7 @@ public class RecipeTree{
     /**
      * Searches using the name attribute. Calls the private method searchByName
      * @param data String data to be searched
-     * @return ArrayList<String> All the recipes that match the search
+     * @return String ArrayList All the recipes that match the search
      */
     public ArrayList<String> searchByName(String data) {
         this.recipeList.clear();
@@ -467,7 +467,7 @@ public class RecipeTree{
      * Searches using the name attribute. Calls the private method searchByName
      * @param data String data to be searched
      * @param root RecipeNode current node is searching
-     * @return ArrayList<String> All the recipes that match the search
+     * @return String ArrayList All the recipes that match the search
      */
     private ArrayList<String> searchByName(String data, RecipeNode root){
         if (root != null && this.recipeList.size() < 5) {
@@ -491,7 +491,7 @@ public class RecipeTree{
     /**
      * Searches using the dishTag attribute. Calls the private method searchByTag
      * @param data String data to be searched
-     * @return ArrayList<String> All the recipes that match the search
+     * @return String ArrayList All the recipes that match the search
      */
     public ArrayList<String> searchByTag(String data){
         this.recipeList.clear();
@@ -502,7 +502,7 @@ public class RecipeTree{
      * Searches using the name attribute. Calls itself recursively
      * @param data String data to be searched
      * @param root RecipeNode current node is searching
-     * @return ArrayList<String> All the recipes that match the search
+     * @return String ArrayList All the recipes that match the search
      */
     private ArrayList<String> searchByTag(String data, RecipeNode root){
         if (root != null && this.recipeList.size() < 15) {
