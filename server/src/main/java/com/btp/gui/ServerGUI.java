@@ -11,6 +11,9 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
+/**
+ * This is a class that represents the server GUI
+ */
 public class ServerGUI extends JFrame{
     private JPanel mainPanel;
     private JPanel rightPanel;
@@ -51,7 +54,9 @@ public class ServerGUI extends JFrame{
     };
 
 
-
+    /**
+     * Constructor for the server GUI
+     */
     public ServerGUI() {
         setTitle("CookTime Server Manager");
         setSize(1200,650);
@@ -87,12 +92,19 @@ public class ServerGUI extends JFrame{
         refuseButton.addActionListener(e -> rejectChef());
     }
 
+    /**
+     * This method prints a line to the gui console
+     * @param txt String to be printed
+     */
     public void printLn(String txt) {
         serverConsoleMonitor.setEditable(true);
         serverConsoleMonitor.append(txt+"\n");
         serverConsoleMonitor.setEditable(false);
     }
 
+    /**
+     * this method searches for a user in the database, and retrieves the data
+     */
     public void searchUser(){
         if(userSearchBoxTextArea.getText().isEmpty()){
             printLn("enter an user's email");
@@ -114,6 +126,10 @@ public class ServerGUI extends JFrame{
         }
     }
 
+    /**
+     * This method loads the user data on the GUI
+     * @param user user to pull data from
+     */
     private void populateFields(User user) {
         userSearchBoxTextArea.setText("");
         printLn("loading user data...");
@@ -124,6 +140,9 @@ public class ServerGUI extends JFrame{
 
     }
 
+    /**
+     * This method loads any active chef requests in the server
+     */
     private void loadActiveChefRequests(){
         chefRequestModel.setRowCount(0);
         ArrayList<String> chefRequests = UserRepo.getChefRequests();
@@ -135,6 +154,10 @@ public class ServerGUI extends JFrame{
         }
     }
 
+    /**
+     * This method loads the user details on the locations
+     * @param user user to load data from
+     */
     private void loadUserDetails(User user){
         userDataModel.setRowCount(0);
         String name = user.fullName();
@@ -146,6 +169,10 @@ public class ServerGUI extends JFrame{
         userDataModel.addRow(new Object[]{name, age, recipes,chefStatus,followers,following});
     }
 
+    /**
+     * This method loads the userRecipes on the appropriate fields in the GUI
+     * @param user user to pull data from
+     */
     private void loadUserRecipes(User user){
         userRecipesModel.setRowCount(0);
         ArrayList<Integer> userRecipes = user.getRecipeList();
@@ -160,6 +187,9 @@ public class ServerGUI extends JFrame{
         }
     }
 
+    /**
+     * This method sends a notification to the user
+     */
     private void sendNotification(){
         if(allUsersRadioButton.isSelected()){
             Notifier.notifyAll(messageTextArea.getText());
@@ -176,6 +206,9 @@ public class ServerGUI extends JFrame{
         }
     }
 
+    /**
+     * This method is in charge of accepting a a chef, and setting the selected user as a chef
+     */
     private void acceptChef() {
         int row = chefRequestTable.getSelectedRow();
         String userID = (String) chefRequestModel.getValueAt(row,1);
@@ -186,6 +219,9 @@ public class ServerGUI extends JFrame{
         Notifier.notify(userID,"Congratulations, we have approved your chef request");
     }
 
+    /**
+     * This method rejects the application
+     */
     private void rejectChef() {
         int row = chefRequestTable.getSelectedRow();
         if(row==-1){
