@@ -150,7 +150,7 @@ namespace CookTime.Activities {
             using var webClient = new WebClient{BaseAddress = "http://" + MainActivity.Ipv4 + ":8080/CookTime_war/cookAPI/"};
             webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
             
-            if (profileType.Equals("user")) {
+            if (profileType.Equals("user") || profileType.Equals("chef")) {
                 // logic for when the recommended result is a user object
                 var userUrl = "resources/getUser?id=" + profileId;
                 var userRequest = webClient.DownloadString(userUrl);

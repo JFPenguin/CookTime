@@ -97,7 +97,6 @@ namespace CookTime.Activities {
             _ageView.Text = "Age: " + _loggedUser.age;
 
             if (!string.IsNullOrEmpty(_loggedUser.photo)) {
-                Console.WriteLine(_loggedUser.photo);
                 pictureUrl = $"http://{MainActivity.Ipv4}:8080/CookTime_war/cookAPI/resources/getPicture?id={_loggedUser.photo}";
                 Bitmap bitmap = GetImageBitmapFromUrl(pictureUrl);
                 _pfp.SetImageBitmap(bitmap);

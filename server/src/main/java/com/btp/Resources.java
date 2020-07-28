@@ -568,7 +568,7 @@ public class Resources {
         if (sortList.getLength() == 0){
             return newsfeed;
         } else if (sortList.getLength() == 1){
-            Recipe recipe = RecipeRepo.getRecipe(user.getRecipeList().get(0));
+            Recipe recipe = RecipeRepo.getRecipe(user.getNewsFeed().get(0));
             newsfeed.add(recipe.getId()+";"+recipe.getName()+
                     ";"+recipe.getAuthorName()+";"+recipe.getAuthorEmail());
             return newsfeed;
